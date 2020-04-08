@@ -1,4 +1,4 @@
-.Body{
+.authenticationBody{
     margin: 0;
     padding: 0;
     background: #f7fff7;
@@ -30,8 +30,8 @@
       width: 60%;
     }
 
-    .Input[type="text"],
-    .Input[type="password"]{
+    .inputBox[type="text"],
+    .inputBox[type="password"]{
         width: 60%;
     }
   }
@@ -41,8 +41,8 @@
         width: 35%;
     }
 
-    .Input[type="text"],
-    .Input[type="password"]{
+    .inputBox[type="text"],
+    .inputBox[type="password"]{
         width: 85%;
     }
 }
@@ -80,8 +80,8 @@
     text-align: center;
 }
 
-.Input[type="text"],
-.Input[type="password"]{
+.inputBox[type="text"],
+.inputBox[type="password"]{
     margin-bottom: 20px;
     border : none;
     border-bottom: 1px dashed #ff6b6f;
@@ -95,7 +95,7 @@
     transition: 0.2s ease;
 }
 
-.Input[type="submit"]{
+.inputBox[type="submit"]{
     margin-bottom: 28px;
     border: none;
     border-radius: 5px;
@@ -109,8 +109,8 @@
     cursor: pointer;
 }
 
-.Input[type="submit"]:hover,
-.Input[type="submit"]:focus{
+.inputBox[type="submit"]:hover,
+.inputBox[type="submit"]:focus{
     background: crimson;
     transition: 0.2s ease;
 }

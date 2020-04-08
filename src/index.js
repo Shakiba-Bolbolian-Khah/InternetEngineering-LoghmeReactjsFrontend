@@ -9,8 +9,9 @@ import './CSS/headerStyles.css';
 import './CSS/footerStyles.css';
 import './CSS/infoBarStyles.css';
 import './CSS/profileStyles.css';
-import './CSS/accountStyle.css';
+import './CSS/authenticationStyles.css';
 import './media/FlatIcon/font/flaticon.css';
+import './media/FlatIcon/font-signup/flaticon.css';
 // link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
 
 
@@ -146,7 +147,7 @@ class InfoBox extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             newCredit : 0,
-            orders : this.props.value,
+            orders : [],
         };
     }
 
@@ -166,28 +167,6 @@ class InfoBox extends React.Component {
         .catch(function (error) {
             console.log(error);
         })
-
-    }
-
-    createOrderTable(){
-        let table = []
-        for (let i = 0; i < this.orders.length; i++) {
-            console.log(this.orders[0].restaurantName)
-            table.push(
-                <div className="row">
-                    <div className="col-md-4 offset-md-1 ordersCell rounded-left">
-                        <div className="row-no-padding">
-                            <div className="col-md-8 offset-md-2 deliveringState rounded">
-                                {this.orders[0].state}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-5 ordersCell">{this.orders[0].restaurantName}</div>
-                    <div className="col-md-1 ordersCell rounded-right">{i+1}</div>
-                </div>
-            )
-        }
-        return table
     }
     
 
@@ -216,13 +195,28 @@ class InfoBox extends React.Component {
             )
         }
         else{
+            const items=this.state.orders.map((item,key)=>
+                <li key={item.id}>
+                    <div className="row">
+                        <div className="col-md-4 offset-md-1 ordersCell rounded-left">
+                            <div className="row-no-padding">
+                                <div className="col-md-8 offset-md-2 deliveringState rounded">
+                                    {item.state}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-5 ordersCell">{item.restaurantName}</div>
+                        <div className="col-md-1 ordersCell rounded-right">{item.id}</div>
+                    </div>
+                </li>
+            )
             console.log(this.state.orders)
             return(
                 <div id = "infoBox" className="infoBox">
                     <SelectBar value = {this.props.type}/>
                     <div className="row dataContainer">
                         <div className="col-md-12 mt-3">
-                            {/* {this.createOrderTable()} */}
+                            {items}
                         </div>
                     </div>
                 </div>
@@ -249,6 +243,7 @@ class Profile extends React.Component {
             });
         })
     }
+
     componentDidMount(){
         this.fetchUser()
         this.timerId = setInterval(
@@ -256,6 +251,7 @@ class Profile extends React.Component {
     		, 500
     	);
     }
+
     render(){      
         return(
             <div className="container-fluid loghmeContainer bg">
@@ -266,6 +262,7 @@ class Profile extends React.Component {
             </div>
         )
     }
+    
     componentWillUnmount(){
         clearInterval(this.timerId);
     }
@@ -276,6 +273,76 @@ Profile.propTypes = {
     user: PropTypes.object,
 }
 
+class Authentication extends React.Component {
+
+    signupInput(){
+        return(
+            <div className="topBox">
+                <input className ="inputBox" type="text" name="firstName" placeholder="نام" required/>
+                <input className ="inputBox" type="text" name="lastName" placeholder="نام خانوادگی" required/>
+                <input className ="inputBox" type="text" name="phoneNumber" placeholder="شماره تلفن" required/>
+                <input className ="inputBox" type="text" name="email" placeholder="ایمیل" required/>
+                <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" required/>
+                <input className ="inputBox" type="password" name="passwordConf" placeholder="تکرار رمز عبور" required/>
+            <input className ="inputBox" type="submit" name="accountBtn" value="ثبت نام"/>
+        </div>
+        )
+    }
+
+    loginInput(){
+        return(
+            <div className="topBox">
+                <input className ="inputBox" type="text" name="email" placeholder="ایمیل" required/>
+                <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" required/>
+                <input className ="inputBox" type="submit" name="accountBtn" value="ورود"/>
+            </div>
+        )
+    }
+    render(){
+        document.body.classList.add('authenticationBody');
+        return(
+            <div className="loghmeContainer">
+                {this.props.type === 'signup' &&
+                    <div className="accountHeader">
+                        <h1>ثبت نام</h1>
+                    </div>
+                }
+                {this.props.type === 'login' &&
+                    <div className="accountHeader">
+                        <h1>ورود به سامانه </h1>
+                    </div>
+                }
+            <div className="accountBox">
+                {this.props.type === 'signup' &&
+                    this.signupInput()
+                }
+                {this.props.type === 'login' &&
+                    this.loginInput()
+                }
+                <div className="bottomBox">
+                    <div className="or">یا</div>
+                    <span> از طریق حساب‌های اجتماعی </span>
+                    <div className="logoBox">
+                        <a   href="#">
+                            <i className="flaticon-facebook-drawn-logo"></i>
+                        </a>
+                        <a href="#">
+                            <i className="flaticon-twitter-draw-logo"></i>
+                        </a>
+                        <a href="#">
+                            <i className="flaticon-google-plus-draw-logo"></i>
+                        </a>
+                    </div>
+                    <a href="./Login.html" className="alreadyDone">
+                    قبلا ثبت نام کرده‌اید؟ وارد سامانه شوید.
+                    </a>
+                </div>
+                <Footer/>
+            </div>
+        </div>
+        )
+    }
+}
 
 class Home extends React.Component {
     render(){
@@ -290,4 +357,4 @@ class Home extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Profile />, document.getElementById("root"));
+ReactDOM.render(<Authentication type = "login" />, document.getElementById("root"));

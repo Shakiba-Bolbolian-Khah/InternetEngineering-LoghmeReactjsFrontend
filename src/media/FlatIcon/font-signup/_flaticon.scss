@@ -1,0 +1,277 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 22/06/2016 15:16
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-500pc-logo:before { content: "\f100"; }
+.flaticon-51-on-draw-logo:before { content: "\f101"; }
+.flaticon-56-drawn-logo:before { content: "\f102"; }
+.flaticon-ads-of-the-world-logo:before { content: "\f103"; }
+.flaticon-arte10-logo:before { content: "\f104"; }
+.flaticon-ashley-draw-logo:before { content: "\f105"; }
+.flaticon-badoo-draw-logo:before { content: "\f106"; }
+.flaticon-baidu-logo:before { content: "\f107"; }
+.flaticon-bandcamp-draw-logo:before { content: "\f108"; }
+.flaticon-bebo-draw-logo:before { content: "\f109"; }
+.flaticon-behance-draw-logo:before { content: "\f10a"; }
+.flaticon-bisquits-logo:before { content: "\f10b"; }
+.flaticon-bitacoras-draw-logo:before { content: "\f10c"; }
+.flaticon-bitacoras-draw-logo-1:before { content: "\f10d"; }
+.flaticon-blackplanet-logo:before { content: "\f10e"; }
+.flaticon-blogger-draw-logo:before { content: "\f10f"; }
+.flaticon-bloson-draw-logo:before { content: "\f110"; }
+.flaticon-caring-bridge-logo:before { content: "\f111"; }
+.flaticon-classmates-logo:before { content: "\f112"; }
+.flaticon-cross-tv-draw-logo:before { content: "\f113"; }
+.flaticon-delicious-drawn-logo:before { content: "\f114"; }
+.flaticon-desarrollo-web-drawn-logo:before { content: "\f115"; }
+.flaticon-digg-draw-logo:before { content: "\f116"; }
+.flaticon-divoblogger-drawn-logo:before { content: "\f117"; }
+.flaticon-etsy-drawn-logo:before { content: "\f118"; }
+.flaticon-everloop-logo:before { content: "\f119"; }
+.flaticon-facebook-drawn-logo:before { content: "\f11a"; }
+.flaticon-fanlala-logo:before { content: "\f11b"; }
+.flaticon-flickr-logo:before { content: "\f11c"; }
+.flaticon-flipkart-drawn-logo:before { content: "\f11d"; }
+.flaticon-flixster-draw-logo:before { content: "\f11e"; }
+.flaticon-fod-draw-logo:before { content: "\f11f"; }
+.flaticon-fontli-draw-logo:before { content: "\f120"; }
+.flaticon-fotki-draw-logo:before { content: "\f121"; }
+.flaticon-fotolog-draw-logo:before { content: "\f122"; }
+.flaticon-fotolog-logo:before { content: "\f123"; }
+.flaticon-friendster-logo:before { content: "\f124"; }
+.flaticon-geni-draw-logo:before { content: "\f125"; }
+.flaticon-glipho-drawn-logo:before { content: "\f126"; }
+.flaticon-glogster-draw-logo:before { content: "\f127"; }
+.flaticon-google-plus-draw-logo:before { content: "\f128"; }
+.flaticon-grooveshark-draw-logo:before { content: "\f129"; }
+.flaticon-habbo-logo:before { content: "\f12a"; }
+.flaticon-heello-draw-logo:before { content: "\f12b"; }
+.flaticon-hexun-logo:before { content: "\f12c"; }
+.flaticon-hi5-drawn-logo:before { content: "\f12d"; }
+.flaticon-hubbub-draw-logo:before { content: "\f12e"; }
+.flaticon-instagram-draw-logo:before { content: "\f12f"; }
+.flaticon-iqyi-draw-logo:before { content: "\f130"; }
+.flaticon-jux-drawn-logo:before { content: "\f131"; }
+.flaticon-ku6-draw-logo:before { content: "\f132"; }
+.flaticon-ku6-draw-logo-1:before { content: "\f133"; }
+.flaticon-lastfm-draw-logo:before { content: "\f134"; }
+.flaticon-linkedin-draw-logo:before { content: "\f135"; }
+.flaticon-literatura-nova-logo:before { content: "\f136"; }
+.flaticon-meetic-draw-logo:before { content: "\f137"; }
+.flaticon-meetme-logo:before { content: "\f138"; }
+.flaticon-mi-life-draw-logo:before { content: "\f139"; }
+.flaticon-mocospace-drawn-logo:before { content: "\f13a"; }
+.flaticon-myfolio-draw-logo:before { content: "\f13b"; }
+.flaticon-myspace-drawn-logo:before { content: "\f13c"; }
+.flaticon-nk-drawn-logo:before { content: "\f13d"; }
+.flaticon-orkut-draw-logo:before { content: "\f13e"; }
+.flaticon-p1-draw-logo:before { content: "\f13f"; }
+.flaticon-path-draw-logo:before { content: "\f140"; }
+.flaticon-pengyou-logo:before { content: "\f141"; }
+.flaticon-pheed-logo:before { content: "\f142"; }
+.flaticon-pictify-draw-logo:before { content: "\f143"; }
+.flaticon-pinspire-draw-logo:before { content: "\f144"; }
+.flaticon-pinterest-drawn-logo:before { content: "\f145"; }
+.flaticon-podio-logo:before { content: "\f146"; }
+.flaticon-questionity-draw-logo:before { content: "\f147"; }
+.flaticon-qzone-draw-logo:before { content: "\f148"; }
+.flaticon-ravelry-draw-logo:before { content: "\f149"; }
+.flaticon-redalyc-draw-logo:before { content: "\f14a"; }
+.flaticon-renren-draw-logo:before { content: "\f14b"; }
+.flaticon-researchgate-draw-logo:before { content: "\f14c"; }
+.flaticon-reverbnation-logo:before { content: "\f14d"; }
+.flaticon-ryze-draw-logo:before { content: "\f14e"; }
+.flaticon-ryze-drawing-logo:before { content: "\f14f"; }
+.flaticon-scoop-it-draw-logo:before { content: "\f150"; }
+.flaticon-scribd-drawn-logo:before { content: "\f151"; }
+.flaticon-skyrock-draw-logo:before { content: "\f152"; }
+.flaticon-slideshare-draw-logo:before { content: "\f153"; }
+.flaticon-sonico-draw-logo:before { content: "\f154"; }
+.flaticon-sonico-logo:before { content: "\f155"; }
+.flaticon-soundcloud-logo:before { content: "\f156"; }
+.flaticon-spotbros-logo:before { content: "\f157"; }
+.flaticon-spotify-draw-logo:before { content: "\f158"; }
+.flaticon-spotify-draw-logo-1:before { content: "\f159"; }
+.flaticon-studivz-logo:before { content: "\f15a"; }
+.flaticon-stumble-upon-drawn-logo:before { content: "\f15b"; }
+.flaticon-tagworld-logo:before { content: "\f15c"; }
+.flaticon-tianji-draw-logo:before { content: "\f15d"; }
+.flaticon-tmblr-draw-logo:before { content: "\f15e"; }
+.flaticon-tribe-draw-logo:before { content: "\f15f"; }
+.flaticon-tv-tag-logo:before { content: "\f160"; }
+.flaticon-twitpic-draw-logo:before { content: "\f161"; }
+.flaticon-twitter-draw-logo:before { content: "\f162"; }
+.flaticon-twitter-logo:before { content: "\f163"; }
+.flaticon-twoo-logo:before { content: "\f164"; }
+.flaticon-twoo-logotype:before { content: "\f165"; }
+.flaticon-typophile-draw-logo:before { content: "\f166"; }
+.flaticon-ushi-draw-logo:before { content: "\f167"; }
+.flaticon-vampirefreaks-draw-logo:before { content: "\f168"; }
+.flaticon-vimeo-logo:before { content: "\f169"; }
+.flaticon-vk-draw-logo:before { content: "\f16a"; }
+.flaticon-wayn-logo:before { content: "\f16b"; }
+.flaticon-webnotes-draw:before { content: "\f16c"; }
+.flaticon-weheartit-draw-logo:before { content: "\f16d"; }
+.flaticon-weibo-logo:before { content: "\f16e"; }
+.flaticon-wordpress-draw-logo:before { content: "\f16f"; }
+.flaticon-xanga-draw-logo:before { content: "\f170"; }
+.flaticon-xiami-draw-logo:before { content: "\f171"; }
+.flaticon-xing-draw-logo:before { content: "\f172"; }
+.flaticon-yelp-draw-logo:before { content: "\f173"; }
+.flaticon-youtube-logo:before { content: "\f174"; }
+.flaticon-yupoo-draw-logo:before { content: "\f175"; }
+.flaticon-zorpia-logo:before { content: "\f176"; }
+    
+    $font-Flaticon-500pc-logo: "\f100";
+    $font-Flaticon-51-on-draw-logo: "\f101";
+    $font-Flaticon-56-drawn-logo: "\f102";
+    $font-Flaticon-ads-of-the-world-logo: "\f103";
+    $font-Flaticon-arte10-logo: "\f104";
+    $font-Flaticon-ashley-draw-logo: "\f105";
+    $font-Flaticon-badoo-draw-logo: "\f106";
+    $font-Flaticon-baidu-logo: "\f107";
+    $font-Flaticon-bandcamp-draw-logo: "\f108";
+    $font-Flaticon-bebo-draw-logo: "\f109";
+    $font-Flaticon-behance-draw-logo: "\f10a";
+    $font-Flaticon-bisquits-logo: "\f10b";
+    $font-Flaticon-bitacoras-draw-logo: "\f10c";
+    $font-Flaticon-bitacoras-draw-logo-1: "\f10d";
+    $font-Flaticon-blackplanet-logo: "\f10e";
+    $font-Flaticon-blogger-draw-logo: "\f10f";
+    $font-Flaticon-bloson-draw-logo: "\f110";
+    $font-Flaticon-caring-bridge-logo: "\f111";
+    $font-Flaticon-classmates-logo: "\f112";
+    $font-Flaticon-cross-tv-draw-logo: "\f113";
+    $font-Flaticon-delicious-drawn-logo: "\f114";
+    $font-Flaticon-desarrollo-web-drawn-logo: "\f115";
+    $font-Flaticon-digg-draw-logo: "\f116";
+    $font-Flaticon-divoblogger-drawn-logo: "\f117";
+    $font-Flaticon-etsy-drawn-logo: "\f118";
+    $font-Flaticon-everloop-logo: "\f119";
+    $font-Flaticon-facebook-drawn-logo: "\f11a";
+    $font-Flaticon-fanlala-logo: "\f11b";
+    $font-Flaticon-flickr-logo: "\f11c";
+    $font-Flaticon-flipkart-drawn-logo: "\f11d";
+    $font-Flaticon-flixster-draw-logo: "\f11e";
+    $font-Flaticon-fod-draw-logo: "\f11f";
+    $font-Flaticon-fontli-draw-logo: "\f120";
+    $font-Flaticon-fotki-draw-logo: "\f121";
+    $font-Flaticon-fotolog-draw-logo: "\f122";
+    $font-Flaticon-fotolog-logo: "\f123";
+    $font-Flaticon-friendster-logo: "\f124";
+    $font-Flaticon-geni-draw-logo: "\f125";
+    $font-Flaticon-glipho-drawn-logo: "\f126";
+    $font-Flaticon-glogster-draw-logo: "\f127";
+    $font-Flaticon-google-plus-draw-logo: "\f128";
+    $font-Flaticon-grooveshark-draw-logo: "\f129";
+    $font-Flaticon-habbo-logo: "\f12a";
+    $font-Flaticon-heello-draw-logo: "\f12b";
+    $font-Flaticon-hexun-logo: "\f12c";
+    $font-Flaticon-hi5-drawn-logo: "\f12d";
+    $font-Flaticon-hubbub-draw-logo: "\f12e";
+    $font-Flaticon-instagram-draw-logo: "\f12f";
+    $font-Flaticon-iqyi-draw-logo: "\f130";
+    $font-Flaticon-jux-drawn-logo: "\f131";
+    $font-Flaticon-ku6-draw-logo: "\f132";
+    $font-Flaticon-ku6-draw-logo-1: "\f133";
+    $font-Flaticon-lastfm-draw-logo: "\f134";
+    $font-Flaticon-linkedin-draw-logo: "\f135";
+    $font-Flaticon-literatura-nova-logo: "\f136";
+    $font-Flaticon-meetic-draw-logo: "\f137";
+    $font-Flaticon-meetme-logo: "\f138";
+    $font-Flaticon-mi-life-draw-logo: "\f139";
+    $font-Flaticon-mocospace-drawn-logo: "\f13a";
+    $font-Flaticon-myfolio-draw-logo: "\f13b";
+    $font-Flaticon-myspace-drawn-logo: "\f13c";
+    $font-Flaticon-nk-drawn-logo: "\f13d";
+    $font-Flaticon-orkut-draw-logo: "\f13e";
+    $font-Flaticon-p1-draw-logo: "\f13f";
+    $font-Flaticon-path-draw-logo: "\f140";
+    $font-Flaticon-pengyou-logo: "\f141";
+    $font-Flaticon-pheed-logo: "\f142";
+    $font-Flaticon-pictify-draw-logo: "\f143";
+    $font-Flaticon-pinspire-draw-logo: "\f144";
+    $font-Flaticon-pinterest-drawn-logo: "\f145";
+    $font-Flaticon-podio-logo: "\f146";
+    $font-Flaticon-questionity-draw-logo: "\f147";
+    $font-Flaticon-qzone-draw-logo: "\f148";
+    $font-Flaticon-ravelry-draw-logo: "\f149";
+    $font-Flaticon-redalyc-draw-logo: "\f14a";
+    $font-Flaticon-renren-draw-logo: "\f14b";
+    $font-Flaticon-researchgate-draw-logo: "\f14c";
+    $font-Flaticon-reverbnation-logo: "\f14d";
+    $font-Flaticon-ryze-draw-logo: "\f14e";
+    $font-Flaticon-ryze-drawing-logo: "\f14f";
+    $font-Flaticon-scoop-it-draw-logo: "\f150";
+    $font-Flaticon-scribd-drawn-logo: "\f151";
+    $font-Flaticon-skyrock-draw-logo: "\f152";
+    $font-Flaticon-slideshare-draw-logo: "\f153";
+    $font-Flaticon-sonico-draw-logo: "\f154";
+    $font-Flaticon-sonico-logo: "\f155";
+    $font-Flaticon-soundcloud-logo: "\f156";
+    $font-Flaticon-spotbros-logo: "\f157";
+    $font-Flaticon-spotify-draw-logo: "\f158";
+    $font-Flaticon-spotify-draw-logo-1: "\f159";
+    $font-Flaticon-studivz-logo: "\f15a";
+    $font-Flaticon-stumble-upon-drawn-logo: "\f15b";
+    $font-Flaticon-tagworld-logo: "\f15c";
+    $font-Flaticon-tianji-draw-logo: "\f15d";
+    $font-Flaticon-tmblr-draw-logo: "\f15e";
+    $font-Flaticon-tribe-draw-logo: "\f15f";
+    $font-Flaticon-tv-tag-logo: "\f160";
+    $font-Flaticon-twitpic-draw-logo: "\f161";
+    $font-Flaticon-twitter-draw-logo: "\f162";
+    $font-Flaticon-twitter-logo: "\f163";
+    $font-Flaticon-twoo-logo: "\f164";
+    $font-Flaticon-twoo-logotype: "\f165";
+    $font-Flaticon-typophile-draw-logo: "\f166";
+    $font-Flaticon-ushi-draw-logo: "\f167";
+    $font-Flaticon-vampirefreaks-draw-logo: "\f168";
+    $font-Flaticon-vimeo-logo: "\f169";
+    $font-Flaticon-vk-draw-logo: "\f16a";
+    $font-Flaticon-wayn-logo: "\f16b";
+    $font-Flaticon-webnotes-draw: "\f16c";
+    $font-Flaticon-weheartit-draw-logo: "\f16d";
+    $font-Flaticon-weibo-logo: "\f16e";
+    $font-Flaticon-wordpress-draw-logo: "\f16f";
+    $font-Flaticon-xanga-draw-logo: "\f170";
+    $font-Flaticon-xiami-draw-logo: "\f171";
+    $font-Flaticon-xing-draw-logo: "\f172";
+    $font-Flaticon-yelp-draw-logo: "\f173";
+    $font-Flaticon-youtube-logo: "\f174";
+    $font-Flaticon-yupoo-draw-logo: "\f175";
+    $font-Flaticon-zorpia-logo: "\f176";

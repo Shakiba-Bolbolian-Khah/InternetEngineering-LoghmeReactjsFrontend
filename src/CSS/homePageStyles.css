@@ -1,0 +1,167 @@
+.titles {
+    font-weight: bold;
+    font-family: Vazir;
+    font-size: 23px;
+    color: #1A535C;
+    direction: rtl;
+}
+
+.titlesUnderline {
+    border-bottom: 1.5px solid #1A535C;
+}
+
+.remainingTimeBox {
+    direction: rtl;
+    font-weight: normal;
+    font-family: Vazir;
+    font-size: 8px;
+    border: 0.5px solid #1A535C;
+    background-color: #F2FDFF;
+    color: #1A535C;
+    padding: 5px 10px 3px 7px;
+    margin-top: 8px;
+}
+
+.foodPartyMenu {
+    overflow: auto;
+    white-space: nowrap;
+    margin-top: 10px;
+}
+
+.partyFoodLogo {
+    width: 45px;
+    height: 45px;
+    object-position: right;
+    object-fit: cover;
+    margin-top: 5px;
+    border-radius: 4px;
+  }
+
+.partyFoodInfo {
+    vertical-align: middle;
+    display: inline-block;
+    direction: rtl;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #FFFFFF;
+    border: 5px solid #ffffff;
+    flex-direction: column;
+    border-radius: 4px;
+    font-family: Vazir;
+    margin-left: 12px;
+    margin-right: 12px;
+    flex: 0 0 8rem;
+    max-width: 8rem;
+    width: 100%;
+}
+
+.partyFoodName{
+    font-weight: 500;
+    font-size: 14px;
+    color: #000000;
+    padding: 10px 7px 0px 3px !important;
+}
+
+.partyFoodRate {
+    font-weight: normal;
+    font-size: 9px;
+    color: #000000;
+    padding-top: 3px;
+    margin-left: 3px;
+}
+
+.partyFoodNewPrice {
+    font-weight: bold;
+    font-size: 9.5px;
+    color: #000000;
+}
+
+.partyFoodOldPrice {
+    font-weight: normal;
+    font-size: 9.5px;
+    color: #7a7878;
+}
+
+s.partyFoodOldPrice {
+    text-decoration-color: red;
+}
+
+.partyStockInfo {
+    font-family: "Vazir Thin";
+    font-size: 7px;
+    padding: 1px 2px 1px 2px !important;
+    border: 0.5px solid #d0d0d0;
+    border-radius: 4.5px;
+    background-color: #F7FFF7;
+    color: #666464;
+}
+
+.partyBuyButton {
+    font-family: "Vazir Thin" !important;
+    font-size: 7px !important;
+    border-radius: 4.5px !important;
+    padding: 1px 0px 1px 0px !important;
+    color: #ffffff !important;
+}
+
+.payGrayBG {
+    background-color: #c4c4c4 !important;
+}
+
+.payBlueBG {
+    background-color: #4ecdc4 !important;
+}
+
+.bottomDashedBorder {
+    border-bottom: 2px dashed #c4c4c4;
+}
+
+.partyRestaurantName {
+    font-weight: normal;
+    font-family: Vazir;
+    font-size: 9.5px;
+}
+
+.restaurants {
+    font-weight: bold;
+    font-family: Vazir;
+    margin-top: 15px;
+}
+
+.restaurantInfo {
+    direction: rtl;
+    background-color: #FFFFFF;
+    border: 5px solid #ffffff;
+    flex-direction: column;
+    border-radius: 4px;
+    font-family: Vazir;
+    margin-left: 14px;
+    margin-right: 14px;
+}
+
+.restaurantSmallLogo {
+    width: 72px;
+    height: 72px;
+    object-position: right;
+    object-fit: cover;
+    margin-top: 8px;
+    border-radius: 7px;
+}
+
+.restaurantSmallName {
+    font-weight: bold;
+    font-size: 9.5px;
+    color: #000000;
+}
+
+.showMenuButton {
+    font-family: "Vazir" !important;
+    font-size: 9.5px !important;
+    margin-top: 9px !important;
+    margin-left: 13px !important;
+    margin-right: 13px !important;
+    margin-bottom: 4px !important;
+    padding: 2px 6px 2px 6px !important;
+    background-color: #FFE66D !important;
+    color: #1f1f1f !important;
+}

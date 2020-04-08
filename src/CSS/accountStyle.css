@@ -1,0 +1,147 @@
+.Body{
+    margin: 0;
+    padding: 0;
+    background: #f7fff7;
+    font-size: 16px;
+    min-height: 100%;
+    background-image: url("../media/Pics/Cover\ Photo.jpg");
+    background-size: cover;
+}
+
+.accountBox{
+    background-color: rgb(219, 199, 203);
+    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+    font-family: Vazir;
+    margin: auto;
+    margin-bottom: 70px;
+    margin-top: 40px;
+    padding-top: 10px;
+    font-size:14px;
+    width: 45%;
+    min-height: 50%;
+    border-radius: 10px;
+    box-shadow: 0 0px 5px 1px rgb(66, 66, 66);
+}
+
+@media screen and (min-width: 400px) {
+    .accountBox{
+      width: 60%;
+    }
+
+    .Input[type="text"],
+    .Input[type="password"]{
+        width: 60%;
+    }
+  }
+  
+  @media screen and (min-width: 800px) {
+    .accountBox{
+        width: 35%;
+    }
+
+    .Input[type="text"],
+    .Input[type="password"]{
+        width: 85%;
+    }
+}
+    
+.accountHeader{
+    opacity: 0.7;
+    background-color: rgb(219, 199, 203);
+    margin: 40px 0 20px 0;
+    font-weight: 300;
+    font-size: 32px;
+    font-family: "Vazir Black";
+    color: #1A535C;
+    text-align: center;
+}
+
+.topBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 0;
+    left: 0;
+    padding: 20px 20px 0px 30px;
+}
+
+.bottomBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px  40px 10px 40px;
+    border-top: 0.2px solid #1A535C;
+    background-color:  #1A535C;
+    font-family: Vazir;
+    font-size: 15px ;
+    color: #f7fff7;
+    text-align: center;
+}
+
+.Input[type="text"],
+.Input[type="password"]{
+    margin-bottom: 20px;
+    border : none;
+    border-bottom: 1px dashed #ff6b6f;
+    direction: rtl;
+    color: black;
+    border-radius: 5px;
+    width: 60%;
+    padding: 4px;
+    font-family: Vazir;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.Input[type="submit"]{
+    margin-bottom: 28px;
+    border: none;
+    border-radius: 5px;
+    font-family: "Vazir Black";
+    font-size: 15px;
+    background: #ff6b6f;
+    color: #f7fff7;
+    width:40%;
+    padding: 10px 0 10px ;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.Input[type="submit"]:hover,
+.Input[type="submit"]:focus{
+    background: crimson;
+    transition: 0.2s ease;
+}
+
+.or {
+    border:  0.5px solid #1A535C;
+    margin-top: -30px;
+    color: black;
+    width: 40px;
+    height: 40px;
+    background: #DDD;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    line-height: 40px;
+    text-align: center;
+    align-self: center;
+}
+
+.logoBox{
+    display: flex;
+    justify-items: center;
+}
+
+.alreadyDone{
+    color : white;
+    direction: rtl;
+    font-size: 12px;
+}
+
+.alreadyDone:hover{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}

@@ -1,0 +1,63 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+.bg{
+  background-color: #F7FFF7;
+}
+
+.loghmeContainer {
+  display: flex;
+  flex-direction:column;
+  flex-wrap: nowrap;
+  position: relative;
+  min-height: 100%;
+}
+
+.userProfile {
+  color: #5f5e5e;
+  padding: 5px 0 0 22px;
+}
+
+.starIcon {
+  padding-top: 2px;
+  font-weight: bold;
+  font-size: 10px;
+  color: #FFA526;
+}
+
+.borderShadow {
+  box-shadow: 0px 0px 4px -1px #3b3a3a;
+}
+
+.marginFromFooter {
+  margin-bottom: 50px;
+}
+
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.flaticon-smart-cart {
+  color: #5f5e5e;
+  padding-left: 15px;
+}
+
+.flaticon-minus {
+  color: #ff6f6f;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.flaticon-plus {
+  color: #205860;
+  padding-left: 1px;
+  padding-right: 1px;
+}

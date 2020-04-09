@@ -4,7 +4,7 @@
   	*/
 
 @font-face {
-  font-family: "Flaticon";
+  font-family: "Flaticon-Loghme";
   src: url("./Flaticon.eot");
   src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
        url("./Flaticon.woff2") format("woff2"),
@@ -17,47 +17,47 @@
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: "Flaticon";
+    font-family: "Flaticon-Loghme";
     src: url("./Flaticon.svg#Flaticon") format("svg");
   }
 }
 
-[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
-  font-family: Flaticon;
+[class^="flaticon-loghme-"]:before, [class*=" flaticon-loghme-"]:before,
+[class^="flaticon-loghme-"]:after, [class*=" flaticon-loghme-"]:after {   
+  font-family: Flaticon-Loghme;
   font-size: 16px;
   font-style: normal;
 }
 
-.flaticon-plus:before {
+.flaticon-loghme-plus:before {
   content: "\f100";
   font-size: 10px;
 }
-.flaticon-minus:before {
+.flaticon-loghme-minus:before {
   content: "\f101";
   font-size: 10px;
 }
-.flaticon-account:before { 
+.flaticon-loghme-account:before { 
   content: "\f102"; 
   font-size: 45px;
   padding-left: 12px;
 }
-.flaticon-smart-cart:before {  
+.flaticon-loghme-smart-cart:before {  
   content: "\f103";
   font-size: 20px;
   display: inline-block;
   vertical-align: middle;
   height: 100%;
 }
-.flaticon-card:before { 
+.flaticon-loghme-card:before { 
   content: "\f104";
   padding: 0px 0px 0px 12px;
 }
-.flaticon-mail:before { 
+.flaticon-loghme-mail:before { 
   content: "\f105"; 
   padding: 0px 0px 0px 8px;
 }
-.flaticon-phone:before { 
+.flaticon-loghme-phone:before { 
   content: "\f106"; 
   padding: 0px 0px 0px 15px;
 }

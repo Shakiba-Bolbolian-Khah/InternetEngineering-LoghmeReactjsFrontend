@@ -15,7 +15,23 @@
     flex-wrap:  wrap;
     font-weight: bold;
 }
-  
+
+.exitContainer {
+    padding: 1px 0 0 40px;
+}
+
+.userProfile {
+    color: #5f5e5e;
+}
+
+.userProfileContainer{
+    padding: 1px 0 0 22px;
+}
+
+.cartIconContainer {
+    padding-left: 15px;
+}
+
 .exit, .userProfile {
     font-family: "Vazir Thin";
     font-size: 15px;
@@ -24,7 +40,6 @@
   
 .exit{
     color: #FF6B6B;
-    padding: 5px 0 0 40px;
 }
   
 .exit:hover, .userProfile:hover{
@@ -32,10 +47,13 @@
     text-decoration: none;
     transition-duration:2s;
 }
-  
+
+.LoghmeLogoContainer {
+    margin-right: 40px;
+}
+
 .LoghmeLogo {
     height: 35px;
     width: 35px;
     float: right;
-    margin-right: 40px;
 }

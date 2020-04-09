@@ -25,22 +25,35 @@ class Header extends React.Component {
         ReactDOM.render(<Profile />, document.getElementById("root"));
     }
 
+    logout(event){
+        event.preventDefault();
+        ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+    }
+
     render(){
         return (
             <div className="row header">
                 <div className="headerLeftSide">
-                    <a className="exit" href="/">خروج</a>
+                    <div className="exitContainer">
+                        <a className="exit" href="#" onClick={(e) => this.logout(e)}>خروج</a>
+                    </div>
                     {this.props.value !== "profile" &&
-                        <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
+                        <div className="userProfileContainer">
+                            <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
+                        </div>
                     }
-                    <a href="#" onClick={(e) => this.showCart(e)}>
-                        <i className="flaticon-smart-cart"></i>
-                    </a>
+                    <div className="cartIconContainer">
+                        <a href="#" onClick={(e) => this.showCart(e)}>
+                            <i className="flaticon-loghme-smart-cart"></i>
+                        </a>
+                    </div>
                 </div>
                 {this.props.value !== "home" &&
-                    <a href="#" onClick={(e) => this.goHome(e)}>
-                        <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"></img>
-                    </a>
+                    <div className="LoghmeLogoContainer">
+                        <a href="#" onClick={(e) => this.goHome(e)}>
+                            <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"></img>
+                        </a>
+                    </div>
                 }
             </div>
         )
@@ -69,20 +82,20 @@ class InfoBar extends React.Component {
                 <div className="row infoBar">
                     <div className="infoBarUserDetails">
                         <div className="infoBarDetailData">
-                            <i className="flaticon-phone"></i>
+                            <i className="flaticon-loghme-phone"></i>
                             <div>{this.props.value.phoneNumber}</div>
                         </div>
                         <div className ="infoBarDetailData">
-                            <i className="flaticon-mail"></i>
+                            <i className="flaticon-loghme-mail"></i>
                             <div>{this.props.value.email}</div>
                         </div>
                         <div className="infoBarDetailData">
-                            <i className="flaticon-card"></i>
+                            <i className="flaticon-loghme-card"></i>
                             <div>{String(this.props.value.credit).toPersianDigits()} تومان</div>
                         </div>
                     </div>
                     <div className="infoBarUsername">
-                        <i className="flaticon-account"></i>
+                        <i className="flaticon-loghme-account"></i>
                         <div>{this.props.value.firstName} {this.props.value.lastName}</div>
                     </div>
                 </div>
@@ -292,6 +305,7 @@ class Authentication extends React.Component {
             rePass : ""
         }
     }
+    // body unmount style
     handleFirstName(event) {
         event.persist();
         this.setState(prevState => ({firstName: event.target.value}));
@@ -334,6 +348,7 @@ class Authentication extends React.Component {
         if(!emailRe.test(this.state.email)) {
             console.log("Invalid email");
             //Error: Invalid email format
+            // reset form
         }
         if(this.props.type === 'signup'){
             let phoneRe = /09[0-9]{9}/;
@@ -410,13 +425,13 @@ class Authentication extends React.Component {
                     <span> از طریق حساب‌های اجتماعی </span>
                     <div className="logoBox">
                         <a   href="#">
-                            <i className="flaticon-facebook-drawn-logo"></i>
+                            <i className="flaticon-Auth-facebook-drawn-logo"></i>
                         </a>
                         <a href="#">
-                            <i className="flaticon-twitter-draw-logo"></i>
+                            <i className="flaticon-Auth-twitter-draw-logo"></i>
                         </a>
                         <a href="#">
-                            <i className="flaticon-google-plus-draw-logo"></i>
+                            <i className="flaticon-Auth-google-plus-draw-logo"></i>
                         </a>
                     </div>
                     {this.props.type === 'signup' &&
@@ -446,4 +461,4 @@ class Home extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Authentication type = "signup" />, document.getElementById("root"));
+ReactDOM.render(<Profile />, document.getElementById("root"));

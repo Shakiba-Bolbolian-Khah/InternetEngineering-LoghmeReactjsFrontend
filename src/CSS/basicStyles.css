@@ -15,11 +15,6 @@ html, body {
   min-height: 100%;
 }
 
-.userProfile {
-  color: #5f5e5e;
-  padding: 5px 0 0 22px;
-}
-
 .starIcon {
   padding-top: 2px;
   font-weight: bold;
@@ -45,18 +40,17 @@ html, body {
   padding-left: 0;
 }
 
-.flaticon-smart-cart {
+.flaticon-loghme-smart-cart {
   color: #5f5e5e;
-  padding-left: 15px;
 }
 
-.flaticon-minus {
+.flaticon-loghme-minus {
   color: #ff6f6f;
   padding-left: 1px;
   padding-right: 1px;
 }
 
-.flaticon-plus {
+.flaticon-loghme-plus {
   color: #205860;
   padding-left: 1px;
   padding-right: 1px;

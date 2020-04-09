@@ -4,7 +4,7 @@
   	*/
 
 @font-face {
-  font-family: "Flaticon";
+  font-family: "Flaticon-Auth";
   src: url("./Flaticon.eot");
   src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
        url("./Flaticon.woff") format("woff"),
@@ -16,147 +16,146 @@
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: "Flaticon";
+    font-family: "Flaticon-Auth";
     src: url("./Flaticon.svg#Flaticon") format("svg");
   }
 }
 
-[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
-[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
-  font-family: Flaticon;
+[class^="flaticon-Auth-"]:before, [class*=" flaticon-Auth-"]:before,
+[class^="flaticon-Auth-"]:after, [class*=" flaticon-Auth-"]:after {   
+  font-family: Flaticon-Auth;
   font-size: 35px;
   font-style: normal;
-  /* margin-left: 20px; */
 }
 
-.flaticon-500pc-logo:before { content: "\f100"; }
-.flaticon-51-on-draw-logo:before { content: "\f101"; }
-.flaticon-56-drawn-logo:before { content: "\f102"; }
-.flaticon-ads-of-the-world-logo:before { content: "\f103"; }
-.flaticon-arte10-logo:before { content: "\f104"; }
-.flaticon-ashley-draw-logo:before { content: "\f105"; }
-.flaticon-badoo-draw-logo:before { content: "\f106"; }
-.flaticon-baidu-logo:before { content: "\f107"; }
-.flaticon-bandcamp-draw-logo:before { content: "\f108"; }
-.flaticon-bebo-draw-logo:before { content: "\f109"; }
-.flaticon-behance-draw-logo:before { content: "\f10a"; }
-.flaticon-bisquits-logo:before { content: "\f10b"; }
-.flaticon-bitacoras-draw-logo:before { content: "\f10c"; }
-.flaticon-bitacoras-draw-logo-1:before { content: "\f10d"; }
-.flaticon-blackplanet-logo:before { content: "\f10e"; }
-.flaticon-blogger-draw-logo:before { content: "\f10f"; }
-.flaticon-bloson-draw-logo:before { content: "\f110"; }
-.flaticon-caring-bridge-logo:before { content: "\f111"; }
-.flaticon-classmates-logo:before { content: "\f112"; }
-.flaticon-cross-tv-draw-logo:before { content: "\f113"; }
-.flaticon-delicious-drawn-logo:before { content: "\f114"; }
-.flaticon-desarrollo-web-drawn-logo:before { content: "\f115"; }
-.flaticon-digg-draw-logo:before { content: "\f116"; }
-.flaticon-divoblogger-drawn-logo:before { content: "\f117"; }
-.flaticon-etsy-drawn-logo:before { content: "\f118"; }
-.flaticon-everloop-logo:before { content: "\f119"; }
-.flaticon-facebook-drawn-logo:before { 
+.flaticon-Auth-500pc-logo:before { content: "\f100"; }
+.flaticon-Auth-51-on-draw-logo:before { content: "\f101"; }
+.flaticon-Auth-56-drawn-logo:before { content: "\f102"; }
+.flaticon-Auth-ads-of-the-world-logo:before { content: "\f103"; }
+.flaticon-Auth-arte10-logo:before { content: "\f104"; }
+.flaticon-Auth-ashley-draw-logo:before { content: "\f105"; }
+.flaticon-Auth-badoo-draw-logo:before { content: "\f106"; }
+.flaticon-Auth-baidu-logo:before { content: "\f107"; }
+.flaticon-Auth-bandcamp-draw-logo:before { content: "\f108"; }
+.flaticon-Auth-bebo-draw-logo:before { content: "\f109"; }
+.flaticon-Auth-behance-draw-logo:before { content: "\f10a"; }
+.flaticon-Auth-bisquits-logo:before { content: "\f10b"; }
+.flaticon-Auth-bitacoras-draw-logo:before { content: "\f10c"; }
+.flaticon-Auth-bitacoras-draw-logo-1:before { content: "\f10d"; }
+.flaticon-Auth-blackplanet-logo:before { content: "\f10e"; }
+.flaticon-Auth-blogger-draw-logo:before { content: "\f10f"; }
+.flaticon-Auth-bloson-draw-logo:before { content: "\f110"; }
+.flaticon-Auth-caring-bridge-logo:before { content: "\f111"; }
+.flaticon-Auth-classmates-logo:before { content: "\f112"; }
+.flaticon-Auth-cross-tv-draw-logo:before { content: "\f113"; }
+.flaticon-Auth-delicious-drawn-logo:before { content: "\f114"; }
+.flaticon-Auth-desarrollo-web-drawn-logo:before { content: "\f115"; }
+.flaticon-Auth-digg-draw-logo:before { content: "\f116"; }
+.flaticon-Auth-divoblogger-drawn-logo:before { content: "\f117"; }
+.flaticon-Auth-etsy-drawn-logo:before { content: "\f118"; }
+.flaticon-Auth-everloop-logo:before { content: "\f119"; }
+.flaticon-Auth-facebook-drawn-logo:before { 
   content: "\f11a";
   padding: 5px;
   color: #f7fff7;
 }
-.flaticon-fanlala-logo:before { content: "\f11b"; }
-.flaticon-flickr-logo:before { content: "\f11c"; }
-.flaticon-flipkart-drawn-logo:before { content: "\f11d"; }
-.flaticon-flixster-draw-logo:before { content: "\f11e"; }
-.flaticon-fod-draw-logo:before { content: "\f11f"; }
-.flaticon-fontli-draw-logo:before { content: "\f120"; }
-.flaticon-fotki-draw-logo:before { content: "\f121"; }
-.flaticon-fotolog-draw-logo:before { content: "\f122"; }
-.flaticon-fotolog-logo:before { content: "\f123"; }
-.flaticon-friendster-logo:before { content: "\f124"; }
-.flaticon-geni-draw-logo:before { content: "\f125"; }
-.flaticon-glipho-drawn-logo:before { content: "\f126"; }
-.flaticon-glogster-draw-logo:before { content: "\f127"; }
-.flaticon-google-plus-draw-logo:before { 
+.flaticon-Auth-fanlala-logo:before { content: "\f11b"; }
+.flaticon-Auth-flickr-logo:before { content: "\f11c"; }
+.flaticon-Auth-flipkart-drawn-logo:before { content: "\f11d"; }
+.flaticon-Auth-flixster-draw-logo:before { content: "\f11e"; }
+.flaticon-Auth-fod-draw-logo:before { content: "\f11f"; }
+.flaticon-Auth-fontli-draw-logo:before { content: "\f120"; }
+.flaticon-Auth-fotki-draw-logo:before { content: "\f121"; }
+.flaticon-Auth-fotolog-draw-logo:before { content: "\f122"; }
+.flaticon-Auth-fotolog-logo:before { content: "\f123"; }
+.flaticon-Auth-friendster-logo:before { content: "\f124"; }
+.flaticon-Auth-geni-draw-logo:before { content: "\f125"; }
+.flaticon-Auth-glipho-drawn-logo:before { content: "\f126"; }
+.flaticon-Auth-glogster-draw-logo:before { content: "\f127"; }
+.flaticon-Auth-google-plus-draw-logo:before { 
   content: "\f128"; 
   padding: 5px;
   color: #f7fff7;
 }
-.flaticon-grooveshark-draw-logo:before { content: "\f129"; }
-.flaticon-habbo-logo:before { content: "\f12a"; }
-.flaticon-heello-draw-logo:before { content: "\f12b"; }
-.flaticon-hexun-logo:before { content: "\f12c"; }
-.flaticon-hi5-drawn-logo:before { content: "\f12d"; }
-.flaticon-hubbub-draw-logo:before { content: "\f12e"; }
-.flaticon-instagram-draw-logo:before { content: "\f12f"; }
-.flaticon-iqyi-draw-logo:before { content: "\f130"; }
-.flaticon-jux-drawn-logo:before { content: "\f131"; }
-.flaticon-ku6-draw-logo:before { content: "\f132"; }
-.flaticon-ku6-draw-logo-1:before { content: "\f133"; }
-.flaticon-lastfm-draw-logo:before { content: "\f134"; }
-.flaticon-linkedin-draw-logo:before { content: "\f135"; }
-.flaticon-literatura-nova-logo:before { content: "\f136"; }
-.flaticon-meetic-draw-logo:before { content: "\f137"; }
-.flaticon-meetme-logo:before { content: "\f138"; }
-.flaticon-mi-life-draw-logo:before { content: "\f139"; }
-.flaticon-mocospace-drawn-logo:before { content: "\f13a"; }
-.flaticon-myfolio-draw-logo:before { content: "\f13b"; }
-.flaticon-myspace-drawn-logo:before { content: "\f13c"; }
-.flaticon-nk-drawn-logo:before { content: "\f13d"; }
-.flaticon-orkut-draw-logo:before { content: "\f13e"; }
-.flaticon-p1-draw-logo:before { content: "\f13f"; }
-.flaticon-path-draw-logo:before { content: "\f140"; }
-.flaticon-pengyou-logo:before { content: "\f141"; }
-.flaticon-pheed-logo:before { content: "\f142"; }
-.flaticon-pictify-draw-logo:before { content: "\f143"; }
-.flaticon-pinspire-draw-logo:before { content: "\f144"; }
-.flaticon-pinterest-drawn-logo:before { content: "\f145"; }
-.flaticon-podio-logo:before { content: "\f146"; }
-.flaticon-questionity-draw-logo:before { content: "\f147"; }
-.flaticon-qzone-draw-logo:before { content: "\f148"; }
-.flaticon-ravelry-draw-logo:before { content: "\f149"; }
-.flaticon-redalyc-draw-logo:before { content: "\f14a"; }
-.flaticon-renren-draw-logo:before { content: "\f14b"; }
-.flaticon-researchgate-draw-logo:before { content: "\f14c"; }
-.flaticon-reverbnation-logo:before { content: "\f14d"; }
-.flaticon-ryze-draw-logo:before { content: "\f14e"; }
-.flaticon-ryze-drawing-logo:before { content: "\f14f"; }
-.flaticon-scoop-it-draw-logo:before { content: "\f150"; }
-.flaticon-scribd-drawn-logo:before { content: "\f151"; }
-.flaticon-skyrock-draw-logo:before { content: "\f152"; }
-.flaticon-slideshare-draw-logo:before { content: "\f153"; }
-.flaticon-sonico-draw-logo:before { content: "\f154"; }
-.flaticon-sonico-logo:before { content: "\f155"; }
-.flaticon-soundcloud-logo:before { content: "\f156"; }
-.flaticon-spotbros-logo:before { content: "\f157"; }
-.flaticon-spotify-draw-logo:before { content: "\f158"; }
-.flaticon-spotify-draw-logo-1:before { content: "\f159"; }
-.flaticon-studivz-logo:before { content: "\f15a"; }
-.flaticon-stumble-upon-drawn-logo:before { content: "\f15b"; }
-.flaticon-tagworld-logo:before { content: "\f15c"; }
-.flaticon-tianji-draw-logo:before { content: "\f15d"; }
-.flaticon-tmblr-draw-logo:before { content: "\f15e"; }
-.flaticon-tribe-draw-logo:before { content: "\f15f"; }
-.flaticon-tv-tag-logo:before { content: "\f160"; }
-.flaticon-twitpic-draw-logo:before { content: "\f161"; }
-.flaticon-twitter-draw-logo:before { 
+.flaticon-Auth-grooveshark-draw-logo:before { content: "\f129"; }
+.flaticon-Auth-habbo-logo:before { content: "\f12a"; }
+.flaticon-Auth-heello-draw-logo:before { content: "\f12b"; }
+.flaticon-Auth-hexun-logo:before { content: "\f12c"; }
+.flaticon-Auth-hi5-drawn-logo:before { content: "\f12d"; }
+.flaticon-Auth-hubbub-draw-logo:before { content: "\f12e"; }
+.flaticon-Auth-instagram-draw-logo:before { content: "\f12f"; }
+.flaticon-Auth-iqyi-draw-logo:before { content: "\f130"; }
+.flaticon-Auth-jux-drawn-logo:before { content: "\f131"; }
+.flaticon-Auth-ku6-draw-logo:before { content: "\f132"; }
+.flaticon-Auth-ku6-draw-logo-1:before { content: "\f133"; }
+.flaticon-Auth-lastfm-draw-logo:before { content: "\f134"; }
+.flaticon-Auth-linkedin-draw-logo:before { content: "\f135"; }
+.flaticon-Auth-literatura-nova-logo:before { content: "\f136"; }
+.flaticon-Auth-meetic-draw-logo:before { content: "\f137"; }
+.flaticon-Auth-meetme-logo:before { content: "\f138"; }
+.flaticon-Auth-mi-life-draw-logo:before { content: "\f139"; }
+.flaticon-Auth-mocospace-drawn-logo:before { content: "\f13a"; }
+.flaticon-Auth-myfolio-draw-logo:before { content: "\f13b"; }
+.flaticon-Auth-myspace-drawn-logo:before { content: "\f13c"; }
+.flaticon-Auth-nk-drawn-logo:before { content: "\f13d"; }
+.flaticon-Auth-orkut-draw-logo:before { content: "\f13e"; }
+.flaticon-Auth-p1-draw-logo:before { content: "\f13f"; }
+.flaticon-Auth-path-draw-logo:before { content: "\f140"; }
+.flaticon-Auth-pengyou-logo:before { content: "\f141"; }
+.flaticon-Auth-pheed-logo:before { content: "\f142"; }
+.flaticon-Auth-pictify-draw-logo:before { content: "\f143"; }
+.flaticon-Auth-pinspire-draw-logo:before { content: "\f144"; }
+.flaticon-Auth-pinterest-drawn-logo:before { content: "\f145"; }
+.flaticon-Auth-podio-logo:before { content: "\f146"; }
+.flaticon-Auth-questionity-draw-logo:before { content: "\f147"; }
+.flaticon-Auth-qzone-draw-logo:before { content: "\f148"; }
+.flaticon-Auth-ravelry-draw-logo:before { content: "\f149"; }
+.flaticon-Auth-redalyc-draw-logo:before { content: "\f14a"; }
+.flaticon-Auth-renren-draw-logo:before { content: "\f14b"; }
+.flaticon-Auth-researchgate-draw-logo:before { content: "\f14c"; }
+.flaticon-Auth-reverbnation-logo:before { content: "\f14d"; }
+.flaticon-Auth-ryze-draw-logo:before { content: "\f14e"; }
+.flaticon-Auth-ryze-drawing-logo:before { content: "\f14f"; }
+.flaticon-Auth-scoop-it-draw-logo:before { content: "\f150"; }
+.flaticon-Auth-scribd-drawn-logo:before { content: "\f151"; }
+.flaticon-Auth-skyrock-draw-logo:before { content: "\f152"; }
+.flaticon-Auth-slideshare-draw-logo:before { content: "\f153"; }
+.flaticon-Auth-sonico-draw-logo:before { content: "\f154"; }
+.flaticon-Auth-sonico-logo:before { content: "\f155"; }
+.flaticon-Auth-soundcloud-logo:before { content: "\f156"; }
+.flaticon-Auth-spotbros-logo:before { content: "\f157"; }
+.flaticon-Auth-spotify-draw-logo:before { content: "\f158"; }
+.flaticon-Auth-spotify-draw-logo-1:before { content: "\f159"; }
+.flaticon-Auth-studivz-logo:before { content: "\f15a"; }
+.flaticon-Auth-stumble-upon-drawn-logo:before { content: "\f15b"; }
+.flaticon-Auth-tagworld-logo:before { content: "\f15c"; }
+.flaticon-Auth-tianji-draw-logo:before { content: "\f15d"; }
+.flaticon-Auth-tmblr-draw-logo:before { content: "\f15e"; }
+.flaticon-Auth-tribe-draw-logo:before { content: "\f15f"; }
+.flaticon-Auth-tv-tag-logo:before { content: "\f160"; }
+.flaticon-Auth-twitpic-draw-logo:before { content: "\f161"; }
+.flaticon-Auth-twitter-draw-logo:before { 
   content: "\f162"; 
   padding: 5px;
   color: #f7fff7;
 }
-.flaticon-twitter-logo:before { content: "\f163"; }
-.flaticon-twoo-logo:before { content: "\f164"; }
-.flaticon-twoo-logotype:before { content: "\f165"; }
-.flaticon-typophile-draw-logo:before { content: "\f166"; }
-.flaticon-ushi-draw-logo:before { content: "\f167"; }
-.flaticon-vampirefreaks-draw-logo:before { content: "\f168"; }
-.flaticon-vimeo-logo:before { content: "\f169"; }
-.flaticon-vk-draw-logo:before { content: "\f16a"; }
-.flaticon-wayn-logo:before { content: "\f16b"; }
-.flaticon-webnotes-draw:before { content: "\f16c"; }
-.flaticon-weheartit-draw-logo:before { content: "\f16d"; }
-.flaticon-weibo-logo:before { content: "\f16e"; }
-.flaticon-wordpress-draw-logo:before { content: "\f16f"; }
-.flaticon-xanga-draw-logo:before { content: "\f170"; }
-.flaticon-xiami-draw-logo:before { content: "\f171"; }
-.flaticon-xing-draw-logo:before { content: "\f172"; }
-.flaticon-yelp-draw-logo:before { content: "\f173"; }
-.flaticon-youtube-logo:before { content: "\f174"; }
-.flaticon-yupoo-draw-logo:before { content: "\f175"; }
-.flaticon-zorpia-logo:before { content: "\f176"; }
+.flaticon-Auth-twitter-logo:before { content: "\f163"; }
+.flaticon-Auth-twoo-logo:before { content: "\f164"; }
+.flaticon-Auth-twoo-logotype:before { content: "\f165"; }
+.flaticon-Auth-typophile-draw-logo:before { content: "\f166"; }
+.flaticon-Auth-ushi-draw-logo:before { content: "\f167"; }
+.flaticon-Auth-vampirefreaks-draw-logo:before { content: "\f168"; }
+.flaticon-Auth-vimeo-logo:before { content: "\f169"; }
+.flaticon-Auth-vk-draw-logo:before { content: "\f16a"; }
+.flaticon-Auth-wayn-logo:before { content: "\f16b"; }
+.flaticon-Auth-webnotes-draw:before { content: "\f16c"; }
+.flaticon-Auth-weheartit-draw-logo:before { content: "\f16d"; }
+.flaticon-Auth-weibo-logo:before { content: "\f16e"; }
+.flaticon-Auth-wordpress-draw-logo:before { content: "\f16f"; }
+.flaticon-Auth-xanga-draw-logo:before { content: "\f170"; }
+.flaticon-Auth-xiami-draw-logo:before { content: "\f171"; }
+.flaticon-Auth-xing-draw-logo:before { content: "\f172"; }
+.flaticon-Auth-yelp-draw-logo:before { content: "\f173"; }
+.flaticon-Auth-youtube-logo:before { content: "\f174"; }
+.flaticon-Auth-yupoo-draw-logo:before { content: "\f175"; }
+.flaticon-Auth-zorpia-logo:before { content: "\f176"; }

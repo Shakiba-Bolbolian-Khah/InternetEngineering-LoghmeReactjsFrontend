@@ -14,7 +14,6 @@ import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
 // link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
 
-
 class Header extends React.Component {
     goHome(event){
         event.preventDefault();
@@ -274,28 +273,115 @@ Profile.propTypes = {
 }
 
 class Authentication extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleFirstName = this.handleFirstName.bind(this);
+        this.handleLastName = this.handleLastName.bind(this);
+        this.handlePhone = this.handlePhone.bind(this);
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this);
+        this.handleRePass = this.handleRePass.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAnother = this.handleAnother.bind(this);
+        this.state = {
+            firstName : "",
+            lastName : "",
+            phone : "",
+            email : "",
+            pass : "",
+            rePass : ""
+        }
+    }
+    handleFirstName(event) {
+        event.persist();
+        this.setState(prevState => ({firstName: event.target.value}));
+        console.log(this.state.firstName);
+    }
+    handleLastName(event, type){
+        event.persist();
+        this.setState(prevState => ({lastName: event.target.value}));
+        console.log(this.state.lastName);
+    }
+    handleEmail(event) {
+        event.persist();
+        this.setState(prevState => ({email: event.target.value}));
+        console.log(this.state.email);
+    }
+    handlePhone(event) {
+        event.persist();
+        this.setState(prevState => ({phone: event.target.value}));
+        console.log(this.state.phone);
+    }
+    handlePassword(event) {
+        event.persist();
+        this.setState(prevState => ({pass: event.target.value}));
+        console.log(this.state.pass);
+    }
+    handleRePass(event) {
+        event.persist();
+        this.setState(prevState => ({rePass: event.target.value}));
+        console.log(this.state.rePass);
+    }
+    handleAnother(event) {
+        event.preventDefault();
+        var anotherPage = this.props.type === 'signup' ? 'login' : 'signup';
+        ReactDOM.render(<Authentication type = {anotherPage}/>, document.getElementById("root"));
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+        let emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        console.log(this.state.email)
+        if(!emailRe.test(this.state.email)) {
+            console.log("Invalid email");
+            //Error: Invalid email format
+        }
+        if(this.props.type === 'signup'){
+            let phoneRe = /09[0-9]{9}/;
+            if(!phoneRe.test(this.state.phone)){
+                console.log("Phone number is not valid in iran");
+                //Error: Phone number is not valid
+            }
+            let passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+            if(this.state.pass !== this.state.rePass){
+                console.log("Passwords are not same")
+                //Error msg: Invalid password validation
+            }
+            else if(!passRe.test(this.state.pass)){
+                console.log("Weak password")
+                //Error: Weak password
+            }
+            if(this.state.firstName.length < 3 || this.state.lastName.length < 3){
+                console.log("Name is not valid")
+            }
+        }
+        
+    }
 
     signupInput(){
         return(
-            <div className="topBox">
-                <input className ="inputBox" type="text" name="firstName" placeholder="نام" required/>
-                <input className ="inputBox" type="text" name="lastName" placeholder="نام خانوادگی" required/>
-                <input className ="inputBox" type="text" name="phoneNumber" placeholder="شماره تلفن" required/>
-                <input className ="inputBox" type="text" name="email" placeholder="ایمیل" required/>
-                <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" required/>
-                <input className ="inputBox" type="password" name="passwordConf" placeholder="تکرار رمز عبور" required/>
-            <input className ="inputBox" type="submit" name="accountBtn" value="ثبت نام"/>
-        </div>
+            <form onSubmit={this.handleSubmit}>
+                <div className="topBox">
+                    <input className ="inputBox" type="text" name="firstName" placeholder="نام" onChange={this.handleFirstName} required/>
+                    <input className ="inputBox" type="text" name="lastName" placeholder="نام خانوادگی" onChange={this.handleLastName} required/>
+                    <input className ="inputBox" type="text" name="phoneNumber" placeholder="شماره تلفن" onChange={this.handlePhone} required/>
+                    <input className ="inputBox" type="text" name="email" placeholder="ایمیل" onChange={this.handleEmail} required/>
+                    <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" onChange={this.handlePassword} required/>
+                    <input className ="inputBox" type="password" name="passwordConf" placeholder="تکرار رمز عبور" onChange={this.handleRePass} required/>
+                    <button className ="inputBox" type="submit" >ثبت نام</button>
+                </div>
+            </form>
         )
     }
 
     loginInput(){
         return(
-            <div className="topBox">
-                <input className ="inputBox" type="text" name="email" placeholder="ایمیل" required/>
-                <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" required/>
-                <input className ="inputBox" type="submit" name="accountBtn" value="ورود"/>
-            </div>
+            <form onSubmit={this.handleSubmit}>
+                <div className="topBox">
+                    <input className ="inputBox" type="text" name="email" placeholder="ایمیل" onChange={this.handleEmail} required/>
+                    <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" onChange={this.handlePassword} required/>
+                    <button className ="inputBox" type="submit">ورود</button>
+                </div>
+            </form>
         )
     }
     render(){
@@ -333,9 +419,12 @@ class Authentication extends React.Component {
                             <i className="flaticon-google-plus-draw-logo"></i>
                         </a>
                     </div>
-                    <a href="./Login.html" className="alreadyDone">
-                    قبلا ثبت نام کرده‌اید؟ وارد سامانه شوید.
-                    </a>
+                    {this.props.type === 'signup' &&
+                        <a href="#" className="alreadyDone" onClick={this.handleAnother}>قبلا ثبت نام کرده‌اید؟ وارد سامانه شوید.</a>
+                    }
+                    {this.props.type === 'login' &&
+                        <a href="#" class="alreadyDone" onClick={this.handleAnother}>هنوز ثبت نام نکرده‌اید؟ ثبت نام کنید.</a> 
+                    }
                 </div>
                 <Footer/>
             </div>
@@ -357,4 +446,4 @@ class Home extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Authentication type = "login" />, document.getElementById("root"));
+ReactDOM.render(<Authentication type = "signup" />, document.getElementById("root"));

@@ -13,7 +13,6 @@ import './CSS/homeSearchBar.css';
 import './CSS/authenticationStyles.css';
 import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
-// link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css';
 
 class Header extends React.Component {
     goHome(event){
@@ -109,9 +108,8 @@ class InfoBar extends React.Component {
         }
         else if(this.props.type === "home") {
             return(
-                <div class="row searchBarBg">
-                    <div class="searchBarEffect">
-
+                <div className="row searchBarBg">
+                    <div className="searchBarEffect">
                     </div>
                 </div>
             )
@@ -186,7 +184,6 @@ class InfoBox extends React.Component {
             console.log(error);
         })
     }
-    
 
     render(){
         if(this.props.type === "cart"){
@@ -242,7 +239,6 @@ class InfoBox extends React.Component {
         }
     }
 }
-
 
 class Profile extends React.Component {
     constructor(props){
@@ -447,7 +443,7 @@ class Authentication extends React.Component {
                         <a href="#" className="alreadyDone" onClick={this.handleAnother}>قبلا ثبت نام کرده‌اید؟ وارد سامانه شوید.</a>
                     }
                     {this.props.type === 'login' &&
-                        <a href="#" class="alreadyDone" onClick={this.handleAnother}>هنوز ثبت نام نکرده‌اید؟ ثبت نام کنید.</a> 
+                        <a href="#" className="alreadyDone" onClick={this.handleAnother}>هنوز ثبت نام نکرده‌اید؟ ثبت نام کنید.</a> 
                     }
                 </div>
                 <Footer/>
@@ -457,15 +453,15 @@ class Authentication extends React.Component {
     }
 }
 
-
 class FoodParty extends React.Component {
-
     constructor(props){
         super(props);
         this.fetchParty = this.fetchParty.bind(this);
         this.remainingTime = this.remainingTime.bind(this);
+        this.showPartyFoods = this.showPartyFoods.bind(this);
+        this.showPartyFood = this.showPartyFood.bind(this);
         this.state = {
-            foodparty : "",
+            partyFoods : [],
             date : "",
         };
     }
@@ -474,12 +470,12 @@ class FoodParty extends React.Component {
         axios.get(`http://localhost:8080/Loghme/foodparty`)
         .then(res => {
             var updatedParty = JSON.parse(JSON.stringify(res.data));
-            var date = JSON.parse(JSON.stringify(updatedParty.enteredDate))
-            const enteredDate = new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0)
-            var foods = JSON.parse(JSON.stringify(updatedParty.partyFoods))
+            var date = JSON.parse(JSON.stringify(updatedParty.enteredDate));
+            const enteredDate = new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0);
+            var foods = JSON.parse(JSON.stringify(updatedParty.partyFoods));
             this.setState({
                 partyFoods : foods,
-                date : enteredDate
+                date : enteredDate,
             });
         })
     }
@@ -492,12 +488,48 @@ class FoodParty extends React.Component {
         );
     }
 
-    // showPartyFoods(){
-    //     const items=this.state.partyFoods.map((item,key)=>
-    //         item.count
-    //     )
-    //     console.log(items)
-    // }
+    showPartyFood(props){
+        var name = (props.partyFood.name.length > 5) ? props.partyFood.name.substring(0,5)+"..." : props.partyFood.name;
+        var restaurantName = (props.partyFood.restaurantName.length > 20) ? props.partyFood.restaurantName.substring(0,20)+"..." : props.partyFood.restaurantName;
+        var count = (props.partyFood.count == 0) ? "ناموجود" : "موجودی: "+String(props.partyFood.count).toPersianDigits();
+        return (
+            <div className="partyFoodInfo borderShadow">
+                <div className="row no-gutters text-center mr-1 ml-1 justify-content-center">
+                    <img className="partyFoodLogo" src={props.partyFood.imageUrl}/>
+                    <div className="col-auto">
+                        <div className="col-auto partyFoodName">{name}</div>
+                        <div className="row ml-0 mr-0 pr-2 justify-content-start">
+                        <div className="partyFoodRate">{String(5 * props.partyFood.popularity).toPersianDigits()}</div>
+                            <div className="starIcon text-right">&#9733;</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="row text-center mr-1 ml-1 mt-2 pb-1 justify-content-around">
+                    <div className="partyFoodOldPrice pl-0"><s className="partyFoodOldPrice">{String(props.partyFood.oldPrice).toPersianDigits()}</s></div>
+                    <div className="partyFoodNewPrice pl-0">{String(props.partyFood.price).toPersianDigits()}</div>
+                </div>
+                <div className="row text-center mt-2 mr-0 ml-0 justify-content-around">
+                <div className="col-5 partyStockInfo align-self-center">{count}</div>
+                {props.partyFood.count === 0
+                    ? <div className="col-5 partyBuyButton payGrayBG btn">خرید</div>
+                    : <button className="col-5 partyBuyButton payBlueBG btn" type="submit">خرید</button>
+                    // buy (POST and modal) should be handled
+                }
+                </div>
+                <div className="bottomDashedBorder mt-1"></div>
+                <div className="row partyRestaurantName pt-1 justify-content-center">{restaurantName}</div>
+            </div>
+        )
+    }
+
+    showPartyFoods(){
+        const items = this.state.partyFoods.map((item, index)=>
+            <this.showPartyFood key={index} partyFood={item} />
+        )
+        return(  
+            items
+        )
+    }
 
     remainingTime(){
         if(this.state.date !== "" ){
@@ -511,25 +543,24 @@ class FoodParty extends React.Component {
             var sec = "00"
         }
         return(
-            <div class="row col-12 justify-content-center">
-                <div class="row col-2 remainingTimeBox rounded justify-content-between">
-                    <div class="col-6 pl-0 pr-0 align-self-center text-right">زمان باقی&zwnj;مانده:</div>
-                    <div class="col-6 pl-0 pr-0 align-self-center text-left">{String(min).toPersianDigits()}:{String(sec).toPersianDigits()}</div>
+            <div className="row col-12 justify-content-center">
+                <div className="row remainingTimeBox rounded justify-content-between">
+                    <div className="col-9 pl-0 pr-0 align-self-center text-right">زمان باقی&zwnj;مانده:</div>
+                    <div className="col-3 pl-0 pr-0 align-self-center text-left">{String(min).toPersianDigits()}:{String(sec).toPersianDigits()}</div>
                 </div>
             </div>
         )
     }
 
     render(){
-        console.log(typeof(this.state.partyFoods))
         return(
-            <div class="row mt-3 justify-content-center">
-                <div class="row col-12 justify-content-center">
-                    <div class="col-2 titles titlesUnderline pr-0 pl-0 text-center">جشن غذا!</div>
+            <div className="row mt-3 justify-content-center">
+                <div className="row col-12 justify-content-center">
+                    <div className="col-2 titles titlesUnderline pr-0 pl-0 text-center">جشن غذا!</div>
                 </div>
-                <this.remainingTime/>
-                <div class="col-12 foodPartyMenu borderShadow text-center">
-                    {/* {this.showPartyFoods()} */}
+                <this.remainingTime />
+                <div className="col-12 foodPartyMenu borderShadow text-center">
+                    <this.showPartyFoods />
                 </div>
             </div>
         )
@@ -540,37 +571,123 @@ class FoodParty extends React.Component {
     }
 }
 
+class HomeRestaurants extends React.Component {
+    constructor(props){
+        super(props);
+        this.fetchRestaurants = this.fetchRestaurants.bind(this);
+        this.showRestaurants = this.showRestaurants.bind(this);
+        this.showRestaurant = this.showRestaurant.bind(this);
+        this.state = {
+            restaurants : []
+        };
+    }
+
+    fetchRestaurants(){
+        axios.get(`http://localhost:8080/Loghme/restaurants`)
+        .then(res => {
+            var updatedRestaurants = JSON.parse(JSON.stringify(res.data));
+            this.setState({
+                restaurants : updatedRestaurants
+            });
+        })
+    }
+
+    componentDidMount(){
+        this.fetchRestaurants()
+    }
+
+    showRestaurant(props){
+        var restaurantName = (props.restaurant.name.length > 25) ? props.restaurant.name.substring(0,25)+"..." : props.restaurant.name;
+        return (
+            <div className="col-2 restaurantInfo pl-0 pr-0 text-center borderShadow">
+                <img className="restaurantSmallLogo" src={props.restaurant.logoUrl}/>
+                <div className="row no-gutters justify-content-center">
+                    <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
+                </div>
+                <button className="showMenuButton btn rounded" type="submit">نمایش منو</button>
+                {/* onclick should be handled */}
+            </div>
+        )
+    }
+
+    createRestaurantsMenu = () => {
+        const rowsNum = Math.floor(this.state.restaurants.length / 4);
+        // const lastRowObjNum = this.state.restaurants.length - rowsNum;
+        let restaurantsTable = [];
+    
+        for (let i = 0; i < rowsNum; i++) {
+            let children = []
+
+            for (let j = 0; j < 4; j++) {
+                children.push(<this.showRestaurant key={this.state.restaurants[i*4+j].id} restaurant={this.state.restaurants[i*4+j]} />)
+            }
+            
+            restaurantsTable.push(
+                <div className="row mb-3 justify-content-center">
+                    {children}
+                </div>
+            )
+        }
+        
+        let children = []
+        for (let i = rowsNum*4; i < this.state.restaurants.length; i++) {
+            children.push(<this.showRestaurant key={this.state.restaurants[i].id} restaurant={this.state.restaurants[i]} />)
+        }
+        restaurantsTable.push(
+            <div className="row mb-3 justify-content-center">
+                {children}
+            </div>
+        )
+
+        return restaurantsTable
+    }
+
+    showRestaurants(){
+        return(  
+            <div className="row marginFromFooter">
+                <div className="col-12 restaurants justify-content-center">
+                    {this.createRestaurantsMenu()}
+                </div>
+            </div>
+        )
+    }
+
+    render(){
+        return(
+            <div>
+                <div className="row mt-4 justify-content-center">
+                    <div className="row col-12 justify-content-center">
+                        <div className="col-2 titles titlesUnderline pr-0 pl-0 text-center">رستوران&zwnj;ها</div>
+                    </div>
+                </div>
+                <this.showRestaurants />
+            </div>
+        )
+    }
+}
 
 class Home extends React.Component {
-    // componentDidMount(){
-    //     this.fetchUser()
-    //     this.timerId = setInterval(
-    // 		() => {this.fetchUser()}
-    // 		, 500
-    // 	);
-    // }
-
     searchBar(){
         return(
-            <div class="row searchBarContents">
-                <div class="col-12 justify-content-center">
-                    <div class="row justify-content-center">
-                        <img class="Loghme borderShadow" src={require("./media/Pics/LOGO.png")} alt="logo"/>
+            <div className="row searchBarContents">
+                <div className="col-12 justify-content-center">
+                    <div className="row justify-content-center">
+                        <img className="Loghme borderShadow" src={require("./media/Pics/LOGO.png")} alt="logo"/>
                     </div>
-                    <div class="row LoghmeDescribe justify-content-center">
+                    <div className="row LoghmeDescribe justify-content-center">
                         اولین و بزرگ&zwnj;ترین وب&zwnj;سایت سفارش آنلاین غذا در دانشگاه تهران
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-6 pl-0 pr-0 searchArea borderShadow rounded text-center">
-                            <div class="row justify-content-center">
-                                <div class="col-4 pl-0 pr-0">
-                                    <input type="text" class="inputDesign text-center" placeholder="نــــام غـــذا" name="credit"/>
+                    <div className="row justify-content-center">
+                        <div className="col-6 pl-0 pr-0 searchArea borderShadow rounded text-center">
+                            <div className="row justify-content-center">
+                                <div className="col-4 pl-0 pr-0">
+                                    <input type="text" className="inputDesign text-center" placeholder="نــــام غـــذا" name="credit"/>
                                 </div>
-                                <div class="col-4 pl-0 pr-0 text-center">
-                                    <input type="text" class="inputDesign text-center" placeholder="نــــام رســــتـــوران" name="credit"/>
+                                <div className="col-4 pl-0 pr-0 text-center">
+                                    <input type="text" className="inputDesign text-center" placeholder="نــــام رســــتـــوران" name="credit"/>
                                 </div>
-                                <div class="col-3 pr-0 pl-3 text-center">
-                                    <button class="serachButton btn btn-block" type="submit">جســت&zwnj;و&zwnj;جـو</button>
+                                <div className="col-3 pr-0 pl-3 text-center">
+                                    <button className="serachButton btn btn-block" type="submit">جســت&zwnj;و&zwnj;جـو</button>
                                 </div>
                             </div>
                         </div>
@@ -587,14 +704,11 @@ class Home extends React.Component {
                 <InfoBar type = {"home"}/>
                 <this.searchBar/>
                 <FoodParty />
+                <HomeRestaurants />
                 <Footer />
             </div>
         )
     }
-
-    // componentWillUnmount(){
-    //     clearInterval(this.timerId);
-    // }
 }
 
 // ========================================

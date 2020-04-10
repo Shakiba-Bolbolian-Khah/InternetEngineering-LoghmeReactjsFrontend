@@ -20,6 +20,8 @@
     color: #1A535C;
     padding: 3px 10px 1px 10px;
     margin-top: 8px;
+    height: auto;
+    width: 95px;
 }
 
 .foodPartyMenu {

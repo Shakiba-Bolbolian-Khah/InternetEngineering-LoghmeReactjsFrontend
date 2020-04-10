@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import './CSS/Normalize.css';
 import './CSS/headerStyles.css';
 import './CSS/basicStyles.css';
-import './CSS/headerStyles.css';
 import './CSS/footerStyles.css';
 import './CSS/infoBarStyles.css';
 import './CSS/profileStyles.css';
+import './CSS/homePageStyles.css';
+import './CSS/homeSearchBar.css';
 import './CSS/authenticationStyles.css';
 import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
@@ -104,24 +105,29 @@ class InfoBar extends React.Component {
         else if(this.props.type === "restaurant"){
             return(
                 <div className="row infoBar"></div>
-                // {/* <div className="row justify-content-center">
-                //     <img className="restaurantBigLogo borderShadow" src={(this.props.value.logo)}></img>
-                // </div>
-                // <div className="row justify-content-center">
-                //     <div className="restaurantBigName">{this.props.value.name}</div>
-                // </div> */}
             )
         }
-        else{
-            return("")
+        else if(this.props.type === "home") {
+            return(
+                <div class="row searchBarBg">
+                    <div class="searchBarEffect">
+
+                    </div>
+                </div>
+            )
         }
     }
 }
 
 class SelectBar extends React.Component{
+    constructor(props){
+        super(props);
+        this.handleClick = this.handleClick.bind(this)
+    }
+
     handleClick(event, page){
         event.preventDefault();
-        ReactDOM.render(<InfoBox type = {page} />, document.getElementById("infoBox"));
+        ReactDOM.render(<InfoBox type = {page} />, document.getElementById("creditForm"));
     }
 
     render(){
@@ -305,7 +311,9 @@ class Authentication extends React.Component {
             rePass : ""
         }
     }
-    // body unmount style
+    componentWillUnmount(){
+        document.body.classList.remove('authenticationBody');
+    }
     handleFirstName(event) {
         event.persist();
         this.setState(prevState => ({firstName: event.target.value}));
@@ -399,6 +407,7 @@ class Authentication extends React.Component {
             </form>
         )
     }
+
     render(){
         document.body.classList.add('authenticationBody');
         return(
@@ -448,17 +457,146 @@ class Authentication extends React.Component {
     }
 }
 
+
+class FoodParty extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.fetchParty = this.fetchParty.bind(this);
+        this.remainingTime = this.remainingTime.bind(this);
+        this.state = {
+            foodparty : "",
+            date : "",
+        };
+    }
+
+    fetchParty(){
+        axios.get(`http://localhost:8080/Loghme/foodparty`)
+        .then(res => {
+            var updatedParty = JSON.parse(JSON.stringify(res.data));
+            var date = JSON.parse(JSON.stringify(updatedParty.enteredDate))
+            const enteredDate = new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0)
+            var foods = JSON.parse(JSON.stringify(updatedParty.partyFoods))
+            this.setState({
+                partyFoods : foods,
+                date : enteredDate
+            });
+        })
+    }
+    
+    componentDidMount(){
+        this.fetchParty()
+        this.timerId = setInterval(
+    		() => {this.fetchParty()}
+    		, 1000
+        );
+    }
+
+    // showPartyFoods(){
+    //     const items=this.state.partyFoods.map((item,key)=>
+    //         item.count
+    //     )
+    //     console.log(items)
+    // }
+
+    remainingTime(){
+        if(this.state.date !== "" ){
+            var now = new Date()
+            var remainedTime = 1800000-(now.getTime() - this.state.date.getTime())
+            var min = Math.floor(remainedTime / 60000)
+            var sec = Math.floor((remainedTime - min*60000) / 1000)
+        }
+        else{
+            var min = "00"
+            var sec = "00"
+        }
+        return(
+            <div class="row col-12 justify-content-center">
+                <div class="row col-2 remainingTimeBox rounded justify-content-between">
+                    <div class="col-6 pl-0 pr-0 align-self-center text-right">زمان باقی&zwnj;مانده:</div>
+                    <div class="col-6 pl-0 pr-0 align-self-center text-left">{String(min).toPersianDigits()}:{String(sec).toPersianDigits()}</div>
+                </div>
+            </div>
+        )
+    }
+
+    render(){
+        console.log(typeof(this.state.partyFoods))
+        return(
+            <div class="row mt-3 justify-content-center">
+                <div class="row col-12 justify-content-center">
+                    <div class="col-2 titles titlesUnderline pr-0 pl-0 text-center">جشن غذا!</div>
+                </div>
+                <this.remainingTime/>
+                <div class="col-12 foodPartyMenu borderShadow text-center">
+                    {/* {this.showPartyFoods()} */}
+                </div>
+            </div>
+        )
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.timerId)
+    }
+}
+
+
 class Home extends React.Component {
+    // componentDidMount(){
+    //     this.fetchUser()
+    //     this.timerId = setInterval(
+    // 		() => {this.fetchUser()}
+    // 		, 500
+    // 	);
+    // }
+
+    searchBar(){
+        return(
+            <div class="row searchBarContents">
+                <div class="col-12 justify-content-center">
+                    <div class="row justify-content-center">
+                        <img class="Loghme borderShadow" src={require("./media/Pics/LOGO.png")} alt="logo"/>
+                    </div>
+                    <div class="row LoghmeDescribe justify-content-center">
+                        اولین و بزرگ&zwnj;ترین وب&zwnj;سایت سفارش آنلاین غذا در دانشگاه تهران
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-6 pl-0 pr-0 searchArea borderShadow rounded text-center">
+                            <div class="row justify-content-center">
+                                <div class="col-4 pl-0 pr-0">
+                                    <input type="text" class="inputDesign text-center" placeholder="نــــام غـــذا" name="credit"/>
+                                </div>
+                                <div class="col-4 pl-0 pr-0 text-center">
+                                    <input type="text" class="inputDesign text-center" placeholder="نــــام رســــتـــوران" name="credit"/>
+                                </div>
+                                <div class="col-3 pr-0 pl-3 text-center">
+                                    <button class="serachButton btn btn-block" type="submit">جســت&zwnj;و&zwnj;جـو</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render(){
         return(
             <div className="container-fluid loghmeContainer bg">
                 <Header value = {"home"}/>
+                <InfoBar type = {"home"}/>
+                <this.searchBar/>
+                <FoodParty />
                 <Footer />
             </div>
         )
     }
+
+    // componentWillUnmount(){
+    //     clearInterval(this.timerId);
+    // }
 }
 
 // ========================================
 
-ReactDOM.render(<Profile />, document.getElementById("root"));
+ReactDOM.render(<Home />, document.getElementById("root"));

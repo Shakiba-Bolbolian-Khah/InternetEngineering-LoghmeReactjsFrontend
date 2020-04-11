@@ -10,6 +10,7 @@ import './CSS/infoBarStyles.css';
 import './CSS/profileStyles.css';
 import './CSS/homePageStyles.css';
 import './CSS/homeSearchBar.css';
+import './CSS/restaurantStyles.css';
 import './CSS/authenticationStyles.css';
 import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
@@ -282,7 +283,6 @@ class Profile extends React.Component {
     }
 }
 
-
 Profile.propTypes = {
     user: PropTypes.object,
 }
@@ -469,14 +469,17 @@ class FoodParty extends React.Component {
     fetchParty(){
         axios.get(`http://localhost:8080/Loghme/foodparty`)
         .then(res => {
-            var updatedParty = JSON.parse(JSON.stringify(res.data));
-            var date = JSON.parse(JSON.stringify(updatedParty.enteredDate));
-            const enteredDate = new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0);
-            var foods = JSON.parse(JSON.stringify(updatedParty.partyFoods));
-            this.setState({
-                partyFoods : foods,
-                date : enteredDate,
-            });
+            if(res !== undefined){
+                var updatedParty = JSON.parse(JSON.stringify(res.data));
+                var date = JSON.parse(JSON.stringify(updatedParty.enteredDate));
+                const enteredDate = (date!== null) ? new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0)
+                : "";
+                var foods = JSON.parse(JSON.stringify(updatedParty.partyFoods));
+                this.setState({
+                    partyFoods : foods,
+                    date : enteredDate,
+                });
+            }
         })
     }
     
@@ -484,7 +487,7 @@ class FoodParty extends React.Component {
         this.fetchParty()
         this.timerId = setInterval(
     		() => {this.fetchParty()}
-    		, 1000
+    		, 1000000
         );
     }
 
@@ -577,6 +580,7 @@ class HomeRestaurants extends React.Component {
         this.fetchRestaurants = this.fetchRestaurants.bind(this);
         this.showRestaurants = this.showRestaurants.bind(this);
         this.showRestaurant = this.showRestaurant.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             restaurants : []
         };
@@ -596,6 +600,12 @@ class HomeRestaurants extends React.Component {
         this.fetchRestaurants()
     }
 
+
+    handleSubmit(event,id){
+        event.preventDefault()
+        ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
+    }
+
     showRestaurant(props){
         var restaurantName = (props.restaurant.name.length > 25) ? props.restaurant.name.substring(0,25)+"..." : props.restaurant.name;
         return (
@@ -604,7 +614,9 @@ class HomeRestaurants extends React.Component {
                 <div className="row no-gutters justify-content-center">
                     <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
                 </div>
-                <button className="showMenuButton btn rounded" type="submit">نمایش منو</button>
+                <form id="restaurantForm" onSubmit={(e) => this.handleSubmit(e,props.restaurant.id)}>
+                    <button className="showMenuButton btn rounded" type="submit" >نمایش منو</button>
+                </form>
                 {/* onclick should be handled */}
             </div>
         )
@@ -661,6 +673,176 @@ class HomeRestaurants extends React.Component {
                     </div>
                 </div>
                 <this.showRestaurants />
+            </div>
+        )
+    }
+}
+
+class Restaurant extends React.Component {
+    constructor(props){
+        super(props);
+        this.fetchRestaurant = this.fetchRestaurant.bind(this)
+        this.showFoods = this.showFoods.bind(this)
+        this.createRestaurantMenu = this.createRestaurantMenu.bind(this)
+        this.showFood = this.showFood.bind(this)
+        this.state = {
+            restaurant : "",
+            foods :[],
+            cart : "",
+        };
+    }
+
+    fetchRestaurant(){
+        axios.get(`http://localhost:8080/Loghme/restaurants/`+ this.props.id)
+        .then(res => {
+            var newRestaurant = JSON.parse(JSON.stringify(res.data));
+            var newFoods = JSON.parse(JSON.stringify(newRestaurant.menu));
+            this.setState({
+                restaurant: newRestaurant,
+                foods: newFoods,
+            });
+        })
+        .catch(error => {
+            console.log(error.response.status)
+            console.log(error.response.data)
+        })
+
+        axios.get(`http://localhost:8080/Loghme/users/cart?userId=0`)
+        .then(res => {
+            var newCart = JSON.parse(JSON.stringify(res.data));
+            this.setState({
+                cart: newCart,
+            });
+        })
+        .catch(error => {
+            console.log(error.response.status)
+            console.log(error.response.data)
+        })
+    }
+    
+    componentDidMount(){
+        this.fetchRestaurant()
+        this.timerId = setInterval(
+    		() => {this.fetchRestaurant()}
+    		, 1000000
+        );
+    }
+
+    showFood(props){
+        var foodName = (props.food.name.length > 25) ? props.food.name.substring(0,25)+"..." : props.food.name;
+        return (
+            <div class="col-3 menuItem pl-0 pr-0 text-center borderShadow">
+                <img class="foodLogo" src={props.food.imageUrl}/>
+                <div class="row no-gutters text-center foodInfo justify-content-center">
+                    <div class="col-auto foodName">foodName</div>
+                    <div class="col-auto foodRate">{String(5* props.food.popularity).toPersianDigits()}</div>
+                    <div class="col-auto starIcon text-right">&#9733;</div>
+                </div>
+                <div class="price pl-0">{String(props.food.price).toPersianDigits()} تومان</div>
+                <button class="addToCartButton btn rounded" type="submit">افزودن به سبد خرید</button>
+                {/* We should handle add to cart */}
+            </div>
+        )
+    }
+
+    createRestaurantMenu = () => {
+        const rowsNum = Math.floor(this.state.foods.length / 3);
+        // const lastRowObjNum = this.state.restaurants.length - rowsNum;
+        let menuTable = [];
+    
+        for (let i = 0; i < rowsNum; i++) {
+            let children = []
+
+            for (let j = 0; j < 3; j++) {
+                children.push(<this.showFood key={this.state.foods[i*3+j].id} food={this.state.foods[i*3+j]} />)
+            }
+            
+            menuTable.push(
+                <div className="row mb-3 justify-content-center">
+                    {children}
+                </div>
+            )
+        }
+        let children = []
+        for (let i = rowsNum*3; i < this.state.foods.length; i++) {
+            children.push(<this.showFood key={this.state.foods[i].name} food={this.state.foods[i]} />)
+        }
+        menuTable.push(
+            <div class="row menuContents justify-content-end">
+                {children}
+            </div>
+        )
+
+        return menuTable    
+    }
+
+    showFoods(){
+        console.log(this.state.foods)
+        return(
+            <div class="col-8 menu dashedDivider justify-content-end">
+                {this.createRestaurantMenu()}
+            </div>
+        )
+    }
+
+    render() {
+        return(
+            <div className="container-fluid loghmeContainer bg">
+            <Header value = {"restaurant"}/>
+            <InfoBar type = {"restaurant"}/>
+            <div className ="row justify-content-center">
+                <img className ="restaurantBigLogo borderShadow" src={this.state.restaurant.logoUrl}/>
+            </div>
+            <div className="row justify-content-center">
+                <div className="restaurantBigName">{this.state.restaurant.name}</div>
+            </div>
+            <div className="row">
+                <div className="col-8 menuTextAlign justify-content-center">
+                    <div className="row justify-content-center">
+                        <div className="col-3 menuText menuUnderline pr-0 pl-0 text-center">منوی غذا</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row marginFromFooter">
+                <this.showFoods/>
+                <div class="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+                    <div class="shoppingCartText text-center">سبد خرید</div>
+                    <div class="shoppingCartContents">
+                        <div>
+                            <div class="firstItem shoppingCartItem justify-content-around">
+                                <div class="col-7 text-right">پیتزا اعلا</div>
+                                <div class="col-5">
+                                    <i class="flaticon-minus"></i>
+                                    ۲
+                                    <i class="flaticon-plus"></i>
+                                </div>
+                            </div>
+                            <div class="price priceUnderline">۷۸۰۰۰ تومان</div>
+                        </div>
+                        <div>
+                            <div class="shoppingCartItem justify-content-around">
+                                <div class="col-7 text-right">پیتزا نیمه&zwnj;اعلا</div>
+                                <div class="col-5">
+                                    <i class="flaticon-minus"></i>
+                                    ۱
+                                    <i class="flaticon-plus"></i>
+                                </div>
+                            </div>
+                            <div class="lastItem price priceUnderline">۲۹۰۰۰ تومان</div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="totalPriceText">جمع کل:</div>
+                        <div class="totalPriceValue">۱۰۷۰۰۰ تومان</div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <button class="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
+                            تایید نهایی
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <Footer/>
             </div>
         )
     }

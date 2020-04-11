@@ -1,0 +1,347 @@
+.food-modal {
+    direction: rtl;
+    display: none;
+    position: fixed;
+    z-index: 5;
+    padding-top: 195px;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.food-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 700px;
+    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.1);
+}
+
+.partyFoodMoreInfoContainer {
+    border-radius: 15px;
+    font-family: Vazir;
+}
+
+.partyFoodMoreInfo {
+    font-size: 22px;
+    font-weight: 300;
+    color: black;
+    padding-top: 20px;
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+
+.partyFoodBigLogo {
+    width: 105px;
+    height: 105px;
+    object-position: right;
+    object-fit: cover;
+    margin: 5px 10px 15px 0px;
+    border-radius: 4px;
+}
+
+.partyFoodBigName{
+    font-size: 22px;
+    font-weight: 400;
+    color: #000000;
+    padding: 10px 0px 0px 0px !important;
+}
+
+.partyFoodBigRate {
+    font-size: 22px;
+    font-weight: 300;
+    font-size: 19px;
+    color: #000000;
+    padding-top: 13px;
+}
+
+.starBigIcon {
+    padding: 8px 9px 0px 3px;
+    font-weight: bold;
+    font-size: 22px;
+    color: #FFA526;
+}
+
+.partyFoodDescription {
+    font-size: 13px;
+    font-weight: 200;
+    color: #000000;
+    padding: 5px 0px 0px 0px !important;
+}
+
+.partyFoodNewBigPrice {
+    font-weight: normal;
+    font-size: 19px;
+    color: #000000;
+    margin-right: 30px;
+}
+
+.partyFoodOldBigPrice {
+    font-weight: 300;
+    font-size: 19px;
+    color: #7a7878;
+}
+
+s.partyFoodOldBigPrice {
+    text-decoration-color: red;
+}
+
+.partyStockBigInfo {
+    font-family: "Vazir";
+    font-weight: 300;
+    font-size: 11px;
+    margin: 0px 20px 0px 30px;
+    padding: 5px 2px 5px 2px !important;
+    border: 0.5px solid #d0d0d0;
+    border-radius: 4.5px;
+    background-color: #F7FFF7;
+    color: #666464;
+}
+
+.partyBigBuyButton {
+    font-family: Vazir !important;
+    font-size: 14px !important;
+    border-radius: 4.5px !important;
+    padding: 0px 2px !important;
+    color: #ffffff !important;
+    height: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.flaticon-loghme-big-minus {
+  color: #ff6f6f;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.flaticon-loghme-big-plus {
+  color: #205860;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.foodCount-big {
+  font-size: 20px;
+  align-items: center;
+  margin-right: 55px;
+  margin-left: 2px;
+  height: 50%;
+}
+
+.foodCount-big a:hover {
+    text-decoration: none;
+}
+
+.stockContainer-big {
+  height: 50px;
+}
+
+.orderDetails-modal {
+    direction: rtl;
+    display: none;
+    position: fixed;
+    z-index: 5;
+    padding-top: 185px;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.orderDetails-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 534px;
+    box-shadow: 0 0px 8px 0 rgba(0,0,0,0.1);
+}
+
+.orderMoreInfoContainer {
+    border-radius: 30px;
+    font-family: Vazir;
+}
+
+.restaurantNameOfOrder {
+    font-size: 25px;
+    font-weight: 300;
+    color: black;
+    padding-top: 15px;
+    padding-bottom: 13px;
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    border-bottom: 1px solid #bdbcbc;
+}
+
+table {
+    border-collapse: collapse;
+    width: auto;
+    margin: 20px 34px 10px 34px;
+}
+
+tr {
+    height: auto;
+}
+
+th {
+    font-size: 11px;
+    font-weight: 300;
+}
+
+td {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    padding-top: 4px;
+}
+
+tr:first-child {
+    background-color: #ebebeb;
+    color: #7c7c7c;
+}
+
+.orderFood-number {
+    width: 40px;
+}
+
+.orderFood-name {
+    width: 240px;
+}
+
+.orderFood-count {
+    width: 80px;
+}
+
+.orderFood-price {
+    width: 80px;
+}
+
+.orderFood-totalPrice {
+    color: black;
+    font-size: 13px;
+    font-weight: bolder;
+}
+
+@-webkit-keyframes zoomOut {
+    from {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: scale3d(0.3, 0.3, 0.3);
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+  
+@keyframes zoomOut {
+    from {
+      opacity: 1;
+    }
+  
+    50% {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+  
+    to {
+      opacity: 0;
+    }
+}
+  
+.zoomOut {
+    -webkit-animation-name: zoomOut;
+    animation-name: zoomOut;
+}
+  
+@-webkit-keyframes zoomIn {
+    from {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+  
+    50% {
+      opacity: 1;
+    }
+}
+  
+@keyframes zoomIn {
+    from {
+      opacity: 0;
+      -webkit-transform: scale3d(0.3, 0.3, 0.3);
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+  
+    50% {
+      opacity: 1;
+    }
+}
+  
+.zoomIn {
+    -webkit-animation-name: zoomIn;
+    animation-name: zoomIn;
+}
+  
+@keyframes zoominoutsinglefeatured {
+      0% {
+          transform: scale(1,1);
+      }
+      50% {
+          transform: scale(1.2,1.2);
+      }
+      100% {
+          transform: scale(1,1);
+      }
+}
+  
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+  
+.animated.fast {
+    -webkit-animation-duration: 800ms;
+    animation-duration: 800ms;
+}
+  
+.animated.faster {
+    -webkit-animation-duration: 500ms;
+    animation-duration: 500ms;
+}
+  
+.animated.slow {
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+}
+  
+.animated.slower {
+    -webkit-animation-duration: 3s;
+    animation-duration: 3s;
+}
+  
+@media (print), (prefers-reduced-motion: reduce) {
+    .animated {
+      -webkit-animation-duration: 1ms !important;
+      animation-duration: 1ms !important;
+      -webkit-transition-duration: 1ms !important;
+      transition-duration: 1ms !important;
+      -webkit-animation-iteration-count: 1 !important;
+      animation-iteration-count: 1 !important;
+    }
+}

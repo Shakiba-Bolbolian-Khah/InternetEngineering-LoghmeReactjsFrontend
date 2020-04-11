@@ -37,6 +37,14 @@
   content: "\f101";
   font-size: 10px;
 }
+.flaticon-loghme-big-plus:before {
+  content: "\f100";
+  font-size: 15px;
+}
+.flaticon-loghme-big-minus:before {
+  content: "\f101";
+  font-size: 16px;
+}
 .flaticon-loghme-account:before { 
   content: "\f102"; 
   font-size: 45px;

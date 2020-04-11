@@ -14,6 +14,7 @@ import './CSS/restaurantStyles.css';
 import './CSS/authenticationStyles.css';
 import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
+import { thisExpression } from '@babel/types';
 
 class Header extends React.Component {
     goHome(event){
@@ -685,6 +686,7 @@ class Restaurant extends React.Component {
         this.showFoods = this.showFoods.bind(this)
         this.createRestaurantMenu = this.createRestaurantMenu.bind(this)
         this.showFood = this.showFood.bind(this)
+        this.showCart = this.showCart.bind(this)
         this.state = {
             restaurant : "",
             foods :[],
@@ -720,7 +722,7 @@ class Restaurant extends React.Component {
         })
     }
     
-    componentDidMount(){
+    componentDidMount() {
         this.fetchRestaurant()
         this.timerId = setInterval(
     		() => {this.fetchRestaurant()}
@@ -728,13 +730,67 @@ class Restaurant extends React.Component {
         );
     }
 
+    showCart() {
+        if(this.state.cart == ""){
+            return(
+                <div class="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+            <div class="shoppingCartText text-center">سبد خرید</div>
+                <div class="shoppingCartContents">
+                    <div class="col-12 text-center">غذایی انتخاب نشده است.</div>
+                </div>
+                </div>
+            )
+        }
+        else{
+            return(
+            <div class="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+            <div class="shoppingCartText text-center">سبد خرید</div>
+            <div class="shoppingCartContents">
+                <div>
+                    <div class="firstItem shoppingCartItem justify-content-around">
+                        <div class="col-7 text-right">پیتزا اعلا</div>
+                        <div class="col-5">
+                            <i class="flaticon-minus"></i>
+                            ۲
+                            <i class="flaticon-plus"></i>
+                        </div>
+                    </div>
+                    <div class="price priceUnderline">۷۸۰۰۰ تومان</div>
+                </div>
+                <div>
+                    <div class="shoppingCartItem justify-content-around">
+                        <div class="col-7 text-right">پیتزا نیمه&zwnj;اعلا</div>
+                        <div class="col-5">
+                            <i class="flaticon-minus"></i>
+                            ۱
+                            <i class="flaticon-plus"></i>
+                        </div>
+                    </div>
+                    <div class="lastItem price priceUnderline">۲۹۰۰۰ تومان</div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="totalPriceText">جمع کل:</div>
+                <div class="totalPriceValue">۱۰۷۰۰۰ تومان</div>
+            </div>
+            <div class="row justify-content-center">
+                <button class="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
+                    تایید نهایی
+                </button>
+            </div>
+            </div>
+            )
+        }       
+        
+    }
+
     showFood(props){
-        var foodName = (props.food.name.length > 25) ? props.food.name.substring(0,25)+"..." : props.food.name;
+        var foodName = (props.food.name.length > 5) ? props.food.name.substring(0,5)+"..." : props.food.name;
         return (
             <div class="col-3 menuItem pl-0 pr-0 text-center borderShadow">
                 <img class="foodLogo" src={props.food.imageUrl}/>
                 <div class="row no-gutters text-center foodInfo justify-content-center">
-                    <div class="col-auto foodName">foodName</div>
+                    <div class="col-auto foodName">{foodName}</div>
                     <div class="col-auto foodRate">{String(5* props.food.popularity).toPersianDigits()}</div>
                     <div class="col-auto starIcon text-right">&#9733;</div>
                 </div>
@@ -758,7 +814,7 @@ class Restaurant extends React.Component {
             }
             
             menuTable.push(
-                <div className="row mb-3 justify-content-center">
+                <div class="row menuContents justify-content-end">
                     {children}
                 </div>
             )
@@ -805,42 +861,7 @@ class Restaurant extends React.Component {
             </div>
             <div class="row marginFromFooter">
                 <this.showFoods/>
-                <div class="col-3 align-self-start justify-content-center shoppingCart borderShadow">
-                    <div class="shoppingCartText text-center">سبد خرید</div>
-                    <div class="shoppingCartContents">
-                        <div>
-                            <div class="firstItem shoppingCartItem justify-content-around">
-                                <div class="col-7 text-right">پیتزا اعلا</div>
-                                <div class="col-5">
-                                    <i class="flaticon-minus"></i>
-                                    ۲
-                                    <i class="flaticon-plus"></i>
-                                </div>
-                            </div>
-                            <div class="price priceUnderline">۷۸۰۰۰ تومان</div>
-                        </div>
-                        <div>
-                            <div class="shoppingCartItem justify-content-around">
-                                <div class="col-7 text-right">پیتزا نیمه&zwnj;اعلا</div>
-                                <div class="col-5">
-                                    <i class="flaticon-minus"></i>
-                                    ۱
-                                    <i class="flaticon-plus"></i>
-                                </div>
-                            </div>
-                            <div class="lastItem price priceUnderline">۲۹۰۰۰ تومان</div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="totalPriceText">جمع کل:</div>
-                        <div class="totalPriceValue">۱۰۷۰۰۰ تومان</div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <button class="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
-                            تایید نهایی
-                        </button>
-                    </div>
-                </div>
+                <this.showCart/>
             </div>
             <Footer/>
             </div>

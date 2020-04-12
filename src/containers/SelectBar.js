@@ -10,14 +10,19 @@ class SelectBar extends React.Component{
     constructor(props){
         super(props);
         this.handleClick = this.handleClick.bind(this)
+        this.state = {
+            orders : this.props.orders,
+        }
     }
 
     handleClick(event, page){
         event.preventDefault();
-        ReactDOM.render(<InfoBox type = {page} />, document.getElementById("creditForm"));
+        ReactDOM.render(<InfoBox type = {page} value={this.state.orders}/>, document.getElementById("creditForm"));
     }
 
     render(){
+        console.log("ordersss")
+        console.log(this.state.orders)
         if(this.props.value === "cart"){
             return(
                 <div className="selectBar">

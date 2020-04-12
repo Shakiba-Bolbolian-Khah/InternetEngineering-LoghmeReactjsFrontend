@@ -13,16 +13,17 @@ import Profile from "./Profile";
 class InfoBox extends React.Component {
     constructor(props){
         super(props);
-// hamed delete        console.log(props.ready)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.createTable = this.createTable.bind(this);
+        this.showOrder = this.showOrder.bind(this)
+        this.showOrders = this.showOrders.bind(this)
         this.state = {
             newCredit : 0,
-            orders : [],
+            orders : this.props.value,
             readyBox: true,
         };
     }
-
     handleChange(event){
         event.persist();
         this.setState(prevState => ({newCredit : parseInt(event.target.value)}));
@@ -59,12 +60,48 @@ class InfoBox extends React.Component {
             }))
             ReactDOM.render(<Profile />, document.getElementById("root"));
             document.getElementById("creditForm").reset()
-// hamed            toast.success("Credit increamented successfully")
+//            toast.success("Credit increamented successfully")
         })
         .catch(function (error) {
             console.log(error);
-// hamed            toast.error("Credit increament failed")
+//            toast.error("Credit increament failed")
         })
+    }
+    showOrder(props){
+        // console.log("Props:   "+props.order)
+        var restaurantName = (props.order.restaurantName.length > 8) ? props.order.restaurantName.name.substring(0,8)+"..." : props.food.name;
+        return (
+            <div className="row">
+                <div className="col-md-4 offset-md-1 ordersCell rounded-left">
+                    <div className="row-no-padding">
+                        <div className="col-md-8 offset-md-2 deliveringState rounded">
+                            {props.order.state}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-5 ordersCell">{restaurantName}</div>
+                <div className="col-md-1 ordersCell rounded-right">{String(props.number).toPersianDigits}</div>
+            </div>
+        )
+    }
+
+    createTable = () => {
+        let orderTable = [];
+        for (let i = 0; i < this.state.orders.length; i++) {
+            console.log("here")
+            console.log(this.state.orders[i])
+            orderTable.push(<this.showOrder key={this.state.orders[i].id} order={this.state.orders[i]} number={i+1}/>)
+        }
+        console.log(orderTable)
+
+        return orderTable
+    }
+    showOrders(){
+        return( 
+            <div className="col-md-12 mt-3">
+                {this.createTable()}
+            </div>             
+        )
     }
 
     render(){
@@ -73,7 +110,7 @@ class InfoBox extends React.Component {
                 <form id="creditForm" onSubmit={this.handleSubmit}>
                     <div id = "infoBox" className="infoBox">
                         <ToastContainer/>
-                        <SelectBar value = {this.props.type}/>
+                        <SelectBar value = {this.props.type} orders={this.state.orders}/>
                         <div className="dataContainer row">
                             <div className="col-md-3 offset-md-1 increaseButtonLink">
                                 {!this.state.readyBox ? ( 
@@ -98,28 +135,11 @@ class InfoBox extends React.Component {
             )
         }
         else{
-            const items=this.state.orders.map((item,key)=>
-                <li key={item.id}>
-                    <div className="row">
-                        <div className="col-md-4 offset-md-1 ordersCell rounded-left">
-                            <div className="row-no-padding">
-                                <div className="col-md-8 offset-md-2 deliveringState rounded">
-                                    {item.state}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-5 ordersCell">{item.restaurantName}</div>
-                        <div className="col-md-1 ordersCell rounded-right">{item.id}</div>
-                    </div>
-                </li>
-            )
             return(
                 <div id = "infoBox" className="infoBox">
-                    <SelectBar value = {this.props.type}/>
+                    <SelectBar value = {this.props.type} orders={this.state.orders}/>
                     <div className="row dataContainer">
-                        <div className="col-md-12 mt-3">
-                            items
-                        </div>
+                        <this.showOrders/>
                     </div>
                 </div>
             )

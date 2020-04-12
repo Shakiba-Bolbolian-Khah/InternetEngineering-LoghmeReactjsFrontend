@@ -6,6 +6,8 @@ import '../CSS/restaurantStyles.css';
 import '../CSS/ModalsStyles.css';
 import '../media/FlatIcon/font/flaticon.css';
 import Spinner from "../components/Spinner";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 String.prototype.toPersianDigits= function(){
     var id = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -21,7 +23,7 @@ class Cart extends React.Component {
         this.showAddedFood = this.showAddedFood.bind(this)
         this.createCart = this.createCart.bind(this)
         this.showCart = this.showCart.bind(this)
-
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.state = {
             cart : "",
             ready : false,
@@ -38,11 +40,56 @@ class Cart extends React.Component {
             this.setState({
                 cart: newCart,
                 ready: true,
+                buttonReady:true,
             });
         })
         .catch(error => {
             // console.log(error)
         })
+    }
+    handleSubmit(event){
+        this.setState(prevState => ({buttonReady:false}));
+        var toastId = toast.warn("Finalizinf your order!..")
+        var params = {
+		    "userId": 0,
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+        };
+        fetch('http://localhost:8080/Loghme/users/finalize', requestOptions)
+        .then((response) => {
+            this.setState(prevState => ({
+                buttonReady:true,
+            }))
+            // this.renderModal(props)
+            if (response.ok) {
+                toast.dismiss(toastId)
+                toast.success("Your order added successfully!")
+            } else {
+                toast.dismiss(toastId)
+                if(response.status===403){
+                    toast.error("Party food time is over!")
+                }
+                if(response.status===400){
+                    toast.error("Not enough credit!")
+                }
+            }
+        })
+        .catch(() =>{
+            toast.error("You can not finalize your order!")
+            this.setState(prevState => ({
+                buttonReady:true,
+            }))
+        }
+        )
     }
     componentDidMount(){
         this.fetchCart()
@@ -119,7 +166,7 @@ class Cart extends React.Component {
                     <div className="totalPriceValue">{String(this.state.cart.totalPayment).toPersianDigits()} تومان</div>
                 </div>
                 <div className="row justify-content-center">
-                    <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
+                    <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit"  onClick={() => this.handleSubmit()}>
                         تایید نهایی
                     </button>
                 </div>

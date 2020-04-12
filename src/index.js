@@ -634,7 +634,9 @@ class FoodParty extends React.Component {
 
     handleSubmit(event, props){
         event.preventDefault()
+        var toastId = toast.warn("Ordering your food...");
         if(this.state.orderCount === 0){
+            toast.dismiss(toastId);
             toast.error("You must choose at least 1 food!")
             return
         }
@@ -663,9 +665,13 @@ class FoodParty extends React.Component {
             }))
             this.renderModal(props)
             if (response.ok) {
+                toast.dismiss(toastId);
                 toast.success("Your order added successfully!")
             } else {
-                toast.error("Your order could not submitted completely!")
+                toast.dismiss(toastId)
+                if(response.status===403){
+                    toast.error("You chose your restaurant before!")
+                }
             }
         })
         .catch(() =>
@@ -809,13 +815,9 @@ class FoodParty extends React.Component {
                 </div>
                 <this.remainingTime />
                 <div className="col-12 foodPartyMenu borderShadow text-center">
-                    {this.state.ready?(
+                    {this.state.ready &&
                         <this.showPartyFoods />
-                    ):(
-                        <div className="partyFoodInfo borderShadow">
-                        <Spinner/>
-                        </div>
-                    )}
+                    }
                     <div id="partyFoodsModal" className="food-modal modal">
                         <div id="partyFoodsModal-content" className="row animated faster zoomIn text-center">
                         </div>
@@ -945,14 +947,129 @@ class HomeRestaurants extends React.Component {
     }
 }
 
+class Cart extends React.Component {
+    constructor(props){
+        super(props)
+        this.fetchCart = this.fetchCart.bind(this)
+        this.showAddedFood = this.showAddedFood.bind(this)
+        this.createCart = this.createCart.bind(this)
+        this.showCart = this.showCart.bind(this)
+
+        this.state = {
+            cart : "",
+            ready : false,
+        }
+    }
+    fetchCart(){
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch(`http://localhost:8080/Loghme/users/cart?userId=0`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            var newCart = data;
+            this.setState({
+                cart: newCart,
+                ready: true,
+            });
+        })
+        .catch(error => {
+            // console.log(error)
+        })
+    }
+    componentDidMount(){
+        this.fetchCart()
+        this.timerId = setInterval(
+    		() => {this.fetchCart()}
+    		, 1000
+        );
+    }
+    showAddedFood(props){
+        var price = parseInt(props.food.price)*parseInt(props.number)
+        var foodName = (props.food.name.length > 8) ? props.food.name.substring(0,8)+"..." : props.food.name;
+        return (
+            <div>
+                <div className="firstItem shoppingCartItem justify-content-around">
+                    <div className="col-7 text-right">{foodName}</div>
+                    <div className="col-5">
+                        <i className="flaticon-loghme-minus"></i>
+                        {String(props.number).toPersianDigits()}
+                        <i className="flaticon-loghme-plus"></i>
+                    </div>
+                </div>
+                <div className="price priceUnderline">{String(price).toPersianDigits()} تومان</div>
+            </div>
+        )
+    }
+
+    createCart = () => {
+        let cartTable = [];
+        for (let i = 0; i < this.state.cart.items.length; i++) {
+            cartTable.push(<this.showAddedFood key={this.state.cart.items[i].food.id} food={this.state.cart.items[i].food} number={this.state.cart.items[i].number}/>)
+        }
+        console.log(cartTable)
+
+        return cartTable
+    }
+    showCart(){
+        return( 
+            <div className="shoppingCartContents">
+                {this.createCart()}
+            </div> 
+            
+        )
+    }
+
+    render(){
+        if(!this.state.ready){
+            return(
+            <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+                <div className="shoppingCartText text-center">سبد خرید</div>
+                <div className="shoppingCartContents">
+                    <Spinner/>
+                </div>
+            </div>
+            )
+        }
+        else{
+            if(this.state.cart.totalPayment === 0){
+                return(
+                    <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+                        <div className="shoppingCartText text-center">سبد خرید</div>
+                        <div className="shoppingCartContents">
+                            <div className="col-12 text-center">غذایی انتخاب نشده است.</div>
+                        </div>
+                    </div>
+                )
+            }
+            else{
+                return(
+                <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
+                <div className="shoppingCartText text-center">سبد خرید</div>
+                <this.showCart/>
+                <div className="row justify-content-center">
+                    <div className="totalPriceText">جمع کل:</div>
+                    <div className="totalPriceValue">{String(this.state.cart.totalPayment).toPersianDigits()} تومان</div>
+                </div>
+                <div className="row justify-content-center">
+                    <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
+                        تایید نهایی
+                    </button>
+                </div>
+                </div>
+                )
+            } 
+        }     
+    }
+}
+
 class Restaurant extends React.Component {
     constructor(props){
         super(props);
-        this.fetchRestaurant = this.fetchRestaurant.bind(this)
-        this.showFoods = this.showFoods.bind(this)
-        this.createRestaurantMenu = this.createRestaurantMenu.bind(this)
-        this.showFood = this.showFood.bind(this)
-        this.showCart = this.showCart.bind(this)
+        this.fetchRestaurant = this.fetchRestaurant.bind(this);
+        this.showFoods = this.showFoods.bind(this);
+        this.createRestaurantMenu = this.createRestaurantMenu.bind(this);
+        this.showFood = this.showFood.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.showFoodModal = this.showFoodModal.bind(this);
@@ -966,6 +1083,7 @@ class Restaurant extends React.Component {
             cart : "",
             clicked : false,
             orderCount : 0,
+            ready : false,
         };
     }
 
@@ -981,18 +1099,7 @@ class Restaurant extends React.Component {
             this.setState({
                 restaurant: newRestaurant,
                 foods: newFoods,
-            });
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
-        fetch(`http://localhost:8080/Loghme/users/cart?userId=0`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            var newCart = data;
-            this.setState({
-                cart: newCart,
+                ready: true,
             });
         })
         .catch(error => {
@@ -1040,7 +1147,9 @@ class Restaurant extends React.Component {
 
     handleSubmit(event, props){
         event.preventDefault();
+        var toastId = toast.warn("Ordering your food...");
         if(this.state.orderCount === 0){
+            toast.dismiss(toastId)
             toast.error("You must choose at least 1 food!")
             return
         }
@@ -1061,7 +1170,7 @@ class Restaurant extends React.Component {
 	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	        },
 	        body: queryString
-	    };
+        };
         fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
         .then((response) => {
             this.setState(prevState => ({
@@ -1069,9 +1178,13 @@ class Restaurant extends React.Component {
             }))
             this.renderModal(props)
             if (response.ok) {
+                toast.dismiss(toastId)
                 toast.success("Your order added successfully!")
             } else {
-                toast.error("Your order could not submitted completely!")
+                toast.dismiss(toastId)
+                if(response.status===403){
+                    toast.error("You chose your restaurant before!")
+                }
             }
         })
         .catch(() =>
@@ -1140,68 +1253,6 @@ class Restaurant extends React.Component {
             },200);
         }
     }
-
-
-
-
-
-    showCart() {
-        if(this.state.cart == ""){
-            return(
-                <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
-            <div className="shoppingCartText text-center">سبد خرید</div>
-                <div className="shoppingCartContents">
-                    <div className="col-12 text-center">غذایی انتخاب نشده است.</div>
-                </div>
-                </div>
-            )
-        }
-        else{
-            return(
-            <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
-            <div className="shoppingCartText text-center">سبد خرید</div>
-            <div className="shoppingCartContents">
-                <div>
-                    <div className="firstItem shoppingCartItem justify-content-around">
-                        <div className="col-7 text-right">پیتزا اعلا</div>
-                        <div className="col-5">
-                            <i className="flaticon-minus"></i>
-                            ۲
-                            <i className="flaticon-plus"></i>
-                        </div>
-                    </div>
-                    <div className="price priceUnderline">۷۸۰۰۰ تومان</div>
-                </div>
-                <div>
-                    <div className="shoppingCartItem justify-content-around">
-                        <div className="col-7 text-right">پیتزا نیمه&zwnj;اعلا</div>
-                        <div className="col-5">
-                            <i className="flaticon-minus"></i>
-                            ۱
-                            <i className="flaticon-plus"></i>
-                        </div>
-                    </div>
-                    <div className="lastItem price priceUnderline">۲۹۰۰۰ تومان</div>
-                </div>
-            </div>
-            <div className="row justify-content-center">
-                <div className="totalPriceText">جمع کل:</div>
-                <div className="totalPriceValue">۱۰۷۰۰۰ تومان</div>
-            </div>
-            <div className="row justify-content-center">
-                <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit">
-                    تایید نهایی
-                </button>
-            </div>
-            </div>
-            )
-        }       
-        
-    }
-
-
-
-    
     showFood(props){
         var foodName = (props.food.name.length > 12) ? props.food.name.substring(0,12)+"..." : props.food.name;
         return (
@@ -1217,7 +1268,6 @@ class Restaurant extends React.Component {
             </div>
         )
     }
-
     createRestaurantMenu = () => {
         const rowsNum = Math.floor(this.state.foods.length / 3);
         let menuTable = [];
@@ -1261,14 +1311,20 @@ class Restaurant extends React.Component {
             <div className="container-fluid loghmeContainer bg">
             <Header value = {"restaurant"}/>
             <InfoBar type = {"restaurant"}/>
+            <ToastContainer/>
             <div className ="row justify-content-center">
+            {this.state.ready?(
                 <img className ="restaurantBigLogo borderShadow" src={this.state.restaurant.logoUrl}/>
+            ):(
+                <span className="spinner-grow spinner-grow-sm"></span>
+            )}
             </div>
             <div className="row justify-content-center">
                 <div className="restaurantBigName">{this.state.restaurant.name}</div>
             </div>
             <div className="row">
                 <div className="col-8 menuTextAlign justify-content-center">
+
                     <div className="row justify-content-center">
                         <div className="col-3 menuText menuUnderline pr-0 pl-0 text-center">منوی غذا</div>
                     </div>
@@ -1280,7 +1336,7 @@ class Restaurant extends React.Component {
                     <div id="restaurantModal-content" className="row animated faster zoomIn text-center">
                     </div>
                 </div>
-                <this.showCart/>
+                <Cart/>
             </div>
             <Footer/>
             </div>

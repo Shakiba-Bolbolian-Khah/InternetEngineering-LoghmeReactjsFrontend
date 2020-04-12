@@ -247,8 +247,7 @@ class InfoBox extends React.Component {
 	        body: queryString
 	    };
         fetch(`http://localhost:8080/Loghme/users/0`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
+        .then(() => {
             this.setState(prevState => ({newCredit : 0}))
             ReactDOM.render(<Profile />, document.getElementById("root"));
             document.getElementById("creditForm").reset()
@@ -565,6 +564,7 @@ class FoodParty extends React.Component {
             orderCount : 0,
         };
     }
+
     fetchParty(){
         const requestOptions = {
             method: 'GET'
@@ -585,6 +585,7 @@ class FoodParty extends React.Component {
             }
         })
     }
+
     componentDidMount(){
         this.fetchParty()
         this.timerId = setInterval(
@@ -593,10 +594,12 @@ class FoodParty extends React.Component {
         );
         window.addEventListener("click", this.hidePartyFoodBuyModal);
     }
+
     handleModal(event,props) {
         event.preventDefault()
         this.renderModal(props)
     }
+
     renderModal(props) {
         const modalWindow = this.showPartyFoodBuyModal(props);
         var modal = document.getElementById("partyFoodsModal");
@@ -606,6 +609,7 @@ class FoodParty extends React.Component {
         modal.style.display = "block";
         ReactDOM.render(modalWindow, content);
     }
+
     increaseOrderCount(props) {
         var newCount = this.state.orderCount + 1;
         if (this.state.orderCount < props.count) {
@@ -616,6 +620,7 @@ class FoodParty extends React.Component {
             toast.error("There is no more available food!")
         }
     }
+
     decreaseOrderCount(props) {
         var newCount = this.state.orderCount - 1;
         if (this.state.orderCount > 0) {
@@ -626,8 +631,8 @@ class FoodParty extends React.Component {
             toast.error("The least possible choice!")
         }
     }
+
     handleSubmit(event, restaurantId, foodName, number){
-        console.log(foodName)
         event.preventDefault();
         if(number === 0){
             toast.error("You must choose at least 1 food!")
@@ -652,59 +657,59 @@ class FoodParty extends React.Component {
 	        body: queryString
 	    };
         fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
-        .then(response => response.json())
         .then(
-            this.setState(prevState => ({newCredit : 0}))
+            this.setState(prevState => ({orderCount : 0}))
         )
         .catch(function (error) {
                 console.log(error);
                 // notif error
         })
     }
+
     showPartyFoodBuyModal(props) {
         var count = (props.count == 0) ? "ناموجود" : "موجودی: "+String(props.count).toPersianDigits();
         return (
-            <div className="partyFoodMoreInfoContainer food-modal-content modal-content">
-                <form onSubmit={(e) => this.handleSubmit(e,props.restaurantId,props.name, this.state.orderCount)}>
-                <div className="col-12 partyFoodMoreInfo">
-                    {props.restaurantName}
-                </div>        
-                <div className="row ml-0 mr-0 bottomDashedBorder">
-                    <div className="col-4 pl-0 pr-1 mr-2">
-                        <img className="partyFoodBigLogo borderShadow" src={props.imageUrl}/>
-                    </div>
-                    <div>
-                        <div className="row no-gutters">
-                            <div className="col-auto partyFoodBigName">{props.name}</div>
-                            <div className="row ml-0 mr-0 justify-content-start">
-                            <div className="starBigIcon text-right">&#9733;</div>
-                            <div className="partyFoodBigRate">{String(5 * props.popularity).toPersianDigits()}</div>
+            <div className="foodMoreInfoContainer food-modal-content modal-content">
+                <form onSubmit={(e) => this.handleSubmit(e, props.restaurantId, props.name, this.state.orderCount)}>
+                    <div className="col-12 foodMoreInfo">
+                        {props.restaurantName}
+                    </div>        
+                    <div className="row ml-0 mr-0 bottomDashedBorder">
+                        <div className="col-4 pl-0 pr-1 mr-2">
+                            <img className="foodBigLogo borderShadow" src={props.imageUrl}/>
+                        </div>
+                        <div>
+                            <div className="row no-gutters">
+                                <div className="col-auto foodBigName">{props.name}</div>
+                                <div className="row ml-0 mr-0 justify-content-start">
+                                <div className="starBigIcon text-right">&#9733;</div>
+                                <div className="foodBigRate">{String(5 * props.popularity).toPersianDigits()}</div>
+                                </div>
+                            </div>
+                            
+                            <div className="row no-gutters">
+                                <div className="foodDescription">{props.description}</div>
+                            </div>
+                
+                            <div className="row no-gutters pt-3">
+                                <div className="partyFoodOldBigPrice pl-0"><s className="partyFoodOldBigPrice">{String(props.oldPrice).toPersianDigits()}</s></div>
+                                <div className="partyFoodNewBigPrice pl-0">{String(props.price).toPersianDigits()} تومان</div>
                             </div>
                         </div>
-                        
-                        <div className="row no-gutters">
-                            <div className="partyFoodDescription">{props.description}</div>
-                        </div>
-            
-                        <div className="row no-gutters pt-3">
-                            <div className="partyFoodOldBigPrice pl-0"><s className="partyFoodOldBigPrice">{String(props.oldPrice).toPersianDigits()}</s></div>
-                            <div className="partyFoodNewBigPrice pl-0">{String(props.price).toPersianDigits()} تومان</div>
-                        </div>
                     </div>
-                </div>
-                <div className="row stockContainer-big ml-0 mr-0 text-center justify-content-around">
-                    <div className="col-2 partyStockBigInfo align-self-center">{count}</div>
-                    <div className="row col-2 pl-0 pr-0 foodCount-big justify-content-center align-self-center">
-                        <a href="#" onClick={() => this.increaseOrderCount(props)}>
-                            <i className="flaticon-loghme-big-plus"></i>
-                        </a>
-                        <div className="mr-2 ml-2">{String(this.state.orderCount).toPersianDigits()}</div>
-                        <a href="#" onClick={() => this.decreaseOrderCount(props)}>
-                            <i className="flaticon-loghme-big-minus"></i>
-                        </a>
+                    <div className="row stockContainer-big ml-0 mr-0 text-center justify-content-around">
+                        <div className="col-2 partyStockBigInfo align-self-center">{count}</div>
+                        <div className="row col-2 pl-0 pr-0 foodCount-big justify-content-center align-self-center">
+                            <a href="#" onClick={() => this.increaseOrderCount(props)}>
+                                <i className="flaticon-loghme-big-plus"></i>
+                            </a>
+                            <div className="mr-2 ml-2">{String(this.state.orderCount).toPersianDigits()}</div>
+                            <a href="#" onClick={() => this.decreaseOrderCount(props)}>
+                                <i className="flaticon-loghme-big-minus"></i>
+                            </a>
+                        </div>
+                            <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
                     </div>
-                        <button className="col-4 partyBigBuyButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
-                </div>
                 </form>
             </div>
         )
@@ -746,11 +751,11 @@ class FoodParty extends React.Component {
                     <div className="partyFoodNewPrice pl-0">{String(props.partyFood.price).toPersianDigits()}</div>
                 </div>
                 <div className="row text-center mt-2 mr-0 ml-0 justify-content-around">
-                <div className="col-5 partyStockInfo align-self-center">{count}</div>
-                { props.partyFood.count === 0
-                    ? <div className="col-5 partyBuyButton payGrayBG btn">خرید</div>
-                    : <button id={props.partyFood.restaurantId+"-"+props.partyFood.restaurantName} className="col-5 partyBuyButton payBlueBG btn" type="submit" onClick={(e) => this.handleModal(e,props.partyFood)}>خرید</button>
-                }
+                    <div className="col-5 partyStockInfo align-self-center">{count}</div>
+                    { props.partyFood.count === 0
+                        ? <div className="col-5 partyBuyButton payGrayBG btn">خرید</div>
+                        : <button id={props.partyFood.restaurantId+"-"+props.partyFood.restaurantName} className="col-5 partyBuyButton payBlueBG btn" type="submit" onClick={(e) => this.handleModal(e,props.partyFood)}>خرید</button>
+                    }
                 </div>
                 <div className="bottomDashedBorder mt-1"></div>
                 <div className="row partyRestaurantName pt-1 justify-content-center">{restaurantName}</div>
@@ -938,11 +943,19 @@ class Restaurant extends React.Component {
         this.createRestaurantMenu = this.createRestaurantMenu.bind(this)
         this.showFood = this.showFood.bind(this)
         this.showCart = this.showCart.bind(this)
+        this.handleModal = this.handleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.showFoodModal = this.showFoodModal.bind(this);
+        this.hideFoodModal = this.hideFoodModal.bind(this);
+        this.increaseOrderCount = this.increaseOrderCount.bind(this);
+        this.decreaseOrderCount = this.decreaseOrderCount.bind(this);
+        this.renderModal = this.renderModal.bind(this);
         this.state = {
             restaurant : "",
             foods :[],
             cart : "",
             clicked : false,
+            orderCount : 0,
         };
     }
 
@@ -978,12 +991,142 @@ class Restaurant extends React.Component {
     }
     
     componentDidMount() {
-        this.fetchRestaurant()
-        this.timerId = setInterval(
-    		() => {this.fetchRestaurant()}
-    		, 1000000
-        );
+        this.fetchRestaurant();
+        window.addEventListener("click", this.hideFoodModal);
     }
+
+    handleModal(event,props) {
+        event.preventDefault()
+        this.renderModal(props)
+    }
+
+    renderModal(props) {
+        const modalWindow = this.showFoodModal(props);
+        var modal = document.getElementById("restaurantModal");
+        var content = document.getElementById("restaurantModal-content");
+        content.classList.remove("zoomOut");
+        content.classList.add("zoomIn");
+        modal.style.display = "block";
+        ReactDOM.render(modalWindow, content);
+    }
+
+    increaseOrderCount(props) {
+        var newCount = this.state.orderCount + 1;
+        this.setState({
+            orderCount : newCount
+        }, () => this.renderModal(props));
+    }
+
+    decreaseOrderCount(props) {
+        var newCount = this.state.orderCount - 1;
+        if (this.state.orderCount > 0) {
+            this.setState({
+                orderCount : newCount
+            }, () => this.renderModal(props));
+        } else {
+            toast.error("The least possible choice!")
+        }
+    }
+
+    handleSubmit(event, restaurantId, foodName, number){
+        event.preventDefault();
+        if(number === 0){
+            toast.error("You must choose at least 1 food!")
+            return
+        }
+        var params = {
+		    "userId": 0,
+		    "id" : restaurantId,
+		    "name" : foodName,
+            "action" : "add",
+            "count" : number
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+	    };
+        fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
+        .then(
+            this.setState(prevState => ({orderCount : 0}))
+        )
+        .catch(function (error) {
+                console.log(error);
+                // notif error
+        })
+    }
+
+    showFoodModal(props) {
+        return (
+            <div className="foodMoreInfoContainer food-modal-content modal-content">
+                <form onSubmit={(e) => this.handleSubmit(e, this.state.restaurant.id, props.name, this.state.orderCount)}>
+                    <div className="col-12 foodMoreInfo">
+                        {this.state.restaurant.name}
+                    </div>
+                    <div className="row ml-0 mr-0 bottomDashedBorder">
+                        <div className="col-4 pl-0 pr-1 mr-2">
+                            <img className="foodBigLogo borderShadow" src={props.imageUrl}/>
+                        </div>
+                        <div>
+                            <div className="row no-gutters">
+                                <div className="col-auto foodBigName">{props.name}</div>
+                                <div className="row ml-0 mr-0 justify-content-start">
+                                <div className="starBigIcon text-right">&#9733;</div>
+                                <div className="foodBigRate">{String(5 * props.popularity).toPersianDigits()}</div>
+                                </div>
+                            </div>
+                            
+                            <div className="row no-gutters">
+                                <div className="foodDescription">{props.description}</div>
+                            </div>
+                
+                            <div className="row no-gutters pt-3">
+                                <div className="foodBigPrice pl-0 mr-0">{String(props.price).toPersianDigits()} تومان</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row stockContainer-big ml-0 mr-0 text-center justify-content-around">
+                        <div className="col-2 align-self-center"></div>
+                        <div className="row col-2 pl-0 pr-0 foodCount-big justify-content-center align-self-center">
+                            <a href="#" onClick={() => this.increaseOrderCount(props)}>
+                                <i className="flaticon-loghme-big-plus"></i>
+                            </a>
+                            <div className="mr-2 ml-2">{String(this.state.orderCount).toPersianDigits()}</div>
+                            <a href="#" onClick={() => this.decreaseOrderCount(props)}>
+                                <i className="flaticon-loghme-big-minus"></i>
+                            </a>
+                        </div>
+                            <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">اضافه&zwnj;کردن به سبد خرید</button>
+                    </div>
+                </form>
+            </div>
+        )
+    }
+
+    hideFoodModal(event) {
+        var modal = document.getElementById("restaurantModal");
+        var content = document.getElementById("restaurantModal-content");
+        if (event.target == modal || event.target == content) {
+            content.classList.remove("zoomIn");
+            content.classList.add("zoomOut");
+            setTimeout(() =>{
+                modal.style.display = "none";
+                this.setState({
+                    orderCount : 0
+                });
+            },200);
+        }
+    }
+
+
+
+
 
     showCart() {
         if(this.state.cart == ""){
@@ -1039,6 +1182,9 @@ class Restaurant extends React.Component {
         
     }
 
+
+
+    
     showFood(props){
         var foodName = (props.food.name.length > 12) ? props.food.name.substring(0,12)+"..." : props.food.name;
         return (
@@ -1050,8 +1196,7 @@ class Restaurant extends React.Component {
                     <div className="col-auto starIcon text-right">&#9733;</div>
                 </div>
                 <div className="price pl-0">{String(props.food.price).toPersianDigits()} تومان</div>
-                <button className="addToCartButton btn rounded" type="submit">افزودن به سبد خرید</button>
-                {/* We should handle add to cart */}
+                <button id={props.food.name} className="addToCartButton btn rounded" type="submit" onClick={(e) => this.handleModal(e,props.food)}>افزودن به سبد خرید</button>
             </div>
         )
     }
@@ -1114,6 +1259,10 @@ class Restaurant extends React.Component {
             </div>
             <div className="row marginFromFooter">
                 <this.showFoods/>
+                <div id="restaurantModal" className="food-modal modal">
+                    <div id="restaurantModal-content" className="row animated faster zoomIn text-center">
+                    </div>
+                </div>
                 <this.showCart/>
             </div>
             <Footer/>

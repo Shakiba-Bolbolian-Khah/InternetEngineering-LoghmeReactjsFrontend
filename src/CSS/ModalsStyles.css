@@ -19,12 +19,12 @@
     box-shadow: 0 0px 8px 0 rgba(0,0,0,0.1);
 }
 
-.partyFoodMoreInfoContainer {
+.foodMoreInfoContainer {
     border-radius: 15px;
     font-family: Vazir;
 }
 
-.partyFoodMoreInfo {
+.foodMoreInfo {
     font-size: 22px;
     font-weight: 300;
     color: black;
@@ -34,7 +34,7 @@
     flex: 1 1 auto;
 }
 
-.partyFoodBigLogo {
+.foodBigLogo {
     width: 105px;
     height: 105px;
     object-position: right;
@@ -43,14 +43,14 @@
     border-radius: 4px;
 }
 
-.partyFoodBigName{
+.foodBigName{
     font-size: 22px;
     font-weight: 400;
     color: #000000;
     padding: 10px 0px 0px 0px !important;
 }
 
-.partyFoodBigRate {
+.foodBigRate {
     font-size: 22px;
     font-weight: 300;
     font-size: 19px;
@@ -65,14 +65,14 @@
     color: #FFA526;
 }
 
-.partyFoodDescription {
+.foodDescription {
     font-size: 13px;
     font-weight: 200;
     color: #000000;
     padding: 5px 0px 0px 0px !important;
 }
 
-.partyFoodNewBigPrice {
+.partyFoodNewBigPrice, .foodBigPrice {
     font-weight: normal;
     font-size: 19px;
     color: #000000;
@@ -101,7 +101,7 @@ s.partyFoodOldBigPrice {
     color: #666464;
 }
 
-.partyBigBuyButton {
+.buyFoodBigButton {
     font-family: Vazir !important;
     font-size: 14px !important;
     border-radius: 4.5px !important;

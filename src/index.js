@@ -17,87 +17,52 @@ import './media/FlatIcon/font-signup/flaticon.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { css } from "@emotion/core";
+import ClipLoader from "react-spinners/ClipLoader";
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  align-self: center;
+`;
+
+function Spinner(){
+    return(
+        <div className="sweet-loading">
+            <ClipLoader
+                css={override}
+                size={50}
+                color={"#123abc"}
+                loading= {true}
+            />
+        </div>
+    )
+}
+
 class Header extends React.Component {
-    constructor(props){
-        super(props)
-        this.goHome = this.goHome.bind(this)
-        this.goProfile = this.goProfile.bind(this)
-        this.logout = this.logout.bind(this)
-        this.renderProfile = this.renderProfile.bind(this)
-        this.renderHome = this.renderHome.bind(this)
-        this.state = {
-            clicked : false,
-            clickedItem : "",
-        }
-    }
     goHome(event){
         event.preventDefault();
-        this.setState(prevState => ({clicked: true}));
-        this.setState(prevState => ({clickedItem: "home"}));
         ReactDOM.render(<Home />, document.getElementById("root"));
     }
     goProfile(event){
         event.preventDefault();
-        this.setState(prevState => ({clicked: true}));
-        this.setState(prevState => ({clickedItem: "profile"}));
         ReactDOM.render(<Profile />, document.getElementById("root"));
     }
     logout(event){
         event.preventDefault();
-        this.setState(prevState => ({clicked: true}));
-        this.setState(prevState => ({clickedItem: "exit"}));
         ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
-    }
-    renderProfile(){
-        if(this.state.clicked && this.state.clickedItem === "profile"){
-            return(
-                <div className="userProfileContainer">
-                    <span className="spinner-grow spinner-grow-sm text-dark"></span>
-                </div>
-            )
-        }
-        else{
-            return(
-                <div className="userProfileContainer">
-                    <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
-                </div>
-            )
-        }
-    }
-    renderHome(){
-        if(this.state.clicked && this.state.clickedItem === "home"){
-            return(
-                <div className="LoghmeLogoContainer">  
-                    <a href="#" onClick={(e) => this.goHome(e)}>
-                        <span className="spinner-grow spinner-grow-sm text-danger"></span>
-                    </a>
-                </div>
-            )
-        }
-        else{
-            return(
-                <div className="LoghmeLogoContainer">
-                    <a href="#" onClick={(e) => this.goHome(e)}>
-                        <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"/>
-                    </a>
-                </div>
-            )
-        }
-    }
-    
+    }    
     render(){
         return (
             <div className="row header">
                 <div className="headerLeftSide">
                     <div className="exitContainer">
-                    {this.state.clicked && this.state.clickedItem === "exit" ? ( 
-                        <span className="spinner-grow spinner-grow-sm text-danger"></span>
-                    ):(
                         <a className="exit" href="#" onClick={(e) => this.logout(e)}>خروج</a>
-                    )}
                     </div>
                     {this.props.value !== "profile" &&
-                    <this.renderProfile/>
+                        <div className="userProfileContainer">
+                            <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
+                        </div>
                     }
                     <div className="cartIconContainer">
                         <a href="#" onClick={(e) => this.showCart(e)}>
@@ -106,7 +71,11 @@ class Header extends React.Component {
                     </div>
                 </div>
                 {this.props.value !== "home" &&
-                    <this.renderHome/>
+                    <div className="LoghmeLogoContainer">
+                        <a href="#" onClick={(e) => this.goHome(e)}>
+                            <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"/>
+                        </a>
+                    </div>
                 }
             </div>
         )
@@ -212,11 +181,13 @@ class SelectBar extends React.Component{
 class InfoBox extends React.Component {
     constructor(props){
         super(props);
+        console.log(props.ready)
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             newCredit : 0,
             orders : [],
+            readyBox: true,
         };
     }
 
@@ -227,9 +198,11 @@ class InfoBox extends React.Component {
 
     handleSubmit(event){
         event.preventDefault();
-        if(isNaN(this.state.newCredit) || this.state.newCredit < 0){
+        this.setState(prevState => ({readyBox: false}))
+        if(isNaN(this.state.newCredit) || this.state.newCredit <= 0){
             toast.error("Bad input format")
             document.getElementById("creditForm").reset()
+            this.setState(prevState => ({readyBox: true}))
             return
         }
         var params = {
@@ -248,7 +221,10 @@ class InfoBox extends React.Component {
 	    };
         fetch(`http://localhost:8080/Loghme/users/0`, requestOptions)
         .then(() => {
-            this.setState(prevState => ({newCredit : 0}))
+            this.setState(prevState => ({
+                newCredit : 0,
+                readyBox: true,    
+            }))
             ReactDOM.render(<Profile />, document.getElementById("root"));
             document.getElementById("creditForm").reset()
         })
@@ -267,10 +243,15 @@ class InfoBox extends React.Component {
                         <SelectBar value = {this.props.type}/>
                         <div className="dataContainer row">
                             <div className="col-md-3 offset-md-1 increaseButtonLink">
-                                <button className="increaseButton btn rounded" type="submit">
-                                    افزایش
-                                </button>
+                                {!this.state.readyBox ? ( 
+                                    <button className="increaseButton btn rounded" type="submit">
+                                        <span class="spinner-grow spinner-grow-sm"></span>
+                                    </button>
+                                ):(
+                                    <button className="increaseButton btn rounded" type="submit"> افزایش</button>
+                                )}
                             </div>
+                            
                             <div className="col-md-7">
                                 <div className="increaseField">
                                     <input type="text" className="formCtrl" placeholder="میزان افزایش اعتبار" name="credit" 
@@ -299,7 +280,6 @@ class InfoBox extends React.Component {
                     </div>
                 </li>
             )
-            console.log(this.state.orders)
             return(
                 <div id = "infoBox" className="infoBox">
                     <SelectBar value = {this.props.type}/>
@@ -319,6 +299,7 @@ class Profile extends React.Component {
         super(props);
         this.state = {
             user : "",
+            ready: false,
         };
     }
 
@@ -332,6 +313,7 @@ class Profile extends React.Component {
             var updatedUser = data;
             this.setState({
                 user : updatedUser,
+                ready : true,
             })
         })
     }
@@ -340,19 +322,31 @@ class Profile extends React.Component {
         this.fetchUser()
         this.timerId = setInterval(
     		() => {this.fetchUser()}
-    		, 500
+    		, 1000
     	);
     }
 
-    render(){      
-        return(
-            <div className="container-fluid loghmeContainer bg">
-                <Header value = {"profile"}/>
-                <InfoBar type = {"profile"} value = {this.state.user}/>
-                <InfoBox type = {"cart"} value = {this.state.user.orders}/>
-                <Footer />
-            </div>
-        )
+    render(){ 
+        if(this.state.ready){     
+            return(
+                <div className="container-fluid loghmeContainer bg">
+                    <Header value = {"profile"}/>
+                    <InfoBar type = {"profile"} value = {this.state.user} ready = {this.state.ready}/>
+                    <InfoBox type = {"cart"} value = {this.state.user.orders} ready = {this.state.ready}/>
+                    <Footer />
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="container-fluid loghmeContainer bg">
+                    <Header value = {"profile"}/>
+                    <div className="pt-5">
+                        <Spinner/>
+                    </div>
+                </div>
+            )
+        }
     }
     
     componentWillUnmount(){
@@ -562,10 +556,13 @@ class FoodParty extends React.Component {
             partyFoods : [],
             date : "",
             orderCount : 0,
+            ready : false,
+            readyPost: true,
         };
     }
 
     fetchParty(){
+        // this.setState(prevState => ({ready: false}));
         const requestOptions = {
             method: 'GET'
         }
@@ -581,6 +578,7 @@ class FoodParty extends React.Component {
                 this.setState({
                     partyFoods : foods,
                     date : enteredDate,
+                    ready: true,
                 });
             }
         })
@@ -590,6 +588,10 @@ class FoodParty extends React.Component {
         this.fetchParty()
         this.timerId = setInterval(
     		() => {this.fetchParty()}
+    		, 1000
+        );
+        this.timerTime = setInterval(
+    		() => {this.remainingTime()}
     		, 1000
         );
         window.addEventListener("click", this.hidePartyFoodBuyModal);
@@ -638,6 +640,7 @@ class FoodParty extends React.Component {
             toast.error("You must choose at least 1 food!")
             return
         }
+        this.setState(prevState => ({readyPost: false}));
         var params = {
 		    "userId": 0,
 		    "id" : restaurantId,
@@ -658,7 +661,10 @@ class FoodParty extends React.Component {
 	    };
         fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
         .then(
-            this.setState(prevState => ({orderCount : 0}))
+            this.setState(prevState => ({
+                orderCount : 0,
+                readyPost: true,
+            }))
         )
         .catch(function (error) {
                 console.log(error);
@@ -667,6 +673,7 @@ class FoodParty extends React.Component {
     }
 
     showPartyFoodBuyModal(props) {
+        console.log(this.state.readyPost)
         var count = (props.count == 0) ? "ناموجود" : "موجودی: "+String(props.count).toPersianDigits();
         return (
             <div className="foodMoreInfoContainer food-modal-content modal-content">
@@ -708,7 +715,14 @@ class FoodParty extends React.Component {
                                 <i className="flaticon-loghme-big-minus"></i>
                             </a>
                         </div>
+                        {!this.state.readyPost ? ( 
+                            <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">
+                                <span class="spinner-grow spinner-grow-sm"></span>
+                                ...منتظر بمانید
+                            </button>
+                        ):(
                             <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
+                        )}
                     </div>
                 </form>
             </div>
@@ -802,7 +816,13 @@ class FoodParty extends React.Component {
                 </div>
                 <this.remainingTime />
                 <div className="col-12 foodPartyMenu borderShadow text-center">
-                    <this.showPartyFoods />
+                    {this.state.ready?(
+                        <this.showPartyFoods />
+                    ):(
+                        <div className="partyFoodInfo borderShadow">
+                        <Spinner/>
+                        </div>
+                    )}
                     <div id="partyFoodsModal" className="food-modal modal">
                         <div id="partyFoodsModal-content" className="row animated faster zoomIn text-center">
                         </div>
@@ -814,8 +834,10 @@ class FoodParty extends React.Component {
 
     componentWillUnmount(){
         clearInterval(this.timerId)
+        clearInterval(this.timerTime)
     }
 }
+
 
 class HomeRestaurants extends React.Component {
     constructor(props){
@@ -826,8 +848,7 @@ class HomeRestaurants extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             restaurants : [],
-            clicked : false,
-            clickedId : "",
+            ready: false,
         };
     }
 
@@ -840,9 +861,11 @@ class HomeRestaurants extends React.Component {
         .then(data => {
             var updatedRestaurants = data;
             this.setState({
-                restaurants : updatedRestaurants
+                restaurants : updatedRestaurants,
+                ready: true,
             });
         })
+        
     }
 
     componentDidMount(){
@@ -852,9 +875,6 @@ class HomeRestaurants extends React.Component {
 
     handleSubmit(event,id){
         event.preventDefault()
-        this.setState(prevState => ({clicked: true}));
-        this.setState(prevState => ({clickedId: id}));
-        setTimeout(alert("Goh"), 5000)
         ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
     }
 
@@ -867,14 +887,7 @@ class HomeRestaurants extends React.Component {
                     <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
                 </div>
                 <form id={props.restaurant.id} onSubmit={(e) => this.handleSubmit(e,props.restaurant.id)}>
-                {(this.state.clicked === true && this.state.clickedId === props.restaurant.id) ? ( 
-                    <button className ="showMenuButton btn rounded" type="submit" >
-                        منتظر بمانید...
-                        <span class="spinner-grow spinner-grow-sm"></span>
-                    </button>
-                ) : (
-                    <button className="showMenuButton btn rounded" type="submit" >نمایش منو</button>
-                )}
+                <button className="showMenuButton btn rounded" type="submit" >نمایش منو</button>
                 </form>
             </div>
         )
@@ -915,7 +928,11 @@ class HomeRestaurants extends React.Component {
         return(  
             <div className="row marginFromFooter">
                 <div className="col-12 restaurants justify-content-center">
-                    {this.createRestaurantsMenu()}
+                    {this.state.ready?(
+                        this.createRestaurantsMenu()
+                    ):(
+                        <Spinner/>
+                    )}
                 </div>
             </div>
         )

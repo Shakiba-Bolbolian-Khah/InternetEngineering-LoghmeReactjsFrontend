@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import './CSS/Normalize.css';
 import './CSS/headerStyles.css';
@@ -233,14 +232,30 @@ class InfoBox extends React.Component {
             document.getElementById("creditForm").reset()
             return
         }
-        axios.post(`http://localhost:8080/Loghme/users/0?credit=`+ this.state.newCredit)
-            .then(res => {
-                this.setState(prevState => ({newCredit : 0}))
-                ReactDOM.render(<Profile />, document.getElementById("root"));
-                document.getElementById("creditForm").reset()
+        var params = {
+		    "credit": this.state.newCredit,
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+	    };
+        fetch(`http://localhost:8080/Loghme/users/0`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            this.setState(prevState => ({newCredit : 0}))
+            ReactDOM.render(<Profile />, document.getElementById("root"));
+            document.getElementById("creditForm").reset()
         })
         .catch(function (error) {
             console.log(error);
+            // notif error
         })
     }
 
@@ -309,12 +324,16 @@ class Profile extends React.Component {
     }
 
     fetchUser(){
-        axios.get(`http://localhost:8080/Loghme/users/0`)
-        .then(res => {
-            var updatedUser = JSON.parse(JSON.stringify(res.data));
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch('http://localhost:8080/Loghme/users/0', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            var updatedUser = data;
             this.setState({
                 user : updatedUser,
-            });
+            })
         })
     }
 
@@ -547,10 +566,14 @@ class FoodParty extends React.Component {
         };
     }
     fetchParty(){
-        axios.get(`http://localhost:8080/Loghme/foodparty`)
-        .then(res => {
-            if(res !== undefined){
-                var updatedParty = JSON.parse(JSON.stringify(res.data));
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch(`http://localhost:8080/Loghme/foodparty`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            if(data !== undefined){
+                var updatedParty = data;
                 var date = JSON.parse(JSON.stringify(updatedParty.enteredDate));
                 const enteredDate = (date!== null) ? new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0)
                 : "";
@@ -603,22 +626,40 @@ class FoodParty extends React.Component {
             toast.error("The least possible choice!")
         }
     }
-    handleSubmit(event, restaurantId, foodName,number){
+    handleSubmit(event, restaurantId, foodName, number){
         console.log(foodName)
         event.preventDefault();
         if(number === 0){
             toast.error("You must choose at least 1 food!")
             return
         }
-        axios.post('http://localhost:8080/Loghme/foodparty?userId=0&id='+restaurantId+'&name='+foodName+'&action=add&count='+number)
-        .then(res => {
+        var params = {
+		    "userId": 0,
+		    "id" : restaurantId,
+		    "name" : foodName,
+            "action" : "add",
+            "count" : number
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+	    };
+        fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
+        .then(response => response.json())
+        .then(
             this.setState(prevState => ({newCredit : 0}))
-            console.log(res.data)
-        })
+        )
         .catch(function (error) {
-            console.log(error);
+                console.log(error);
+                // notif error
         })
-
     }
     showPartyFoodBuyModal(props) {
         var count = (props.count == 0) ? "ناموجود" : "موجودی: "+String(props.count).toPersianDigits();
@@ -786,9 +827,13 @@ class HomeRestaurants extends React.Component {
     }
 
     fetchRestaurants(){
-        axios.get(`http://localhost:8080/Loghme/restaurants`)
-        .then(res => {
-            var updatedRestaurants = JSON.parse(JSON.stringify(res.data));
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch(`http://localhost:8080/Loghme/restaurants`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            var updatedRestaurants = data;
             this.setState({
                 restaurants : updatedRestaurants
             });
@@ -902,9 +947,13 @@ class Restaurant extends React.Component {
     }
 
     fetchRestaurant(){
-        axios.get(`http://localhost:8080/Loghme/restaurants/`+ this.props.id)
-        .then(res => {
-            var newRestaurant = JSON.parse(JSON.stringify(res.data));
+        const requestOptions = {
+            method: 'GET'
+        }
+        fetch(`http://localhost:8080/Loghme/restaurants/`+ this.props.id, requestOptions)
+        .then(response => response.json())    
+        .then(data => {
+            var newRestaurant = data;
             var newFoods = JSON.parse(JSON.stringify(newRestaurant.menu));
             this.setState({
                 restaurant: newRestaurant,
@@ -912,20 +961,19 @@ class Restaurant extends React.Component {
             });
         })
         .catch(error => {
-            console.log(error.response.status)
-            console.log(error.response.data)
+            console.log(error)
         })
 
-        axios.get(`http://localhost:8080/Loghme/users/cart?userId=0`)
-        .then(res => {
-            var newCart = JSON.parse(JSON.stringify(res.data));
+        fetch(`http://localhost:8080/Loghme/users/cart?userId=0`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            var newCart = data;
             this.setState({
                 cart: newCart,
             });
         })
         .catch(error => {
-            console.log(error.response.status)
-            console.log(error.response.data)
+            console.log(error)
         })
     }
     

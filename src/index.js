@@ -557,12 +557,10 @@ class FoodParty extends React.Component {
             date : "",
             orderCount : 0,
             ready : false,
-            readyPost: true,
         };
     }
 
     fetchParty(){
-        // this.setState(prevState => ({ready: false}));
         const requestOptions = {
             method: 'GET'
         }
@@ -588,7 +586,7 @@ class FoodParty extends React.Component {
         this.fetchParty()
         this.timerId = setInterval(
     		() => {this.fetchParty()}
-    		, 1000
+    		, 5000
         );
         this.timerTime = setInterval(
     		() => {this.remainingTime()}
@@ -634,19 +632,18 @@ class FoodParty extends React.Component {
         }
     }
 
-    handleSubmit(event, restaurantId, foodName, number){
-        event.preventDefault();
-        if(number === 0){
+    handleSubmit(event, props){
+        event.preventDefault()
+        if(this.state.orderCount === 0){
             toast.error("You must choose at least 1 food!")
             return
         }
-        this.setState(prevState => ({readyPost: false}));
         var params = {
 		    "userId": 0,
-		    "id" : restaurantId,
-		    "name" : foodName,
+		    "id" : props.restaurantId,
+		    "name" : props.name,
             "action" : "add",
-            "count" : number
+            "count" : this.state.orderCount,
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
@@ -658,29 +655,32 @@ class FoodParty extends React.Component {
 	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 	        },
 	        body: queryString
-	    };
+        };
         fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
-        .then(
+        .then((response) => {
             this.setState(prevState => ({
                 orderCount : 0,
-                readyPost: true,
             }))
-        )
-        .catch(function (error) {
-                console.log(error);
-                // notif error
+            this.renderModal(props)
+            if (response.ok) {
+                toast.success("Your order added successfully!")
+            } else {
+                toast.error("Your order could not submitted completely!")
+            }
         })
+        .catch(() =>
+            toast.error("Your order could not submitted completely!")
+        )
     }
 
     showPartyFoodBuyModal(props) {
-        console.log(this.state.readyPost)
         var count = (props.count == 0) ? "ناموجود" : "موجودی: "+String(props.count).toPersianDigits();
         return (
             <div className="foodMoreInfoContainer food-modal-content modal-content">
-                <form onSubmit={(e) => this.handleSubmit(e, props.restaurantId, props.name, this.state.orderCount)}>
+                <form onSubmit={(e) => this.handleSubmit(e, props)}>
                     <div className="col-12 foodMoreInfo">
                         {props.restaurantName}
-                    </div>        
+                    </div>
                     <div className="row ml-0 mr-0 bottomDashedBorder">
                         <div className="col-4 pl-0 pr-1 mr-2">
                             <img className="foodBigLogo borderShadow" src={props.imageUrl}/>
@@ -715,14 +715,7 @@ class FoodParty extends React.Component {
                                 <i className="flaticon-loghme-big-minus"></i>
                             </a>
                         </div>
-                        {!this.state.readyPost ? ( 
-                            <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">
-                                <span class="spinner-grow spinner-grow-sm"></span>
-                                ...منتظر بمانید
-                            </button>
-                        ):(
-                            <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
-                        )}
+                        <button className="col-4 buyFoodBigButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
                     </div>
                 </form>
             </div>
@@ -1045,18 +1038,18 @@ class Restaurant extends React.Component {
         }
     }
 
-    handleSubmit(event, restaurantId, foodName, number){
+    handleSubmit(event, props){
         event.preventDefault();
-        if(number === 0){
+        if(this.state.orderCount === 0){
             toast.error("You must choose at least 1 food!")
             return
         }
         var params = {
 		    "userId": 0,
-		    "id" : restaurantId,
-		    "name" : foodName,
+		    "id" : this.state.restaurant.id,
+		    "name" : props.name,
             "action" : "add",
-            "count" : number
+            "count" : this.state.orderCount
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
@@ -1070,19 +1063,26 @@ class Restaurant extends React.Component {
 	        body: queryString
 	    };
         fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
-        .then(
-            this.setState(prevState => ({orderCount : 0}))
-        )
-        .catch(function (error) {
-                console.log(error);
-                // notif error
+        .then((response) => {
+            this.setState(prevState => ({
+                orderCount : 0,
+            }))
+            this.renderModal(props)
+            if (response.ok) {
+                toast.success("Your order added successfully!")
+            } else {
+                toast.error("Your order could not submitted completely!")
+            }
         })
+        .catch(() =>
+            toast.error("Your order could not submitted completely!")
+        )
     }
 
     showFoodModal(props) {
         return (
             <div className="foodMoreInfoContainer food-modal-content modal-content">
-                <form onSubmit={(e) => this.handleSubmit(e, this.state.restaurant.id, props.name, this.state.orderCount)}>
+                <form onSubmit={(e) => this.handleSubmit(e, props)}>
                     <div className="col-12 foodMoreInfo">
                         {this.state.restaurant.name}
                     </div>

@@ -15,34 +15,90 @@ import './CSS/authenticationStyles.css';
 import './CSS/ModalsStyles.css'
 import './media/FlatIcon/font/flaticon.css';
 import './media/FlatIcon/font-signup/flaticon.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Header extends React.Component {
+    constructor(props){
+        super(props)
+        this.goHome = this.goHome.bind(this)
+        this.goProfile = this.goProfile.bind(this)
+        this.logout = this.logout.bind(this)
+        this.renderProfile = this.renderProfile.bind(this)
+        this.renderHome = this.renderHome.bind(this)
+        this.state = {
+            clicked : false,
+            clickedItem : "",
+        }
+    }
     goHome(event){
         event.preventDefault();
+        this.setState(prevState => ({clicked: true}));
+        this.setState(prevState => ({clickedItem: "home"}));
         ReactDOM.render(<Home />, document.getElementById("root"));
     }
-
     goProfile(event){
         event.preventDefault();
+        this.setState(prevState => ({clicked: true}));
+        this.setState(prevState => ({clickedItem: "profile"}));
         ReactDOM.render(<Profile />, document.getElementById("root"));
     }
-
     logout(event){
         event.preventDefault();
+        this.setState(prevState => ({clicked: true}));
+        this.setState(prevState => ({clickedItem: "exit"}));
         ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
     }
-
+    renderProfile(){
+        if(this.state.clicked && this.state.clickedItem === "profile"){
+            return(
+                <div className="userProfileContainer">
+                    <span className="spinner-grow spinner-grow-sm text-dark"></span>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="userProfileContainer">
+                    <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
+                </div>
+            )
+        }
+    }
+    renderHome(){
+        if(this.state.clicked && this.state.clickedItem === "home"){
+            return(
+                <div className="LoghmeLogoContainer">  
+                    <a href="#" onClick={(e) => this.goHome(e)}>
+                        <span className="spinner-grow spinner-grow-sm text-danger"></span>
+                    </a>
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="LoghmeLogoContainer">
+                    <a href="#" onClick={(e) => this.goHome(e)}>
+                        <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"/>
+                    </a>
+                </div>
+            )
+        }
+    }
+    
     render(){
         return (
             <div className="row header">
                 <div className="headerLeftSide">
                     <div className="exitContainer">
+                    {this.state.clicked && this.state.clickedItem === "exit" ? ( 
+                        <span className="spinner-grow spinner-grow-sm text-danger"></span>
+                    ):(
                         <a className="exit" href="#" onClick={(e) => this.logout(e)}>خروج</a>
+                    )}
                     </div>
                     {this.props.value !== "profile" &&
-                        <div className="userProfileContainer">
-                            <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
-                        </div>
+                    <this.renderProfile/>
                     }
                     <div className="cartIconContainer">
                         <a href="#" onClick={(e) => this.showCart(e)}>
@@ -51,11 +107,7 @@ class Header extends React.Component {
                     </div>
                 </div>
                 {this.props.value !== "home" &&
-                    <div className="LoghmeLogoContainer">
-                        <a href="#" onClick={(e) => this.goHome(e)}>
-                            <img className="LoghmeLogo" src={require('./media/Pics/LOGO.png')} alt="logo"></img>
-                        </a>
-                    </div>
+                    <this.renderHome/>
                 }
             </div>
         )
@@ -176,6 +228,11 @@ class InfoBox extends React.Component {
 
     handleSubmit(event){
         event.preventDefault();
+        if(isNaN(this.state.newCredit) || this.state.newCredit < 0){
+            toast.error("Bad input format")
+            document.getElementById("creditForm").reset()
+            return
+        }
         axios.post(`http://localhost:8080/Loghme/users/0?credit=`+ this.state.newCredit)
             .then(res => {
                 this.setState(prevState => ({newCredit : 0}))
@@ -192,6 +249,7 @@ class InfoBox extends React.Component {
             return(
                 <form id="creditForm" onSubmit={this.handleSubmit}>
                     <div id = "infoBox" className="infoBox">
+                        <ToastContainer/>
                         <SelectBar value = {this.props.type}/>
                         <div className="dataContainer row">
                             <div className="col-md-3 offset-md-1 increaseButtonLink">
@@ -305,7 +363,8 @@ class Authentication extends React.Component {
             phone : "",
             email : "",
             pass : "",
-            rePass : ""
+            rePass : "",
+            clicked : false,
         }
     }
     componentWillUnmount(){
@@ -314,32 +373,26 @@ class Authentication extends React.Component {
     handleFirstName(event) {
         event.persist();
         this.setState(prevState => ({firstName: event.target.value}));
-        console.log(this.state.firstName);
     }
     handleLastName(event, type){
         event.persist();
         this.setState(prevState => ({lastName: event.target.value}));
-        console.log(this.state.lastName);
     }
     handleEmail(event) {
         event.persist();
         this.setState(prevState => ({email: event.target.value}));
-        console.log(this.state.email);
     }
     handlePhone(event) {
         event.persist();
         this.setState(prevState => ({phone: event.target.value}));
-        console.log(this.state.phone);
     }
     handlePassword(event) {
         event.persist();
         this.setState(prevState => ({pass: event.target.value}));
-        console.log(this.state.pass);
     }
     handleRePass(event) {
         event.persist();
         this.setState(prevState => ({rePass: event.target.value}));
-        console.log(this.state.rePass);
     }
     handleAnother(event) {
         event.preventDefault();
@@ -347,64 +400,83 @@ class Authentication extends React.Component {
         ReactDOM.render(<Authentication type = {anotherPage}/>, document.getElementById("root"));
     }
     handleSubmit(event) {
+        this.setState(prevState => ({clicked: true}));
+        var hasError = false
         event.preventDefault();
         let emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        console.log(this.state.email)
         if(!emailRe.test(this.state.email)) {
-            console.log("Invalid email");
-            //Error: Invalid email format
-            // reset form
+            setTimeout(() => { toast.error("Invalid email format")}, 3000);
+            hasError = true
         }
         if(this.props.type === 'signup'){
             let phoneRe = /09[0-9]{9}/;
             if(!phoneRe.test(this.state.phone)){
-                console.log("Phone number is not valid in iran");
-                //Error: Phone number is not valid
+                setTimeout(() => { toast.error("Invalid phone number");}, 3000);
+                hasError = true
             }
             let passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
             if(this.state.pass !== this.state.rePass){
-                console.log("Passwords are not same")
-                //Error msg: Invalid password validation
+                setTimeout(() => { toast.error("Passwords are not same")}, 3000);
+                
+                hasError = true
             }
             else if(!passRe.test(this.state.pass)){
-                console.log("Weak password")
-                //Error: Weak password
+                setTimeout(() => {toast.error("Weak password")}, 3000);
+                hasError = true
             }
             if(this.state.firstName.length < 3 || this.state.lastName.length < 3){
-                console.log("Name is not valid")
+                setTimeout(() => { toast.error("First name or last name is not valid")}, 3000);
+                hasError = true
             }
         }
-        
+        if(!hasError){
+            toast.success("Your "+this.props.type+" completed successfully!")
+            document.getElementById("authForm").reset()
+        }
+        setTimeout(() => {  this.setState(prevState => ({clicked: false})) }, 3000);   
     }
-
     signupInput(){
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form id="authForm" onSubmit={this.handleSubmit}>
                 <div className="topBox">
+                    <ToastContainer autoClose={6000}/>
                     <input className ="inputBox" type="text" name="firstName" placeholder="نام" onChange={this.handleFirstName} required/>
                     <input className ="inputBox" type="text" name="lastName" placeholder="نام خانوادگی" onChange={this.handleLastName} required/>
                     <input className ="inputBox" type="text" name="phoneNumber" placeholder="شماره تلفن" onChange={this.handlePhone} required/>
                     <input className ="inputBox" type="text" name="email" placeholder="ایمیل" onChange={this.handleEmail} required/>
                     <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" onChange={this.handlePassword} required/>
                     <input className ="inputBox" type="password" name="passwordConf" placeholder="تکرار رمز عبور" onChange={this.handleRePass} required/>
+                    {this.state.clicked ? ( 
+                        <button className ="inputBox" type="submit" >
+                            <span class="spinner-grow spinner-grow-sm"></span>
+                            ...منتظر بمانید
+                        </button>
+                    ):(
                     <button className ="inputBox" type="submit" >ثبت نام</button>
+                    )}
                 </div>
             </form>
         )
     }
-
     loginInput(){
         return(
-            <form onSubmit={this.handleSubmit}>
+            <form id="authForm" onSubmit={this.handleSubmit}>
                 <div className="topBox">
+                    <ToastContainer autoClose={5000}/>
                     <input className ="inputBox" type="text" name="email" placeholder="ایمیل" onChange={this.handleEmail} required/>
                     <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" onChange={this.handlePassword} required/>
-                    <button className ="inputBox" type="submit">ورود</button>
+                    {this.state.clicked ? ( 
+                        <button className ="inputBox" type="submit" >
+                            <span class="spinner-grow spinner-grow-sm"></span>
+                            ...منتظر بمانید
+                        </button>
+                    ):(
+                    <button className ="inputBox" type="submit" >ورود</button>
+                    )}
                 </div>
             </form>
         )
     }
-
     render(){
         document.body.classList.add('authenticationBody');
         return(
@@ -462,6 +534,7 @@ class FoodParty extends React.Component {
         this.showPartyFoods = this.showPartyFoods.bind(this);
         this.showPartyFood = this.showPartyFood.bind(this);
         this.handleModal = this.handleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.showPartyFoodBuyModal = this.showPartyFoodBuyModal.bind(this);
         this.hidePartyFoodBuyModal = this.hidePartyFoodBuyModal.bind(this);
         this.increaseOrderCount = this.increaseOrderCount.bind(this);
@@ -473,7 +546,6 @@ class FoodParty extends React.Component {
             orderCount : 0,
         };
     }
-
     fetchParty(){
         axios.get(`http://localhost:8080/Loghme/foodparty`)
         .then(res => {
@@ -490,7 +562,6 @@ class FoodParty extends React.Component {
             }
         })
     }
-    
     componentDidMount(){
         this.fetchParty()
         this.timerId = setInterval(
@@ -499,12 +570,10 @@ class FoodParty extends React.Component {
         );
         window.addEventListener("click", this.hidePartyFoodBuyModal);
     }
-
     handleModal(event,props) {
         event.preventDefault()
         this.renderModal(props)
     }
-
     renderModal(props) {
         const modalWindow = this.showPartyFoodBuyModal(props);
         var modal = document.getElementById("partyFoodsModal");
@@ -514,7 +583,6 @@ class FoodParty extends React.Component {
         modal.style.display = "block";
         ReactDOM.render(modalWindow, content);
     }
-
     increaseOrderCount(props) {
         var newCount = this.state.orderCount + 1;
         if (this.state.orderCount < props.count) {
@@ -522,10 +590,9 @@ class FoodParty extends React.Component {
                 orderCount : newCount
             }, () => this.renderModal(props));
         } else {
-            // notif error
+            toast.error("There is no more available food!")
         }
     }
-
     decreaseOrderCount(props) {
         var newCount = this.state.orderCount - 1;
         if (this.state.orderCount > 0) {
@@ -533,14 +600,31 @@ class FoodParty extends React.Component {
                 orderCount : newCount
             }, () => this.renderModal(props));
         } else {
-            // notif error
+            toast.error("The least possible choice!")
         }
     }
+    handleSubmit(event, restaurantId, foodName,number){
+        console.log(foodName)
+        event.preventDefault();
+        if(number === 0){
+            toast.error("You must choose at least 1 food!")
+            return
+        }
+        axios.post('http://localhost:8080/Loghme/foodparty?userId=0&id='+restaurantId+'&name='+foodName+'&action=add&count='+number)
+        .then(res => {
+            this.setState(prevState => ({newCredit : 0}))
+            console.log(res.data)
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
 
+    }
     showPartyFoodBuyModal(props) {
         var count = (props.count == 0) ? "ناموجود" : "موجودی: "+String(props.count).toPersianDigits();
         return (
             <div className="partyFoodMoreInfoContainer food-modal-content modal-content">
+                <form onSubmit={(e) => this.handleSubmit(e,props.restaurantId,props.name, this.state.orderCount)}>
                 <div className="col-12 partyFoodMoreInfo">
                     {props.restaurantName}
                 </div>        
@@ -578,8 +662,9 @@ class FoodParty extends React.Component {
                             <i className="flaticon-loghme-big-minus"></i>
                         </a>
                     </div>
-                    <button className="col-4 partyBigBuyButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
+                        <button className="col-4 partyBigBuyButton payBlueBG btn align-self-center" type="submit">افزودن به سبد خرید</button>
                 </div>
+                </form>
             </div>
         )
     }
@@ -665,6 +750,7 @@ class FoodParty extends React.Component {
     render(){
         return(
             <div className="row mt-3 justify-content-center">
+                <ToastContainer/>
                 <div className="row col-12 justify-content-center">
                     <div className="col-2 titles titlesUnderline pr-0 pl-0 text-center">جشن غذا!</div>
                 </div>
@@ -693,7 +779,9 @@ class HomeRestaurants extends React.Component {
         this.showRestaurant = this.showRestaurant.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            restaurants : []
+            restaurants : [],
+            clicked : false,
+            clickedId : "",
         };
     }
 
@@ -714,6 +802,9 @@ class HomeRestaurants extends React.Component {
 
     handleSubmit(event,id){
         event.preventDefault()
+        this.setState(prevState => ({clicked: true}));
+        this.setState(prevState => ({clickedId: id}));
+        setTimeout(alert("Goh"), 5000)
         ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
     }
 
@@ -726,7 +817,14 @@ class HomeRestaurants extends React.Component {
                     <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
                 </div>
                 <form id={props.restaurant.id} onSubmit={(e) => this.handleSubmit(e,props.restaurant.id)}>
+                {(this.state.clicked === true && this.state.clickedId === props.restaurant.id) ? ( 
+                    <button className ="showMenuButton btn rounded" type="submit" >
+                        منتظر بمانید...
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                    </button>
+                ) : (
                     <button className="showMenuButton btn rounded" type="submit" >نمایش منو</button>
+                )}
                 </form>
             </div>
         )
@@ -799,6 +897,7 @@ class Restaurant extends React.Component {
             restaurant : "",
             foods :[],
             cart : "",
+            clicked : false,
         };
     }
 

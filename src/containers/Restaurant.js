@@ -147,6 +147,15 @@ class Restaurant extends React.Component {
                 }
             }
         })
+        .then(() => {
+            var modal = document.getElementById("restaurantModal");
+            var content = document.getElementById("restaurantModal-content");
+            content.classList.remove("zoomIn");
+            content.classList.add("zoomOut");
+            setTimeout(() =>{
+                modal.style.display = "none";
+            },200);
+        })
         .catch(() =>
             toast.error("Your order could not submitted completely!")
         )

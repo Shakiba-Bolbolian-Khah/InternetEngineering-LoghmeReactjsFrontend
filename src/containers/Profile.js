@@ -15,8 +15,6 @@ import Header from "../components/Header"
 import InfoBar from "./InfoBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Home from "../containers/HomeContainers/Home"
-
 
 class Profile extends React.Component {
     constructor(props){
@@ -25,10 +23,16 @@ class Profile extends React.Component {
         this.handleClick = this.handleClick.bind(this)
         this.showSelectBar = this.showSelectBar.bind(this)
         this.showInfoBox = this.showInfoBox.bind(this)
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.createTable = this.createTable.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmitCredit = this.handleSubmitCredit.bind(this)
+        this.createTable = this.createTable.bind(this)
         this.handleFactor = this.handleFactor.bind(this)
+        this.renderFactor = this.renderFactor.bind(this)
+        this.showFactor = this.showFactor.bind(this)
+        this.createFactorTable = this.createFactorTable.bind(this)
+        this.showFactorElements = this.showFactorElements.bind(this)
+        this.showFactorElement = this.showFactorElement.bind(this)
+        this.hideFactor = this.hideFactor.bind(this)
         this.showState = this.showState.bind(this)
         this.showOrder = this.showOrder.bind(this)
         this.showOrders = this.showOrders.bind(this)
@@ -45,7 +49,8 @@ class Profile extends React.Component {
         this.timerId = setInterval(
     		() => {this.fetchUser()}
     		, 1000
-    	);
+        );
+        window.addEventListener("click", this.hideFactor);
     }
     fetchUser(){
         const requestOptions = {
@@ -95,11 +100,81 @@ class Profile extends React.Component {
         event.persist();
         this.setState(prevState => ({newCredit : parseInt(event.target.value)}));
     }
-    handleFactor(event,id){
+    handleFactor(event,props){
         event.preventDefault();
-        ReactDOM.render(<Home />, document.getElementById("root"));
+        this.renderFactor(props)
     }
-    handleSubmit(event){
+    renderFactor(props) {
+        const modalWindow = this.showFactor(props);
+        var modal = document.getElementById("factorModal");
+        var content = document.getElementById("factorModal-content");
+        content.classList.remove("zoomOut");
+        content.classList.add("zoomIn");
+        modal.style.display = "block";
+        ReactDOM.render(modalWindow, content);
+    }
+    showFactorElement(props){
+        return (
+            <tr>
+                <td>{String(props.number).toPersianDigits()}</td>
+                <td>{props.element.food.name}</td>
+                <td>{String(props.element.number).toPersianDigits()}</td>
+                <td>{String(props.element.price).toPersianDigits()}</td>
+            </tr>
+        )
+    }
+    createFactorTable = (props) => {
+        let factorTable = [];
+        var items = props.items;
+        for (let i = 0; i < items.length; i++) {
+            factorTable.push(<this.showFactorElement key={i} element={items[i]} number={i+1}/>)
+        }
+        return factorTable
+    }
+    showFactorElements(props){
+        return(
+            <table>
+                <tr>
+                    <th className="orderFood-number">ردیف</th>
+                    <th className="orderFood-name">نام غذا</th>
+                    <th className="orderFood-count">تعداد</th>
+                    <th className="orderFood-price">قیمت</th>
+                </tr>
+                {this.createFactorTable(props)}
+            </table>
+        )
+    }
+    showFactor(props) {
+        var factor = this.state.user.orders[props];
+        var totalPayment = String(factor.totalPayment).toPersianDigits()
+        return (
+            <div className="orderMoreInfoContainer orderDetails-modal-content modal-content">
+                <div className="row col-12 mr-0 justify-content-center">
+                    <div className="col-8 restaurantNameOfOrder">
+                        {factor.restaurantName}
+                    </div>
+                </div>
+                <this.showFactorElements items={factor.items} />            
+                <div className="row col-12 mr-0 mb-3 justify-content-end text-left">
+                    <div className="col-5 pl-4 pr-0 orderFood-totalPrice">
+                        جمع کل : {totalPayment} تومان
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    hideFactor(event) {
+        var modal = document.getElementById("factorModal");
+        var content = document.getElementById("factorModal-content");
+        if (event.target == modal || event.target == content) {
+            content.classList.remove("zoomIn");
+            content.classList.add("zoomOut");
+            setTimeout(() =>{
+                modal.style.display = "none";
+            },200);
+        }
+    }
+    handleSubmitCredit(event){
         event.preventDefault();
         this.setState(prevState => ({readyBox: false}))
         if(isNaN(this.state.newCredit) || this.state.newCredit <= 0){
@@ -194,7 +269,7 @@ class Profile extends React.Component {
         }
         if(props.type === "cart"){
             return(
-                <form id="creditForm" onSubmit={this.handleSubmit}>
+                <form id="creditForm" onSubmit={this.handleSubmitCredit}>
                     <div id = "infoBox" className="infoBox">
                         <ToastContainer/>
                         <this.showSelectBar/>
@@ -233,7 +308,6 @@ class Profile extends React.Component {
         }
     }
 
-
     render(){
         if(this.state.ready){     
             return(
@@ -241,6 +315,10 @@ class Profile extends React.Component {
                     <Header value = {this.state.type}/>
                     <InfoBar type = {"profile"} value = {this.state.user}/>
                     <this.showInfoBox id="infoBox" type ={this.state.type}/>
+                    <div id="factorModal" className="orderDetails-modal modal">
+                        <div id="factorModal-content" className="row animated faster zoomIn text-center">
+                        </div>
+                    </div>
                     <Footer />
                 </div>
             )
@@ -264,6 +342,10 @@ class Profile extends React.Component {
 
 Profile.propTypes = {
     type: PropTypes.string,
+}
+
+Profile.defaultProps = {
+    type : "cart"
 }
 
 export default Profile;

@@ -140,7 +140,7 @@ s.partyFoodOldBigPrice {
   height: 50px;
 }
 
-.orderDetails-modal {
+.cart-modal, .orderDetails-modal {
     direction: rtl;
     display: none;
     position: fixed;
@@ -151,7 +151,7 @@ s.partyFoodOldBigPrice {
     background-color: rgba(0,0,0,0.4);
 }
 
-.orderDetails-modal-content {
+.cart-modal-content, .orderDetails-modal-content {
     position: relative;
     background-color: #ffffff;
     margin: auto;

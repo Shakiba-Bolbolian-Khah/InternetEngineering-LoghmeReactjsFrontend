@@ -50,6 +50,7 @@ class Cart extends React.Component {
         })
     }
     handleSubmit(event){
+        event.preventDefault()
         this.setState(prevState => ({buttonReady:false}));
         var toastId = toast.warn("Finalizing your order!..")
         var params = {
@@ -96,10 +97,11 @@ class Cart extends React.Component {
         this.fetchCart()
         this.timerId = setInterval(
     		() => {this.fetchCart()}
-    		, 1000
+    		, 5000
         );
     }
     deleteFood(event, index){
+        event.preventDefault()
         var item = this.state.cart.items[index]
         var toastId = toast.warn("Deleting "+item.food.name+" to your cart!..")
         var params = {
@@ -154,6 +156,7 @@ class Cart extends React.Component {
         }
     }
     addFood(event, index){
+        event.preventDefault();
         console.log(index)
         var item = this.state.cart.items[index]
         console.log(item.partyFood)
@@ -283,7 +286,7 @@ class Cart extends React.Component {
                     <div className="totalPriceValue">{String(this.state.cart.totalPayment).toPersianDigits()} تومان</div>
                 </div>
                 <div className="row justify-content-center">
-                    <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit"  onClick={() => this.handleSubmit()}>
+                    <button className="col-6 pl-1 pr-1 text-center btn submitButton" type="submit"  onClick={(e) => this.handleSubmit(e)}>
                         تایید نهایی
                     </button>
                 </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import '../../CSS/Normalize.css';
 import '../../CSS/basicStyles.css';
 import '../../CSS/infoBarStyles.css';

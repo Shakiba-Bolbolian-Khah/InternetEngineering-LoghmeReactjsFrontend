@@ -55,3 +55,7 @@ html, body {
   padding-left: 1px;
   padding-right: 1px;
 }
+
+.flaticon-loghme-plus, .flaticon-loghme-minus, .flaticon-loghme-smart-cart a:hover {
+  text-decoration: none;
+}

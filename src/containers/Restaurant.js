@@ -304,4 +304,8 @@ class Restaurant extends React.Component {
     }
 }
 
+Restaurant.propTypes = {
+    id: PropTypes.string,
+};
+
 export default Restaurant;

@@ -55,4 +55,11 @@ class InfoBar extends React.Component {
     }
 }
 
+InfoBar.propTypes = {
+    type: PropTypes.string,
+};
+
+InfoBar.defaultProps = {
+    type: 'home'
+}
 export default InfoBar;

@@ -189,4 +189,12 @@ class Authentication extends React.Component {
     }
 }
 
+Authentication.propTypes = {
+    type: PropTypes.string,
+};
+
+Authentication.defaultProps = {
+    type: 'signup'
+}
+
 export default Authentication;

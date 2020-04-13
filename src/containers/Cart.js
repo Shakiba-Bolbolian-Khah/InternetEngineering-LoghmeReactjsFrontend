@@ -24,6 +24,8 @@ class Cart extends React.Component {
         this.createCart = this.createCart.bind(this)
         this.showCart = this.showCart.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.addFood = this.addFood.bind(this)
+        this.deleteFood = this.deleteFood.bind(this)
         this.state = {
             cart : "",
             ready : false,
@@ -49,7 +51,7 @@ class Cart extends React.Component {
     }
     handleSubmit(event){
         this.setState(prevState => ({buttonReady:false}));
-        var toastId = toast.warn("Finalizinf your order!..")
+        var toastId = toast.warn("Finalizing your order!..")
         var params = {
 		    "userId": 0,
         };
@@ -72,7 +74,7 @@ class Cart extends React.Component {
             // this.renderModal(props)
             if (response.ok) {
                 toast.dismiss(toastId)
-                toast.success("Your order added successfully!")
+                toast.success("Your order finalized successfully!")
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){
@@ -98,6 +100,121 @@ class Cart extends React.Component {
     		, 1000
         );
     }
+    deleteFood(event, index){
+        // console.log(this.state.cart.items[index].name)
+        var item = this.state.cart.items[index]
+        var toastId = toast.warn("Adding "+item.food.name+" to your cart!..")
+        var params = {
+            "userId": 0,
+		    "id" : this.state.cart.restaurantId,
+		    "name" : item.food.name,
+            "action" : "delete",
+            "count" : 1,
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+        };
+        if(item.partyFood){
+            fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    toast.dismiss(toastId)
+                    toast.success("Party food deleted from your cart successfully!")
+                } else {
+                    toast.dismiss(toastId)
+                    if(response.status===403){
+                        toast.error("Party food time is over!")
+                    }
+                }
+            })
+            .catch(() =>{
+                toast.dismiss(toastId)
+            })
+        }
+        else{
+            fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    toast.dismiss(toastId)
+                    toast.success("Food deleted from your cart successfully!")
+                } else {
+                    toast.dismiss(toastId)
+                    toast.error("You can not order this food again!")
+                }
+            })
+            .catch(() =>{
+                toast.dismiss(toastId)
+            })
+        }
+    }
+    addFood(event, index){
+        console.log(index)
+        // console.log(this.state.cart.items)
+        var item = this.state.cart.items[index]
+        console.log(item.partyFood)
+        var toastId = toast.warn("Adding "+item.food.name+" to your cart!..")
+        var params = {
+            "userId": 0,
+		    "id" : this.state.cart.restaurantId,
+		    "name" : item.food.name,
+            "action" : "add",
+            "count" : 1,
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	        },
+	        body: queryString
+        };
+        if(item.partyFood){
+            fetch('http://localhost:8080/Loghme/foodparty', requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    toast.dismiss(toastId)
+                    toast.success("Party food added to your cart successfully!")
+                } else {
+                    toast.dismiss(toastId)
+                    if(response.status===404){
+                        toast.error("Party food time is over!")
+                    }
+                    if(response.status===403){
+                        toast.error("There is no more "+item.food.name+"in foodparty!")
+                    }
+                }
+            })
+            .catch(() =>{
+                toast.dismiss(toastId)
+            })
+        }
+        else{
+            fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    toast.dismiss(toastId)
+                    toast.success("Food added to your cart successfully!")
+                } else {
+                    toast.dismiss(toastId)
+                    toast.error("You can not order this food again!")
+                }
+            })
+            .catch(() =>{
+                toast.dismiss(toastId)
+            })
+        }
+    }
     showAddedFood(props){
         var price = parseInt(props.food.price)*parseInt(props.number)
         var foodName = (props.food.name.length > 8) ? props.food.name.substring(0,8)+"..." : props.food.name;
@@ -106,9 +223,13 @@ class Cart extends React.Component {
                 <div className="firstItem shoppingCartItem justify-content-around">
                     <div className="col-7 text-right">{foodName}</div>
                     <div className="col-5">
-                        <i className="flaticon-loghme-minus"></i>
+                        <a href="#" onClick={(event) => this.deleteFood(event,props.index)}>
+                            <i className="flaticon-loghme-minus"></i>
+                        </a>
                         {String(props.number).toPersianDigits()}
-                        <i className="flaticon-loghme-plus"></i>
+                        <a href="#" onClick={(event) => this.addFood(event,props.index)}>
+                            <i className="flaticon-loghme-plus"></i>
+                        </a>
                     </div>
                 </div>
                 <div className="price priceUnderline">{String(price).toPersianDigits()} تومان</div>
@@ -119,9 +240,9 @@ class Cart extends React.Component {
     createCart = () => {
         let cartTable = [];
         for (let i = 0; i < this.state.cart.items.length; i++) {
-            cartTable.push(<this.showAddedFood key={this.state.cart.items[i].food.id} food={this.state.cart.items[i].food} number={this.state.cart.items[i].number}/>)
+            cartTable.push(<this.showAddedFood key={this.state.cart.items[i].food.id} index={i} food={this.state.cart.items[i].food} number={this.state.cart.items[i].number}/>)
         }
-        console.log(cartTable)
+        // console.log(cartTable)
 
         return cartTable
     }

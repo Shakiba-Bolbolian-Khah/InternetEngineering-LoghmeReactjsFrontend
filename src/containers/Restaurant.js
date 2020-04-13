@@ -139,7 +139,7 @@ class Restaurant extends React.Component {
             this.renderModal(props)
             if (response.ok) {
                 toast.dismiss(toastId)
-                toast.success("Your order added successfully!")
+                toast.success("Food added to your cart successfully!")
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){

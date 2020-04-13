@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import '../CSS/Normalize.css';
 import '../CSS/headerStyles.css';
@@ -17,6 +18,8 @@ import InfoBox from "./InfoBox";
 class Profile extends React.Component {
     constructor(props){
         super(props);
+        this.fetchUser = this.fetchUser.bind(this)
+
         this.state = {
             user : "",
             ready: false,
@@ -47,12 +50,14 @@ class Profile extends React.Component {
     }
 
     render(){ 
+        // console.log("orders- profile")
+        // console.log(this.state.user.orders)
         if(this.state.ready){     
             return(
                 <div className="container-fluid loghmeContainer bg">
                     <Header value = {"profile"}/>
-                    <InfoBar type = {"profile"} value = {this.state.user} ready = {this.state.ready}/>
-                    <InfoBox type = {"cart"} value = {this.state.user.orders} ready = {this.state.ready}/>
+                    <InfoBar type = {"profile"} value = {this.state.user}/>
+                    <InfoBox type = {"cart"} orders = {this.state.user.orders}/>
                     <Footer />
                 </div>
             )

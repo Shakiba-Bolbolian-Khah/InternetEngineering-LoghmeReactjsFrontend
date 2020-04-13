@@ -15,7 +15,6 @@ import Header from "../components/Header"
 import InfoBar from "./InfoBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import InfoBox from "./InfoBox";
 import Home from "../containers/HomeContainers/Home"
 
 
@@ -30,6 +29,7 @@ class Profile extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createTable = this.createTable.bind(this);
         this.handleFactor = this.handleFactor.bind(this)
+        this.showState = this.showState.bind(this)
         this.showOrder = this.showOrder.bind(this)
         this.showOrders = this.showOrders.bind(this)
         this.state = {
@@ -63,9 +63,6 @@ class Profile extends React.Component {
     }
     handleClick(event, page){
         event.preventDefault();
-        console.log(page)
-        // ReactDOM.render(<Profile type={page}/>, document.getElementById("root"));
-
         ReactDOM.render(<this.showInfoBox type = {page}/>, document.getElementById("infoBox"));
     }
     showSelectBar(){
@@ -100,13 +97,10 @@ class Profile extends React.Component {
     }
     handleFactor(event,id){
         event.preventDefault();
-        console.log(id)
         ReactDOM.render(<Home />, document.getElementById("root"));
     }
     handleSubmit(event){
         event.preventDefault();
-        console.log("credit")
-        console.log(this.state.newCredit)
         this.setState(prevState => ({readyBox: false}))
         if(isNaN(this.state.newCredit) || this.state.newCredit <= 0){
             toast.error("Bad input format")
@@ -139,7 +133,6 @@ class Profile extends React.Component {
             toast.success("Credit increamented successfully")
         })
         .catch(function (error) {
-            console.log(error);
             toast.error("Credit increament failed")
         })
     }
@@ -160,7 +153,7 @@ class Profile extends React.Component {
         }
         else{
             return(
-            <button className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  type="submit" onClick={(e) => this.handleFactor(e,props.orderId)}>مشاهده فاکتور</button>
+                <button id={props.orderId} className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  type="submit" onClick={(e) => this.handleFactor(e,props.orderId)}>مشاهده فاکتور</button>
             )
         }
     }
@@ -241,9 +234,7 @@ class Profile extends React.Component {
     }
 
 
-    render(){ 
-        // console.log("orders- profile")
-        // console.log(this.state.user.orders)
+    render(){
         if(this.state.ready){     
             return(
                 <div className="container-fluid loghmeContainer bg">
@@ -272,7 +263,7 @@ class Profile extends React.Component {
 }
 
 Profile.propTypes = {
-    user: PropTypes.object,
+    type: PropTypes.string,
 }
 
 export default Profile;

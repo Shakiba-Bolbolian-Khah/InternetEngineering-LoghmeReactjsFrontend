@@ -46,7 +46,7 @@ class Cart extends React.Component {
             });
         })
         .catch(error => {
-            // console.log(error)
+            console.log(error)
         })
     }
     handleSubmit(event){
@@ -71,7 +71,6 @@ class Cart extends React.Component {
             this.setState(prevState => ({
                 buttonReady:true,
             }))
-            // this.renderModal(props)
             if (response.ok) {
                 toast.dismiss(toastId)
                 toast.success("Your order finalized successfully!")
@@ -101,9 +100,8 @@ class Cart extends React.Component {
         );
     }
     deleteFood(event, index){
-        // console.log(this.state.cart.items[index].name)
         var item = this.state.cart.items[index]
-        var toastId = toast.warn("Adding "+item.food.name+" to your cart!..")
+        var toastId = toast.warn("Deleting "+item.food.name+" to your cart!..")
         var params = {
             "userId": 0,
 		    "id" : this.state.cart.restaurantId,
@@ -157,7 +155,6 @@ class Cart extends React.Component {
     }
     addFood(event, index){
         console.log(index)
-        // console.log(this.state.cart.items)
         var item = this.state.cart.items[index]
         console.log(item.partyFood)
         var toastId = toast.warn("Adding "+item.food.name+" to your cart!..")
@@ -242,7 +239,6 @@ class Cart extends React.Component {
         for (let i = 0; i < this.state.cart.items.length; i++) {
             cartTable.push(<this.showAddedFood key={this.state.cart.items[i].food.id} index={i} food={this.state.cart.items[i].food} number={this.state.cart.items[i].number}/>)
         }
-        // console.log(cartTable)
 
         return cartTable
     }

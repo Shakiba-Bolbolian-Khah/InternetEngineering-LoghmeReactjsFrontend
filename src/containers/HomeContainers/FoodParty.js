@@ -37,6 +37,7 @@ class FoodParty extends React.Component {
             date : "",
             orderCount : 0,
             ready : false,
+            timer : false,
         };
     }
 
@@ -62,15 +63,16 @@ class FoodParty extends React.Component {
         })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchParty()
         this.timerId = setInterval(
     		() => {this.fetchParty()}
     		, 5000
         );
-        this.timerTime = setInterval(
-    		() => {this.remainingTime()}
-    		, 1000
+        this.timerTime = setInterval(() => {
+            this.setState({ timer : true })
+            this.remainingTime()}
+            , 1000
         );
         window.addEventListener("click", this.hidePartyFoodBuyModal);
     }
@@ -150,9 +152,18 @@ class FoodParty extends React.Component {
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){
-                    toast.error("You chose your restaurant before!")
+                    toast.error("You chose your restaurant before or food is over!")
                 }
             }
+        })
+        .then(() => {
+            var modal = document.getElementById("partyFoodsModal");
+            var content = document.getElementById("partyFoodsModal-content");
+            content.classList.remove("zoomIn");
+            content.classList.add("zoomOut");
+            setTimeout(() =>{
+                modal.style.display = "none";
+            },200);
         })
         .catch(() =>
             toast.error("Your order could not submitted completely!")
@@ -266,15 +277,21 @@ class FoodParty extends React.Component {
     }
 
     remainingTime(){
+        var min;
+        var sec;
         if(this.state.date !== "" ){
             var now = new Date()
             var remainedTime = 1800000-(now.getTime() - this.state.date.getTime())
-            var min = Math.floor(remainedTime / 60000)
-            var sec = Math.floor((remainedTime - min*60000) / 1000)
+            min = Math.floor(remainedTime / 60000)
+            sec = Math.floor((remainedTime - min*60000) / 1000)
+            if (sec < 10) {
+                var newSec = sec
+                sec = "0" + newSec
+            }
         }
         else{
-            var min = "00"
-            var sec = "00"
+            min = "00"
+            sec = "00"
         }
         return(
             <div className="row col-12 justify-content-center">

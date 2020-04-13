@@ -17,7 +17,7 @@ class Header extends React.Component {
     }
     goProfile(event){
         event.preventDefault();
-        ReactDOM.render(<Profile />, document.getElementById("root"));
+        ReactDOM.render(<Profile type={"cart"}/>, document.getElementById("root"));
     }
     logout(event){
         event.preventDefault();

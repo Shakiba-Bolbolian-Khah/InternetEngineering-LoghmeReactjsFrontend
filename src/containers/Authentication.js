@@ -111,7 +111,7 @@ class Authentication extends React.Component {
                     <input className ="inputBox" type="password" name="passwordConf" placeholder="تکرار رمز عبور" onChange={this.handleRePass} required/>
                     {this.state.clicked ? ( 
                         <button className ="inputBox" type="submit" >
-                            <span class="spinner-grow spinner-grow-sm"></span>
+                            <span className="spinner-grow spinner-grow-sm"></span>
                             ...منتظر بمانید
                         </button>
                     ):(
@@ -130,7 +130,7 @@ class Authentication extends React.Component {
                     <input className ="inputBox" type="password" name="password" placeholder="رمز عبور" onChange={this.handlePassword} required/>
                     {this.state.clicked ? ( 
                         <button className ="inputBox" type="submit" >
-                            <span class="spinner-grow spinner-grow-sm"></span>
+                            <span className="spinner-grow spinner-grow-sm"></span>
                             ...منتظر بمانید
                         </button>
                     ):(

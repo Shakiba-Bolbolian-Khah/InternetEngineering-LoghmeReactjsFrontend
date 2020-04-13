@@ -70,33 +70,33 @@ class InfoBox extends React.Component {
                 newCredit : 0,
                 readyBox: true,    
             }))
+            toast.success("Credit increamented successfully")
             ReactDOM.render(<Profile />, document.getElementById("root"));
             document.getElementById("creditForm").reset()
-            // toast.success("Credit increamented successfully")
         })
         .catch(function (error) {
             console.log(error);
-            // toast.error("Credit increament failed")
+            toast.error("Credit increament failed")
         })
     }
     showState(props){
         if(props.state === "Searching"){
             return(
-                <div class="col-md-8 offset-md-2 searchingState rounded">
+                <div className="col-md-8 offset-md-2 searchingState rounded">
                     در جست&zwnj;جوی پیک
                 </div>
             )
         }
         else if(props.state === "Delivering"){
             return(
-                <div class="col-md-8 offset-md-2 deliveringState rounded">
+                <div className="col-md-8 offset-md-2 deliveringState rounded">
                     پیک در مسیر
                 </div>
             )
         }
         else{
             return(
-            <button class="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  onClick={(e) => this.handleFactor(e,props.id)}>مشاهده فاکتور</button>
+            <button className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  onClick={(e) => this.handleFactor(e,props.id)}>مشاهده فاکتور</button>
             )
         }
     }
@@ -140,7 +140,7 @@ class InfoBox extends React.Component {
                             <div className="col-md-3 offset-md-1 increaseButtonLink">
                                 {!this.state.readyBox ? ( 
                                     <button className="increaseButton btn rounded" type="submit">
-                                        <span class="spinner-grow spinner-grow-sm"></span>
+                                        <span className="spinner-grow spinner-grow-sm"></span>
                                     </button>
                                 ):(
                                     <button className="increaseButton btn rounded" type="submit"> افزایش</button>

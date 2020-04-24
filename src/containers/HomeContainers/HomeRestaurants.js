@@ -14,6 +14,7 @@ class HomeRestaurants extends React.Component {
     constructor(props){
         super(props);
         this.fetchRestaurants = this.fetchRestaurants.bind(this);
+        this.serachRestaurants = this.serachRestaurants.bind(this)
         this.showRestaurants = this.showRestaurants.bind(this);
         this.showRestaurant = this.showRestaurant.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,13 +36,51 @@ class HomeRestaurants extends React.Component {
                 restaurants : updatedRestaurants,
                 ready: true,
             });
+        })   
+    }
+
+    serachRestaurants(){
+        var params = {
+		    "food" : this.props.foodQuery,
+            "restaurant" : this.props.restaurantQuery,
+        };
+		var queryString = Object.keys(params).map(function(key) {
+    		return key + '=' + params[key]
+		}).join('&');
+		const requestOptions = {
+	        method: 'POST',
+	        headers: { 
+	        	'content-length' : queryString.length,
+	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: queryString
+        };
+        fetch(`http://localhost:8080/Loghme/restaurants/search?`, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            var updatedRestaurants = data;
+            this.setState({
+                restaurants : updatedRestaurants,
+                ready: true,
+            });
         })
-        
     }
 
     componentDidMount(){
         this.fetchRestaurants()
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.type === "normal" && prevProps.type === "search") {
+            this.fetchRestaurants()
+        } else if (this.props.type === "search" && prevProps.type === "normal") {
+            this.serachRestaurants();
+        } else if (this.props.type === "search" && prevProps.type === "search") {
+            if (this.props.foodQuery !== prevProps.foodQuery || this.props.restaurantQuery !== prevProps.restaurantQuery) {
+                this.serachRestaurants();
+            }
+        }
+      }
 
     handleSubmit(event,id){
         event.preventDefault()

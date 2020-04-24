@@ -117,7 +117,7 @@ class Profile extends React.Component {
         return (
             <tr>
                 <td>{String(props.number).toPersianDigits()}</td>
-                <td>{props.element.food.name}</td>
+                <td>{props.element.foodName}</td>
                 <td>{String(props.element.number).toPersianDigits()}</td>
                 <td>{String(props.element.price).toPersianDigits()}</td>
             </tr>
@@ -313,6 +313,7 @@ class Profile extends React.Component {
             return(
                 <div className="container-fluid loghmeContainer bg">
                     <Header value = {this.state.type}/>
+                    <ToastContainer/>
                     <InfoBar type = {"profile"} value = {this.state.user}/>
                     <this.showInfoBox id="infoBox" type ={this.state.type}/>
                     <div id="factorModal" className="orderDetails-modal modal">
@@ -327,6 +328,7 @@ class Profile extends React.Component {
             return(
                 <div className="container-fluid loghmeContainer bg">
                     <Header value = {"profile"}/>
+                    <ToastContainer/>
                     <div className="pt-5">
                         <Spinner/>
                     </div>

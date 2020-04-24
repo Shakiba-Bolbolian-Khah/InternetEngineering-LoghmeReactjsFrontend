@@ -281,7 +281,7 @@ class FoodParty extends React.Component {
         var sec;
         if(this.state.date !== "" ){
             var now = new Date()
-            var remainedTime = 1*60000-(now.getTime() - this.state.date.getTime())
+            var remainedTime = 30*60000-(now.getTime() - this.state.date.getTime())
             min = Math.floor(remainedTime / 60000)
             sec = Math.floor((remainedTime - min*60000) / 1000)
             if (min < 0 || sec < 0){

@@ -24,7 +24,7 @@ class Header extends React.Component {
     }
     goHome(event){
         event.preventDefault();
-        ReactDOM.render(<Home />, document.getElementById("root"));
+        ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
     }
     goProfile(event){
         event.preventDefault();

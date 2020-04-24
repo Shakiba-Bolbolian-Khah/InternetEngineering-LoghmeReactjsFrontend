@@ -52,7 +52,7 @@ class HomeRestaurants extends React.Component {
         var restaurantName = (props.restaurant.name.length > 20) ? props.restaurant.name.substring(0,20)+"..." : props.restaurant.name;
         return (
             <div className="col-2 restaurantInfo pl-0 pr-0 text-center borderShadow">
-                <img className="restaurantSmallLogo" src={props.restaurant.logoUrl}/>
+                <img className="restaurantSmallLogo" src={props.restaurant.logo}/>
                 <div className="row no-gutters justify-content-center">
                     <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
                 </div>

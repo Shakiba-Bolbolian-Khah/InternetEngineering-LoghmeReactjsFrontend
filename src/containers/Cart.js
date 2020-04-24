@@ -29,6 +29,7 @@ class Cart extends React.Component {
         this.state = {
             cart : "",
             ready : false,
+            isEmpty : true,
         }
     }
     fetchCart(){
@@ -42,11 +43,16 @@ class Cart extends React.Component {
             this.setState({
                 cart: newCart,
                 ready: true,
-                buttonReady:true,
+                isEmpty : false,
+                buttonReady: true,
             });
         })
         .catch(error => {
-            console.log(error)
+            this.setState({
+                ready: true,
+                isEmpty : true,
+                buttonReady: true,
+            });
         })
     }
     handleSubmit(event){
@@ -97,17 +103,17 @@ class Cart extends React.Component {
         this.fetchCart()
         this.timerId = setInterval(
     		() => {this.fetchCart()}
-    		, 5000
+    		, 10000
         );
     }
     deleteFood(event, index){
         event.preventDefault()
         var item = this.state.cart.items[index]
-        var toastId = toast.warn("Deleting "+item.food.name+" to your cart!..")
+        var toastId = toast.warn("Deleting "+item.foodName+" to your cart!..")
         var params = {
             "userId": 0,
 		    "id" : this.state.cart.restaurantId,
-		    "name" : item.food.name,
+		    "name" : item.foodName,
             "action" : "delete",
             "count" : 1,
         };
@@ -157,14 +163,12 @@ class Cart extends React.Component {
     }
     addFood(event, index){
         event.preventDefault();
-        console.log(index)
         var item = this.state.cart.items[index]
-        console.log(item.partyFood)
-        var toastId = toast.warn("Adding "+item.food.name+" to your cart!..")
+        var toastId = toast.warn("Adding "+item.foodName+" to your cart!..")
         var params = {
             "userId": 0,
 		    "id" : this.state.cart.restaurantId,
-		    "name" : item.food.name,
+		    "name" : item.foodName,
             "action" : "add",
             "count" : 1,
         };
@@ -191,7 +195,7 @@ class Cart extends React.Component {
                         toast.error("Party food time is over!")
                     }
                     if(response.status===403){
-                        toast.error("There is no more "+item.food.name+"in foodparty!")
+                        toast.error("There is no more "+item.foodName+"in foodparty!")
                     }
                 }
             })
@@ -216,8 +220,8 @@ class Cart extends React.Component {
         }
     }
     showAddedFood(props){
-        var price = parseInt(props.food.price)*parseInt(props.number)
-        var foodName = (props.food.name.length > 8) ? props.food.name.substring(0,8)+"..." : props.food.name;
+        var price = parseInt(props.price)*parseInt(props.number)
+        var foodName = (props.foodName.length > 8) ? props.foodName.substring(0,8)+"..." : props.foodName;
         return (
             <div>
                 <div className="firstItem shoppingCartItem justify-content-around">
@@ -240,7 +244,8 @@ class Cart extends React.Component {
     createCart = () => {
         let cartTable = [];
         for (let i = 0; i < this.state.cart.items.length; i++) {
-            cartTable.push(<this.showAddedFood key={this.state.cart.items[i].food.id} index={i} food={this.state.cart.items[i].food} number={this.state.cart.items[i].number}/>)
+            cartTable.push(<this.showAddedFood key={this.state.cart.items[i].foodName} index={i} foodName={this.state.cart.items[i].foodName} 
+                number={this.state.cart.items[i].number} price={this.state.cart.items[i].price} />)
         }
 
         return cartTable
@@ -266,7 +271,8 @@ class Cart extends React.Component {
             )
         }
         else{
-            if(this.state.cart.totalPayment === 0){
+            console.log(this.state.cart);
+            if(this.state.isEmpty === true){
                 return(
                     <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">
                         <div className="shoppingCartText text-center">سبد خرید</div>

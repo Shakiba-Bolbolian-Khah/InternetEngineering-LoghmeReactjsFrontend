@@ -170,7 +170,7 @@ class Restaurant extends React.Component {
                     </div>
                     <div className="row ml-0 mr-0 bottomDashedBorder">
                         <div className="col-4 pl-0 pr-1 mr-2">
-                            <img className="foodBigLogo borderShadow" src={props.imageUrl}/>
+                            <img className="foodBigLogo borderShadow" src={props.image}/>
                         </div>
                         <div>
                             <div className="row no-gutters">
@@ -226,7 +226,7 @@ class Restaurant extends React.Component {
         var foodName = (props.food.name.length > 12) ? props.food.name.substring(0,12)+"..." : props.food.name;
         return (
             <div className="col-3 menuItem pl-0 pr-0 text-center borderShadow">
-                <img className="foodLogo" src={props.food.imageUrl}/>
+                <img className="foodLogo" src={props.food.image}/>
                 <div className="row no-gutters text-center foodInfo justify-content-center">
                     <div className="col-auto foodName">{foodName}</div>
                     <div className="col-auto foodRate">{String(5* props.food.popularity).toPersianDigits()}</div>
@@ -245,7 +245,7 @@ class Restaurant extends React.Component {
             let children = []
 
             for (let j = 0; j < 3; j++) {
-                children.push(<this.showFood key={this.state.foods[i*3+j].id} food={this.state.foods[i*3+j]} />)
+                children.push(<this.showFood key={this.state.foods[i*3+j].name} food={this.state.foods[i*3+j]} />)
             }
             
             menuTable.push(
@@ -283,7 +283,7 @@ class Restaurant extends React.Component {
             <ToastContainer/>
             <div className ="row justify-content-center">
             {this.state.ready?(
-                <img className ="restaurantBigLogo borderShadow" src={this.state.restaurant.logoUrl}/>
+                <img className ="restaurantBigLogo borderShadow" src={this.state.restaurant.logo}/>
             ):(
                 <span className="spinner-grow spinner-grow-sm"></span>
             )}

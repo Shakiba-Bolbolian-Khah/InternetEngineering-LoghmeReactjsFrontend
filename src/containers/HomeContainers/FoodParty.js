@@ -67,7 +67,7 @@ class FoodParty extends React.Component {
         this.fetchParty()
         this.timerId = setInterval(
     		() => {this.fetchParty()}
-    		, 5000
+    		, 10000
         );
         this.timerTime = setInterval(() => {
             this.setState({ timer : true })
@@ -180,7 +180,7 @@ class FoodParty extends React.Component {
                     </div>
                     <div className="row ml-0 mr-0 bottomDashedBorder">
                         <div className="col-4 pl-0 pr-1 mr-2">
-                            <img className="foodBigLogo borderShadow" src={props.imageUrl}/>
+                            <img className="foodBigLogo borderShadow" src={props.image}/>
                         </div>
                         <div>
                             <div className="row no-gutters">
@@ -241,7 +241,7 @@ class FoodParty extends React.Component {
         return (
             <div className="partyFoodInfo borderShadow">
                 <div className="row no-gutters text-center mr-1 ml-1 justify-content-center">
-                    <img className="partyFoodLogo" src={props.partyFood.imageUrl}/>
+                    <img className="partyFoodLogo" src={props.partyFood.image}/>
                     <div className="col-auto">
                         <div className="col-auto partyFoodName">{name}</div>
                         <div className="row ml-0 mr-0 pr-2 justify-content-start">
@@ -281,12 +281,13 @@ class FoodParty extends React.Component {
         var sec;
         if(this.state.date !== "" ){
             var now = new Date()
-            var remainedTime = 1800000-(now.getTime() - this.state.date.getTime())
+            var remainedTime = 1*60000-(now.getTime() - this.state.date.getTime())
             min = Math.floor(remainedTime / 60000)
             sec = Math.floor((remainedTime - min*60000) / 1000)
-            if (sec < 10) {
-                var newSec = sec
-                sec = "0" + newSec
+            if (min < 0 || sec < 0){
+                min = 0
+                sec = 0
+                this.fetchParty()
             }
         }
         else{

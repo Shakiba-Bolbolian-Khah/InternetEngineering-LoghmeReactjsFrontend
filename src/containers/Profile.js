@@ -48,7 +48,7 @@ class Profile extends React.Component {
         this.fetchUser()
         this.timerId = setInterval(
     		() => {this.fetchUser()}
-    		, 1000
+    		, 10000
         );
         window.addEventListener("click", this.hideFactor);
     }

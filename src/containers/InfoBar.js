@@ -21,7 +21,7 @@ class InfoBar extends React.Component {
                     <div className="infoBarUserDetails">
                         <div className="infoBarDetailData">
                             <i className="flaticon-loghme-phone"></i>
-                            <div>{this.props.value.phoneNumber}</div>
+                            <div>{this.props.value.phoneNumber.toPersianDigits()}</div>
                         </div>
                         <div className ="infoBarDetailData">
                             <i className="flaticon-loghme-mail"></i>

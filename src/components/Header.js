@@ -71,7 +71,7 @@ class Header extends React.Component {
                     <div className="exitContainer">
                         <a className="exit" href="#" onClick={(e) => this.logout(e)}>خروج</a>
                     </div>
-                    {this.props.value !== "profile" &&
+                    {this.props.value !== "profile" && this.props.value !== "cart" && this.props.value !== "order" &&
                         <div className="userProfileContainer">
                             <a className="userProfile" href="#" onClick={(e) => this.goProfile(e)}>حساب کاربری</a>
                         </div>

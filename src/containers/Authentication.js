@@ -20,6 +20,8 @@ class Authentication extends React.Component {
         this.handleRePass = this.handleRePass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAnother = this.handleAnother.bind(this);
+        this.googleSDK = this.googleSDK.bind(this);
+        this.prepareLoginButton = this.prepareLoginButton.bind(this);
         this.state = {
             firstName : "",
             lastName : "",
@@ -29,6 +31,9 @@ class Authentication extends React.Component {
             rePass : "",
             clicked : false,
         }
+    }
+    componentDidMount(){
+        this.googleSDK();
     }
     componentWillUnmount(){
         document.body.classList.remove('authenticationBody');
@@ -96,8 +101,50 @@ class Authentication extends React.Component {
             toast.success("Your "+this.props.type+" completed successfully!")
             document.getElementById("authForm").reset()
         }
-        setTimeout(() => {  this.setState(prevState => ({clicked: false})) }, 3000);   
+        setTimeout(() => {  this.setState(prevState => ({clicked: false})) }, 3000); 
+        // ToDo: Call sign up or login and render home if it is successful!  
     }
+    prepareLoginButton = () => {
+ 
+        console.log(this.refs.googleLoginBtn);
+         
+        this.auth2.attachClickHandler(this.refs.googleLoginBtn, {},
+            (googleUser) => {
+            let profile = googleUser.getBasicProfile();
+            console.log('Token || ' + googleUser.getAuthResponse().id_token);
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+            // ToDo : Call sign in for google logging
+            //YOUR CODE HERE
+            }, (error) => {
+            alert(JSON.stringify(error, undefined, 2));
+        });
+         
+    }
+    googleSDK() {
+        window['googleSDKLoaded'] = () => {
+          window['gapi'].load('auth2', () => {
+            this.auth2 = window['gapi'].auth2.init({
+              client_id: 'YOUR_CLIENT_ID', //ToDo: Change to our client ID
+              cookiepolicy: 'single_host_origin',
+              scope: 'profile email'
+            });
+            this.prepareLoginButton();
+          });
+        }
+       
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://apis.google.com/js/platform.js?onload=googleSDKLoaded";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'google-jssdk'));
+       
+    }
+    
     signupInput(){
         return(
             <form id="authForm" onSubmit={this.handleSubmit}>
@@ -163,17 +210,11 @@ class Authentication extends React.Component {
                 }
                 <div className="bottomBox">
                     <div className="or">یا</div>
-                    <span> از طریق حساب‌های اجتماعی </span>
+                    <span>ورود از طریق حساب‌های اجتماعی </span>
                     <div className="logoBox">
-                        <a   href="#">
-                            <i className="flaticon-Auth-facebook-drawn-logo"></i>
-                        </a>
-                        <a href="#">
-                            <i className="flaticon-Auth-twitter-draw-logo"></i>
-                        </a>
-                        <a href="#">
+                        <button className="loginBtn loginBtn--google" ref="googleLoginBtn">
                             <i className="flaticon-Auth-google-plus-draw-logo"></i>
-                        </a>
+                        </button>
                     </div>
                     {this.props.type === 'signup' &&
                         <a href="#" className="alreadyDone" onClick={this.handleAnother}>قبلا ثبت نام کرده‌اید؟ وارد سامانه شوید.</a>

@@ -47,6 +47,17 @@
     }
 }
     
+.loginBtn {
+    box-sizing: border-box;
+    border: none;
+    font-size: 16px;
+    color: none;
+}
+
+.loginBtn--google {
+   background: none;
+}
+
 .accountHeader{
     opacity: 0.7;
     background-color: rgb(219, 199, 203);

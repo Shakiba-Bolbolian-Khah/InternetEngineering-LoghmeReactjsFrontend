@@ -36,7 +36,7 @@ class HomeRestaurants extends React.Component {
                 restaurants : updatedRestaurants,
                 ready: true,
             });
-        })   
+        })
     }
 
     serachRestaurants(){

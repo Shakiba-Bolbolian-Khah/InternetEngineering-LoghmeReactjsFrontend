@@ -8,6 +8,7 @@ import '../media/FlatIcon/font-signup/flaticon.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "../components/Footer"
+import Home from "./HomeContainers/Home"
 
 class Authentication extends React.Component {
     constructor(props){
@@ -20,6 +21,8 @@ class Authentication extends React.Component {
         this.handleRePass = this.handleRePass.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAnother = this.handleAnother.bind(this);
+        this.signup = this.signup.bind(this);
+        this.login = this.login.bind(this);
         this.googleSDK = this.googleSDK.bind(this);
         this.prepareLoginButton = this.prepareLoginButton.bind(this);
         this.state = {
@@ -37,6 +40,8 @@ class Authentication extends React.Component {
     }
     componentWillUnmount(){
         document.body.classList.remove('authenticationBody');
+        var elem = document.getElementById("google-jssdk");
+        elem.parentElement.removeChild(elem);
     }
     handleFirstName(event) {
         event.persist();
@@ -73,61 +78,162 @@ class Authentication extends React.Component {
         event.preventDefault();
         let emailRe = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!emailRe.test(this.state.email)) {
-            setTimeout(() => { toast.error("Invalid email format")}, 3000);
+            toast.error("Invalid email format");
             hasError = true
         }
         if(this.props.type === 'signup'){
             let phoneRe = /09[0-9]{9}/;
             if(!phoneRe.test(this.state.phone)){
-                setTimeout(() => { toast.error("Invalid phone number");}, 3000);
+                toast.error("Invalid phone number");
                 hasError = true
             }
-            let passRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
             if(this.state.pass !== this.state.rePass){
-                setTimeout(() => { toast.error("Passwords are not same")}, 3000);
-                
-                hasError = true
-            }
-            else if(!passRe.test(this.state.pass)){
-                setTimeout(() => {toast.error("Weak password")}, 3000);
+                toast.error("Passwords are not same");
                 hasError = true
             }
             if(this.state.firstName.length < 3 || this.state.lastName.length < 3){
-                setTimeout(() => { toast.error("First name or last name is not valid")}, 3000);
+                toast.error("First name or last name is not valid");
                 hasError = true
             }
         }
         if(!hasError){
-            toast.success("Your "+this.props.type+" completed successfully!")
             document.getElementById("authForm").reset()
+            if(this.props.type === 'signup'){
+                this.signup();
+            }
+            else if(this.props.type === 'login'){
+                this.login();
+            }
         }
-        setTimeout(() => {  this.setState(prevState => ({clicked: false})) }, 3000); 
-        // ToDo: Call sign up or login and render home if it is successful!  
+        this.setState(prevState => ({clicked: false}));
     }
-    prepareLoginButton = () => {
- 
-        console.log(this.refs.googleLoginBtn);
-         
+
+    signup() {
+        var params = {
+            "firstName": this.state.firstName,
+            "lastName": this.state.lastName,
+            "phone": this.state.phone,
+            "email": this.state.email,
+            "password": this.state.pass,
+        };
+        var queryString = Object.keys(params).map(function(key) {
+            return key + '=' + params[key]
+        }).join('&');
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'content-length' : queryString.length,
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: queryString
+        };
+        fetch('http://localhost:8080/Loghme/authentication/signup', requestOptions)
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===200){
+                toast.success("Your sign up completed successfully!")
+                localStorage.setItem("JWT", data)
+                ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
+            }
+            if(stat===403){
+                toast.error("There is already an account with this E-mail address!")
+                document.getElementById("authForm").reset()
+            }
+        })
+        .catch(() =>{
+            toast.error("You can not sign up right now!")
+        })
+    }
+    
+    login() {
+        var params = {
+            "email": this.state.email,
+            "password": this.state.pass,
+        };
+        var queryString = Object.keys(params).map(function(key) {
+            return key + '=' + params[key]
+        }).join('&');
+        const requestOptions = {
+            method: 'POST',
+            headers: { 
+                'content-length' : queryString.length,
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: queryString
+        };
+        fetch('http://localhost:8080/Loghme/authentication/login', requestOptions)
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===200){
+                localStorage.setItem("JWT", data)
+                ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
+            }
+            if(stat===403){
+                toast.error("Wrong password or username!")
+                document.getElementById("authForm").reset()
+            }
+        })
+        .catch(() =>{
+            toast.error("You can not login right now!")
+        })
+    }
+
+    prepareLoginButton = () => {         
         this.auth2.attachClickHandler(this.refs.googleLoginBtn, {},
             (googleUser) => {
             let profile = googleUser.getBasicProfile();
-            console.log('Token || ' + googleUser.getAuthResponse().id_token);
-            console.log('ID: ' + profile.getId());
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail());
-            // ToDo : Call sign in for google logging
-            //YOUR CODE HERE
+            var params = {
+                "email": profile.getEmail(),
+            };
+            var queryString = Object.keys(params).map(function(key) {
+                return key + '=' + params[key]
+            }).join('&');
+            const requestOptions = {
+                method: 'POST',
+                headers: { 
+                    'content-length' : queryString.length,
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: queryString
+            };
+            fetch('http://localhost:8080/Loghme/authentication/googleLogin', requestOptions)
+            .then(response => {
+                const statusCode = response.status;
+                const data = response.json();
+                return Promise.all([statusCode, data]);
+            })
+            .then(([stat, data]) => {
+                if(stat===200){
+                    localStorage.setItem("JWT", data)
+                    ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
+                }
+                if(stat===403){
+                    toast.error("You shoud sign up first!")
+                    setTimeout(() =>{
+                        ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+                    },3000);
+                }
+            })
+            .catch(() =>{
+                toast.error("You can not login right now!")
+            })
             }, (error) => {
             alert(JSON.stringify(error, undefined, 2));
         });
-         
     }
     googleSDK() {
         window['googleSDKLoaded'] = () => {
           window['gapi'].load('auth2', () => {
             this.auth2 = window['gapi'].auth2.init({
-              client_id: 'YOUR_CLIENT_ID', //ToDo: Change to our client ID
+              client_id: '385252994096-hh2hgodtto8qhd0jct982i4mktomdu4s.apps.googleusercontent.com',
               cookiepolicy: 'single_host_origin',
               scope: 'profile email'
             });
@@ -136,13 +242,12 @@ class Authentication extends React.Component {
         }
        
         (function(d, s, id){
-          var js, fjs = d.getElementsByTagName(s)[0];
+          var js, fjs = d.getElementsByTagName("link")[0];
           if (d.getElementById(id)) {return;}
           js = d.createElement(s); js.id = id;
           js.src = "https://apis.google.com/js/platform.js?onload=googleSDKLoaded";
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'google-jssdk'));
-       
     }
     
     signupInput(){

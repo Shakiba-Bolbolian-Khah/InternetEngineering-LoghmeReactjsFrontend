@@ -42,8 +42,12 @@ class FoodParty extends React.Component {
     }
 
     fetchParty(){
+        var jwtStr = localStorage.getItem("JWT") || ''
         const requestOptions = {
-            method: 'GET'
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': jwtStr
+            })
         }
         fetch(`http://localhost:8080/Loghme/foodparty`, requestOptions)
         .then(response => response.json())
@@ -123,7 +127,6 @@ class FoodParty extends React.Component {
             return
         }
         var params = {
-		    "userId": 0,
 		    "id" : props.restaurantId,
 		    "name" : props.name,
             "action" : "add",
@@ -131,13 +134,15 @@ class FoodParty extends React.Component {
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
-		}).join('&');
+        }).join('&');
+        var jwtStr = localStorage.getItem("JWT") || ''
 		const requestOptions = {
 	        method: 'POST',
-	        headers: { 
+	        headers: new Headers({ 
 	        	'content-length' : queryString.length,
-	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	        },
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Authorization': jwtStr
+	        }),
 	        body: queryString
         };
         fetch('http://localhost:8080/Loghme/foodparty', requestOptions)

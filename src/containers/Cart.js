@@ -33,10 +33,14 @@ class Cart extends React.Component {
         }
     }
     fetchCart(){
+        var jwtStr = localStorage.getItem("JWT") || ''
         const requestOptions = {
-            method: 'GET'
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': jwtStr
+            })
         }
-        fetch(`http://localhost:8080/Loghme/users/cart?userId=0`, requestOptions)
+        fetch(`http://localhost:8080/Loghme/users/cart`, requestOptions)
         .then(response => response.json())
         .then(data => {
             var newCart = data;
@@ -59,19 +63,13 @@ class Cart extends React.Component {
         event.preventDefault()
         this.setState(prevState => ({buttonReady:false}));
         var toastId = toast.warn("Finalizing your order!..")
-        var params = {
-		    "userId": 0,
-        };
-		var queryString = Object.keys(params).map(function(key) {
-    		return key + '=' + params[key]
-		}).join('&');
+        var jwtStr = localStorage.getItem("JWT") || ''
 		const requestOptions = {
 	        method: 'POST',
-	        headers: { 
-	        	'content-length' : queryString.length,
-	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	        },
-	        body: queryString
+	        headers: new Headers({ 
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Authorization': jwtStr
+	        }),
         };
         fetch('http://localhost:8080/Loghme/users/finalize', requestOptions)
         .then((response) => {
@@ -106,12 +104,14 @@ class Cart extends React.Component {
     		, 10000
         );
     }
+    componentWillUnmount(){
+        clearInterval(this.timerId)
+    }
     deleteFood(event, index){
         event.preventDefault()
         var item = this.state.cart.items[index]
         var toastId = toast.warn("Deleting "+item.foodName+" to your cart!..")
         var params = {
-            "userId": 0,
 		    "id" : this.state.cart.restaurantId,
 		    "name" : item.foodName,
             "action" : "delete",
@@ -119,13 +119,15 @@ class Cart extends React.Component {
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
-		}).join('&');
+        }).join('&');
+        var jwtStr = localStorage.getItem("JWT") || ''
 		const requestOptions = {
 	        method: 'POST',
-	        headers: { 
+	        headers: new Headers({ 
 	        	'content-length' : queryString.length,
-	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	        },
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Authorization': jwtStr
+	        }),
 	        body: queryString
         };
         if(item.partyFood){
@@ -166,7 +168,6 @@ class Cart extends React.Component {
         var item = this.state.cart.items[index]
         var toastId = toast.warn("Adding "+item.foodName+" to your cart!..")
         var params = {
-            "userId": 0,
 		    "id" : this.state.cart.restaurantId,
 		    "name" : item.foodName,
             "action" : "add",
@@ -174,13 +175,15 @@ class Cart extends React.Component {
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
-		}).join('&');
+        }).join('&');
+        var jwtStr = localStorage.getItem("JWT") || ''
 		const requestOptions = {
 	        method: 'POST',
-	        headers: { 
+	        headers: new Headers({ 
 	        	'content-length' : queryString.length,
-	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-	        },
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Authorization': jwtStr
+	        }),
 	        body: queryString
         };
         if(item.partyFood){

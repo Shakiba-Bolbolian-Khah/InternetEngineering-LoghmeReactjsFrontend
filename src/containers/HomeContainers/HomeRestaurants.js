@@ -25,8 +25,12 @@ class HomeRestaurants extends React.Component {
     }
 
     fetchRestaurants(){
+        var jwtStr = localStorage.getItem("JWT") || ''
         const requestOptions = {
-            method: 'GET'
+            method: 'GET',
+            headers: new Headers({
+                'Authorization': jwtStr
+            })
         }
         fetch(`http://localhost:8080/Loghme/restaurants`, requestOptions)
         .then(response => response.json())
@@ -46,16 +50,18 @@ class HomeRestaurants extends React.Component {
         };
 		var queryString = Object.keys(params).map(function(key) {
     		return key + '=' + params[key]
-		}).join('&');
+        }).join('&');
+        var jwtStr = localStorage.getItem("JWT") || ''
 		const requestOptions = {
 	        method: 'POST',
-	        headers: { 
+	        headers: new Headers({ 
 	        	'content-length' : queryString.length,
-	        	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                'Authorization': jwtStr
+            }),
             body: queryString
         };
-        fetch(`http://localhost:8080/Loghme/restaurants/search?`, requestOptions)
+        fetch(`http://localhost:8080/Loghme/restaurants/search`, requestOptions)
         .then(response => response.json())
         .then(data => {
             var updatedRestaurants = data;

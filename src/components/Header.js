@@ -16,7 +16,6 @@ class Header extends React.Component {
         super(props);
         this.handleCart= this.handleCart.bind(this)
         this.renderCart = this.renderCart.bind(this)
-        this.showCart = this.showCart.bind(this)
         this.hideCart = this.hideCart.bind(this)
     }
     componentDidMount(){
@@ -32,6 +31,7 @@ class Header extends React.Component {
     }
     logout(event){
         event.preventDefault();
+        localStorage.removeItem("JWT")
         ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
     }
 
@@ -40,18 +40,12 @@ class Header extends React.Component {
         this.renderCart()
     }
     renderCart() {
-        const modalWindow = this.showCart();
         var modal = document.getElementById("cartModal");
         var content = document.getElementById("cartModal-content");
         content.classList.remove("zoomOut");
         content.classList.add("zoomIn");
         modal.style.display = "block";
-        ReactDOM.render(modalWindow, content);
-    }
-    showCart() {
-        return (
-            <Cart/>
-        )
+        ReactDOM.render(<Cart/>, content);
     }
     hideCart(event) {
         var modal = document.getElementById("cartModal");
@@ -61,6 +55,7 @@ class Header extends React.Component {
             content.classList.add("zoomOut");
             setTimeout(() =>{
                 modal.style.display = "none";
+                ReactDOM.unmountComponentAtNode(content)
             },200);
         }
     }

@@ -32,6 +32,7 @@ class Header extends React.Component {
     logout(event){
         event.preventDefault();
         localStorage.removeItem("JWT")
+        localStorage.removeItem("expDate")
         ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
     }
 

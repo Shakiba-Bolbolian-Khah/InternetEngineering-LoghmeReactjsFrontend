@@ -10,6 +10,7 @@ import '../../CSS/ModalsStyles.css'
 import '../../media/FlatIcon/font/flaticon.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Authentication from "../Authentication"
 
 String.prototype.toPersianDigits= function(){
     var id = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -52,7 +53,14 @@ class FoodParty extends React.Component {
         fetch(`http://localhost:8080/Loghme/foodparty`, requestOptions)
         .then(response => response.json())
         .then(data => {
-            if(data !== undefined){
+            if(JSON.stringify(data) === "BAD_JWT"){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                clearInterval(this.timerId)
+                clearInterval(this.timerTime)
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            else if(data !== undefined){
                 var updatedParty = data;
                 var date = JSON.parse(JSON.stringify(updatedParty.enteredDate));
                 const enteredDate = (date!== null) ? new Date(date.year,date.monthValue-1, date.dayOfMonth, date.hour, date.minute, date.second, 0)
@@ -64,6 +72,9 @@ class FoodParty extends React.Component {
                     ready: true,
                 });
             }
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
 
@@ -157,6 +168,13 @@ class FoodParty extends React.Component {
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){
+                    if(JSON.stringify(response.json()) === "BAD_JWT") {
+                        localStorage.removeItem("JWT")
+                        localStorage.removeItem("expDate")
+                        clearInterval(this.timerId)
+                        clearInterval(this.timerTime)
+                        ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                    }
                     toast.error("You chose your restaurant before or food is over!")
                 }
             }

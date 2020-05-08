@@ -13,6 +13,7 @@ import InfoBar from "../InfoBar";
 import FoodParty from "./FoodParty";
 import HomeRestaurants from "./HomeRestaurants";
 import { toast, ToastContainer } from 'react-toastify';
+import Authentication from "../Authentication"
 
 class Home extends React.Component {
     constructor(props){
@@ -25,6 +26,15 @@ class Home extends React.Component {
             foodQuery : "",
             restaurantQuery : "",
         };
+    }
+    componentDidMount() {
+        var now = new Date();
+        var expDate = new Date(localStorage.getItem("expDate"));
+        if(now.getTime() >= expDate.getTime()) {
+            localStorage.removeItem("JWT")
+            localStorage.removeItem("expDate")
+            ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+        }
     }
     handleFoodChange(event){
         event.persist();

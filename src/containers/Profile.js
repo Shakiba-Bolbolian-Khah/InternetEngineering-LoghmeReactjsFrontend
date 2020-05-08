@@ -15,6 +15,7 @@ import Header from "../components/Header"
 import InfoBar from "./InfoBar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Authentication from "./Authentication"
 
 class Profile extends React.Component {
     constructor(props){
@@ -45,6 +46,13 @@ class Profile extends React.Component {
         };
     }
     componentDidMount(){
+        var now = new Date();
+        var expDate = new Date(localStorage.getItem("expDate"));
+        if(now.getTime() >= expDate.getTime()) {
+            localStorage.removeItem("JWT")
+            localStorage.removeItem("expDate")
+            ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+        }
         this.fetchUser()
         this.timerId = setInterval(
     		() => {this.fetchUser()}
@@ -61,13 +69,27 @@ class Profile extends React.Component {
             })
         }
         fetch('http://localhost:8080/Loghme/users', requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            var updatedUser = data;
-            this.setState({
-                user : updatedUser,
-                ready : true,
-            })
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===403){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            if(stat===200){
+                var updatedUser = data;
+                this.setState({
+                    user : updatedUser,
+                    ready : true,
+                })
+            }
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
     handleClick(event, page){
@@ -204,14 +226,21 @@ class Profile extends React.Component {
 	        body: queryString
 	    };
         fetch(`http://localhost:8080/Loghme/users`, requestOptions)
-        .then(() => {
-            this.setState(prevState => ({
-                newCredit : 0,
-                readyBox: true,    
-            }))
-            ReactDOM.render(<Profile type={"cart"}/>, document.getElementById("root"));
-            document.getElementById("creditForm").reset()
-            toast.success("Credit increamented successfully")
+        .then((response) => {
+            if(response.status === 403) {
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            else {
+                this.setState(prevState => ({
+                    newCredit : 0,
+                    readyBox: true,    
+                }))
+                ReactDOM.render(<Profile type={"cart"}/>, document.getElementById("root"));
+                document.getElementById("creditForm").reset()
+                toast.success("Credit increamented successfully")
+            }
         })
         .catch(function (error) {
             toast.error("Credit increament failed")

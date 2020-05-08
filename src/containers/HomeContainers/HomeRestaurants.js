@@ -9,6 +9,7 @@ import '../../CSS/ModalsStyles.css'
 import '../../media/FlatIcon/font/flaticon.css';
 import Restaurant from "../Restaurant";
 import Spinner from "../../components/Spinner"
+import Authentication from "../Authentication"
 
 class HomeRestaurants extends React.Component {
     constructor(props){
@@ -33,13 +34,27 @@ class HomeRestaurants extends React.Component {
             })
         }
         fetch(`http://localhost:8080/Loghme/restaurants`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            var updatedRestaurants = data;
-            this.setState({
-                restaurants : updatedRestaurants,
-                ready: true,
-            });
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===403){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            if(stat===200){
+                var updatedRestaurants = data;
+                this.setState({
+                    restaurants : updatedRestaurants,
+                    ready: true,
+                });
+            }
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
 
@@ -62,13 +77,27 @@ class HomeRestaurants extends React.Component {
             body: queryString
         };
         fetch(`http://localhost:8080/Loghme/restaurants/search`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            var updatedRestaurants = data;
-            this.setState({
-                restaurants : updatedRestaurants,
-                ready: true,
-            });
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===403){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            if(stat===200){
+                var updatedRestaurants = data;
+                this.setState({
+                    restaurants : updatedRestaurants,
+                    ready: true,
+                });
+            }
+        })
+        .catch(error => {
+            console.log(error)
         })
     }
 

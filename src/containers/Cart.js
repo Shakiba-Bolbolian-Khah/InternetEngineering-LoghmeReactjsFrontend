@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import '../CSS/Normalize.css';
 import '../CSS/basicStyles.css';
 import '../CSS/restaurantStyles.css';
@@ -8,6 +8,7 @@ import '../media/FlatIcon/font/flaticon.css';
 import Spinner from "../components/Spinner";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Authentication from "./Authentication"
 
 String.prototype.toPersianDigits= function(){
     var id = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -41,15 +42,27 @@ class Cart extends React.Component {
             })
         }
         fetch(`http://localhost:8080/Loghme/users/cart`, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-            var newCart = data;
-            this.setState({
-                cart: newCart,
-                ready: true,
-                isEmpty : false,
-                buttonReady: true,
-            });
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===403){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                clearInterval(this.timerId)
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            if(stat===200){
+                var newCart = data;
+                this.setState({
+                    cart: newCart,
+                    ready: true,
+                    isEmpty : false,
+                    buttonReady: true,
+                });
+            }
         })
         .catch(error => {
             this.setState({
@@ -82,7 +95,19 @@ class Cart extends React.Component {
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){
-                    toast.error("Party food time is over!")
+                    console.log(JSON.stringify(response.json()))
+                    if(JSON.stringify(response.json()) === "BAD_JWT") {
+                        localStorage.removeItem("JWT")
+                        localStorage.removeItem("expDate")
+                        clearInterval(this.timerId)
+                        ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                    }
+                    else {
+                        toast.error("Party food time is over!")
+                        this.setState(prevState => ({
+                            isEmpty: true,
+                        }))
+                    }
                 }
                 if(response.status===400){
                     toast.error("Not enough credit!")
@@ -98,10 +123,17 @@ class Cart extends React.Component {
         )
     }
     componentDidMount(){
+        var now = new Date();
+        var expDate = new Date(localStorage.getItem("expDate"));
+        if(now.getTime() >= expDate.getTime()) {
+            localStorage.removeItem("JWT")
+            localStorage.removeItem("expDate")
+            ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+        }
         this.fetchCart()
         this.timerId = setInterval(
     		() => {this.fetchCart()}
-    		, 10000
+    		, 5000
         );
     }
     componentWillUnmount(){
@@ -139,7 +171,15 @@ class Cart extends React.Component {
                 } else {
                     toast.dismiss(toastId)
                     if(response.status===403){
-                        toast.error("Party food time is over!")
+                        if(JSON.stringify(response.json()) === "BAD_JWT") {
+                            localStorage.removeItem("JWT")
+                            localStorage.removeItem("expDate")
+                            clearInterval(this.timerId)
+                            ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                        }
+                        else {    
+                            toast.error("Party food time is over!")
+                        }
                     }
                 }
             })
@@ -154,6 +194,14 @@ class Cart extends React.Component {
                     toast.dismiss(toastId)
                     toast.success("Food deleted from your cart successfully!")
                 } else {
+                    if(response.status===403){
+                        if(JSON.stringify(response.json()) === "BAD_JWT") {
+                            localStorage.removeItem("JWT")
+                            localStorage.removeItem("expDate")
+                            clearInterval(this.timerId)
+                            ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                        }
+                    }
                     toast.dismiss(toastId)
                     toast.error("You can not order this food again!")
                 }
@@ -198,7 +246,17 @@ class Cart extends React.Component {
                         toast.error("Party food time is over!")
                     }
                     if(response.status===403){
-                        toast.error("There is no more "+item.foodName+"in foodparty!")
+                        if(response.status===403){
+                            if(JSON.stringify(response.json()) === "BAD_JWT") {
+                                localStorage.removeItem("JWT")
+                                localStorage.removeItem("expDate")
+                                clearInterval(this.timerId)
+                                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                            }
+                            else {    
+                                toast.error("There is no more "+item.foodName+"in foodparty!")
+                            }
+                        }
                     }
                 }
             })
@@ -213,6 +271,14 @@ class Cart extends React.Component {
                     toast.dismiss(toastId)
                     toast.success("Food added to your cart successfully!")
                 } else {
+                    if(response.status===403){
+                        if(JSON.stringify(response.json()) === "BAD_JWT") {
+                            localStorage.removeItem("JWT")
+                            localStorage.removeItem("expDate")
+                            clearInterval(this.timerId)
+                            ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                        }
+                    }
                     toast.dismiss(toastId)
                     toast.error("You can not order this food again!")
                 }
@@ -274,7 +340,6 @@ class Cart extends React.Component {
             )
         }
         else{
-            console.log(this.state.cart);
             if(this.state.isEmpty === true){
                 return(
                     <div className="col-3 align-self-start justify-content-center shoppingCart borderShadow">

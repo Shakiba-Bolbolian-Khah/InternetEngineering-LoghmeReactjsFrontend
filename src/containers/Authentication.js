@@ -136,7 +136,9 @@ class Authentication extends React.Component {
         .then(([stat, data]) => {
             if(stat===200){
                 toast.success("Your sign up completed successfully!")
-                localStorage.setItem("JWT", data)
+                var token = JSON.parse(data)
+                localStorage.setItem("JWT", token.JWT)
+                localStorage.setItem("expDate", token.expDate)
                 ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
             }
             if(stat===403){
@@ -173,7 +175,9 @@ class Authentication extends React.Component {
         })
         .then(([stat, data]) => {
             if(stat===200){
-                localStorage.setItem("JWT", data)
+                var token = JSON.parse(data)
+                localStorage.setItem("JWT", token.JWT)
+                localStorage.setItem("expDate", token.expDate)
                 ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
             }
             if(stat===403){
@@ -212,7 +216,9 @@ class Authentication extends React.Component {
             })
             .then(([stat, data]) => {
                 if(stat===200){
-                    localStorage.setItem("JWT", data)
+                    var token = JSON.parse(data)
+                    localStorage.setItem("JWT", token.JWT)
+                    localStorage.setItem("expDate", token.expDate)
                     ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
                 }
                 if(stat===403){

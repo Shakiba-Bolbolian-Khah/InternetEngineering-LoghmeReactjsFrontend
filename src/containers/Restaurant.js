@@ -15,6 +15,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InfoBar from "./InfoBar";
 import Cart from "./Cart";
+import Authentication from "./Authentication"
 
 String.prototype.toPersianDigits= function(){
     var id = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -56,15 +57,26 @@ class Restaurant extends React.Component {
             })
         }
         fetch(`http://localhost:8080/Loghme/restaurants/`+ this.props.id, requestOptions)
-        .then(response => response.json())    
-        .then(data => {
-            var newRestaurant = data;
-            var newFoods = JSON.parse(JSON.stringify(newRestaurant.menu));
-            this.setState({
-                restaurant: newRestaurant,
-                foods: newFoods,
-                ready: true,
-            });
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            return Promise.all([statusCode, data]);
+        })
+        .then(([stat, data]) => {
+            if(stat===403){
+                localStorage.removeItem("JWT")
+                localStorage.removeItem("expDate")
+                ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+            }
+            if(stat===200){
+                var newRestaurant = data;
+                var newFoods = JSON.parse(JSON.stringify(newRestaurant.menu));
+                this.setState({
+                    restaurant: newRestaurant,
+                    foods: newFoods,
+                    ready: true,
+                });
+            }
         })
         .catch(error => {
             console.log(error)
@@ -72,6 +84,13 @@ class Restaurant extends React.Component {
     }
     
     componentDidMount() {
+        var now = new Date();
+        var expDate = new Date(localStorage.getItem("expDate"));
+        if(now.getTime() >= expDate.getTime()) {
+            localStorage.removeItem("JWT")
+            localStorage.removeItem("expDate")
+            ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
+        }
         this.fetchRestaurant();
         window.addEventListener("click", this.hideFoodModal);
     }
@@ -118,7 +137,6 @@ class Restaurant extends React.Component {
             return
         }
         var params = {
-		    "userId": 0,
 		    "id" : this.state.restaurant.id,
 		    "name" : props.name,
             "action" : "add",
@@ -149,6 +167,11 @@ class Restaurant extends React.Component {
             } else {
                 toast.dismiss(toastId)
                 if(response.status===403){
+                    if(JSON.stringify(response.json()) === "BAD_JWT") {
+                        localStorage.removeItem("JWT")
+                        localStorage.removeItem("expDate")
+                        ReactDOM.render(<Authentication type={"signup"}/>, document.getElementById("root"));
+                    }
                     toast.error("You chose your restaurant before!")
                 }
             }

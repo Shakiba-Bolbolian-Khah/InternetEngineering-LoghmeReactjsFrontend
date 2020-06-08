@@ -1,0 +1,20 @@
+variables:
+  USER: "mirhamedjz"
+  PASSWORD: "MirHamed2495"
+  REGISTRY: "docker.io"
+  IMAGE: "index.docker.io/mirhamedjz/react-ui"
+docker-build-master:
+  # Official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$USER" -p "$PASSWORD" $REGISTRY
+  script:
+    - docker build --pull -t "$IMAGE" .
+    - docker push "$IMAGE"
+  after_script:
+    - docker logout
+  only:
+    - master

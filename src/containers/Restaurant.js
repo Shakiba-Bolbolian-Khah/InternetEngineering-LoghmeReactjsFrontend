@@ -56,7 +56,7 @@ class Restaurant extends React.Component {
                 'Authorization': jwtStr
             })
         }
-        fetch(`http://localhost:8080/Loghme/restaurants/`+ this.props.id, requestOptions)
+        fetch(`http://backend:8080/Loghme/restaurants/`+ this.props.id, requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -155,7 +155,7 @@ class Restaurant extends React.Component {
 	        }),
 	        body: queryString
         };
-        fetch('http://localhost:8080/Loghme/users/cart', requestOptions)
+        fetch('http://backend:8080/Loghme/users/cart', requestOptions)
         .then((response) => {
             this.setState(prevState => ({
                 orderCount : 0,

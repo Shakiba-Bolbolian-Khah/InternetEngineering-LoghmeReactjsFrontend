@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: react-ui
+spec:
+  selector:
+    matchLabels:
+      app: react-ui
+  template:
+    metadata:
+      labels:
+        app: react-ui
+    spec:
+      containers:
+      - name: react-ui
+        image: mirhamedjz/react-ui:latest
+        resources:
+          limits:
+            memory: "150Mi"
+            cpu: "0.15"
+          requests:
+            memory: "100Mi"
+            cpu: "0.1"
+        ports:
+        - containerPort: 3000

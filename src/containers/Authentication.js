@@ -127,7 +127,7 @@ class Authentication extends React.Component {
             },
             body: queryString
         };
-        fetch('http://localhost:8080/Loghme/authentication/signup', requestOptions)
+        fetch('http://backend:8080/Loghme/authentication/signup', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -167,7 +167,7 @@ class Authentication extends React.Component {
             },
             body: queryString
         };
-        fetch('http://localhost:8080/Loghme/authentication/login', requestOptions)
+        fetch('http://backend:8080/Loghme/authentication/login', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -208,7 +208,7 @@ class Authentication extends React.Component {
                 },
                 body: queryString
             };
-            fetch('http://localhost:8080/Loghme/authentication/googleLogin', requestOptions)
+            fetch('http://backend:8080/Loghme/authentication/googleLogin', requestOptions)
             .then(response => {
                 const statusCode = response.status;
                 const data = response.json();

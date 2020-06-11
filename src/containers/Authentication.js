@@ -174,7 +174,7 @@ class Authentication extends React.Component {
             return Promise.all([statusCode, data]);
         })
         .then(([stat, data]) => {
-            if(stat===200){
+            if(stat===200 || stat===202){
                 var token = JSON.parse(data)
                 localStorage.setItem("JWT", token.JWT)
                 localStorage.setItem("expDate", token.expDate)

@@ -178,6 +178,8 @@ class Authentication extends React.Component {
                 var token = JSON.parse(data)
                 localStorage.setItem("JWT", token.JWT)
                 localStorage.setItem("expDate", token.expDate)
+                console.log("residi be login?")
+                console.log(localStorage.getItem("JWT"))
                 ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
             }
             if(stat===403){

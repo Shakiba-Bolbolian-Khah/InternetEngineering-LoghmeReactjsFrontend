@@ -50,7 +50,7 @@ class FoodParty extends React.Component {
                 'Authorization': jwtStr
             })
         }
-        fetch(`http://backend:8080/Loghme/foodparty`, requestOptions)
+        fetch(`http://ie.etuts.ir:31367/Loghme/foodparty`, requestOptions)
         .then(response => response.json())
         .then(data => {
             if(JSON.stringify(data) === "BAD_JWT"){
@@ -156,7 +156,7 @@ class FoodParty extends React.Component {
 	        }),
 	        body: queryString
         };
-        fetch('http://backend:8080/Loghme/foodparty', requestOptions)
+        fetch('http://ie.etuts.ir:31367/Loghme/foodparty', requestOptions)
         .then((response) => {
             this.setState(prevState => ({
                 orderCount : 0,

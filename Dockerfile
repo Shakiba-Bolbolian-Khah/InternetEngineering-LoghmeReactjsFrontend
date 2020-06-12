@@ -1,7 +1,8 @@
-FROM nginx:alpine
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
-RUN rm -rf /usr/share/nginx/html/*
-COPY /build /usr/share/nginx/html
-EXPOSE 3000
+FROM node:12.16.1 as builder
+COPY package.json package-lock.json ./
+RUN npm install && mkdir /react-ui && mv ./node_modules ./react-ui
+WORKDIR /react-ui
+COPY . .
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+ENTRYPOINT ["npm", "start"]

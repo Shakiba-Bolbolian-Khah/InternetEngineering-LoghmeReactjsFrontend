@@ -1,4 +1,4 @@
-FROM node:12.18-alpine as builder
+FROM node:latest as builder
 COPY package.json package-lock.json ./
 RUN npm install && mkdir /react-ui && mv ./node_modules ./react-ui
 WORKDIR /react-ui

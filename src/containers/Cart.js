@@ -41,7 +41,7 @@ class Cart extends React.Component {
                 'Authorization': jwtStr
             })
         }
-        fetch(`http://ie.etuts.ir:31664/Loghme/users/cart`, requestOptions)
+        fetch(`http://ie.etuts.ir:32139/Loghme/users/cart`, requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -84,7 +84,7 @@ class Cart extends React.Component {
                 'Authorization': jwtStr
 	        }),
         };
-        fetch('http://ie.etuts.ir:31664/Loghme/users/finalize', requestOptions)
+        fetch('http://ie.etuts.ir:32139/Loghme/users/finalize', requestOptions)
         .then((response) => {
             this.setState(prevState => ({
                 buttonReady:true,
@@ -163,7 +163,7 @@ class Cart extends React.Component {
 	        body: queryString
         };
         if(item.partyFood){
-            fetch('http://ie.etuts.ir:31664/Loghme/foodparty', requestOptions)
+            fetch('http://ie.etuts.ir:32139/Loghme/foodparty', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     toast.dismiss(toastId)
@@ -188,7 +188,7 @@ class Cart extends React.Component {
             })
         }
         else{
-            fetch('http://ie.etuts.ir:31664/Loghme/users/cart', requestOptions)
+            fetch('http://ie.etuts.ir:32139/Loghme/users/cart', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     toast.dismiss(toastId)
@@ -235,7 +235,7 @@ class Cart extends React.Component {
 	        body: queryString
         };
         if(item.partyFood){
-            fetch('http://ie.etuts.ir:31664/Loghme/foodparty', requestOptions)
+            fetch('http://ie.etuts.ir:32139/Loghme/foodparty', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     toast.dismiss(toastId)
@@ -265,7 +265,7 @@ class Cart extends React.Component {
             })
         }
         else{
-            fetch('http://ie.etuts.ir:31664/Loghme/users/cart', requestOptions)
+            fetch('http://ie.etuts.ir:32139/Loghme/users/cart', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     toast.dismiss(toastId)

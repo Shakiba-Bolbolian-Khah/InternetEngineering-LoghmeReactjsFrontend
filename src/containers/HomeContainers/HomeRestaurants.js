@@ -33,7 +33,7 @@ class HomeRestaurants extends React.Component {
                 'Authorization': jwtStr
             })
         }
-        fetch(`http://ie.etuts.ir:31664/Loghme/restaurants`, requestOptions)
+        fetch(`http://ie.etuts.ir:32139/Loghme/restaurants`, requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -76,7 +76,7 @@ class HomeRestaurants extends React.Component {
             }),
             body: queryString
         };
-        fetch(`http://ie.etuts.ir:31664/Loghme/restaurants/search`, requestOptions)
+        fetch(`http://ie.etuts.ir:32139/Loghme/restaurants/search`, requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();

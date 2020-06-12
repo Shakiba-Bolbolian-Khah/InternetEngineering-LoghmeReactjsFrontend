@@ -269,7 +269,6 @@ class Profile extends React.Component {
     }
     showOrder(props){
         var restaurantName = (props.order.restaurantName.length > 25) ? "..."+props.order.restaurantName.substring(0,25) : props.order.restaurantName;
-        console.log(this)
         return (
             <div className="row">
                 <div className="col-md-4 offset-md-1 ordersCell rounded-left">

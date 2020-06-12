@@ -35,7 +35,6 @@ class Home extends React.Component {
         if(now.getTime() >= expDate.getTime()) {
             localStorage.removeItem("JWT")
             localStorage.removeItem("expDate")
-            console.log("inja")
             ReactDOM.render(<Authentication type = {"signup"} />, document.getElementById("root"));
         }
     }

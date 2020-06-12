@@ -127,7 +127,7 @@ class Authentication extends React.Component {
             },
             body: queryString
         };
-        fetch('http://ie.etuts.ir:31367/Loghme/authentication/signup', requestOptions)
+        fetch('http://ie.etuts.ir:32120/Loghme/authentication/signup', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -167,19 +167,17 @@ class Authentication extends React.Component {
             },
             body: queryString
         };
-        fetch('http://ie.etuts.ir:31367/Loghme/authentication/login', requestOptions)
+        fetch('http://ie.etuts.ir:32120/Loghme/authentication/login', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
             return Promise.all([statusCode, data]);
         })
         .then(([stat, data]) => {
-            if(stat===200 || stat===202){
+            if(stat===200){
                 var token = JSON.parse(data)
                 localStorage.setItem("JWT", token.JWT)
                 localStorage.setItem("expDate", token.expDate)
-                console.log("residi be login?")
-                console.log(localStorage.getItem("JWT"))
                 ReactDOM.render(<Home type={"normal"}/>, document.getElementById("root"));
             }
             if(stat===403){
@@ -210,7 +208,7 @@ class Authentication extends React.Component {
                 },
                 body: queryString
             };
-            fetch('http://ie.etuts.ir:31367/Loghme/authentication/googleLogin', requestOptions)
+            fetch('http://ie.etuts.ir:32120/Loghme/authentication/googleLogin', requestOptions)
             .then(response => {
                 const statusCode = response.status;
                 const data = response.json();

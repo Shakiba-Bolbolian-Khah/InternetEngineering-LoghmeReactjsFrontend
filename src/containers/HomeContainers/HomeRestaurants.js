@@ -18,7 +18,7 @@ class HomeRestaurants extends React.Component {
         this.serachRestaurants = this.serachRestaurants.bind(this)
         this.showRestaurants = this.showRestaurants.bind(this);
         this.showRestaurant = this.showRestaurant.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             restaurants : [],
             ready: false,
@@ -117,10 +117,10 @@ class HomeRestaurants extends React.Component {
         }
       }
 
-    handleSubmit(event,id){
-        event.preventDefault()
-        ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
-    }
+    // handleSubmit(event,id){
+    //     event.preventDefault()
+    //     ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
+    // }
 
     showRestaurant(props){
         var restaurantName = (props.restaurant.name.length > 20) ? props.restaurant.name.substring(0,20)+"..." : props.restaurant.name;
@@ -130,7 +130,10 @@ class HomeRestaurants extends React.Component {
                 <div className="row no-gutters justify-content-center">
                     <div className="col-auto restaurantSmallName pt-2 text-center">{restaurantName}</div>
                 </div>
-                <form id={props.restaurant.id} onSubmit={(e) => this.handleSubmit(e,props.restaurant.id)}>
+                <form id={props.restaurant.id} onSubmit={(e) => {
+                    e.preventDefault()
+                    ReactDOM.render(<Restaurant id = {props.restaurant.id}/>, document.getElementById("root"));
+                }}>
                 <button className="showMenuButton btn rounded" type="submit" >نمایش منو</button>
                 </form>
             </div>

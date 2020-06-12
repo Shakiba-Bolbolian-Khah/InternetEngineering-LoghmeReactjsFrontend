@@ -34,7 +34,7 @@ class Profile extends React.Component {
         this.showFactorElements = this.showFactorElements.bind(this)
         this.showFactorElement = this.showFactorElement.bind(this)
         this.hideFactor = this.hideFactor.bind(this)
-        this.showState = this.showState.bind(this)
+        // this.showState = this.showState.bind(this)
         this.showOrder = this.showOrder.bind(this)
         this.showOrders = this.showOrders.bind(this)
         this.state = {
@@ -246,34 +246,56 @@ class Profile extends React.Component {
             toast.error("Credit increament failed")
         })
     }
-    showState(props){
-        if(props.state === "Searching"){
-            return(
-                <div className="col-md-8 offset-md-2 searchingState rounded">
+    // showState(props){
+    //     if(props.state === "Searching"){
+    //         return(
+    //             <div className="col-md-8 offset-md-2 searchingState rounded">
+    //                 در جست&zwnj;جوی پیک
+    //             </div>
+    //         )
+    //     }
+    //     else if(props.state === "Delivering"){
+    //         return(
+    //             <div className="col-md-8 offset-md-2 deliveringState rounded">
+    //                 پیک در مسیر
+    //             </div>
+    //         )
+    //     }
+    //     else{
+    //         return(
+    //             <button id={props.orderId} className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  type="submit" onClick={(e) => this.handleFactor(e,props.orderId)}>مشاهده فاکتور</button>
+    //         )
+    //     }
+    // }
+    showOrder(props){
+        var restaurantName = (props.order.restaurantName.length > 25) ? "..."+props.order.restaurantName.substring(0,25) : props.order.restaurantName;
+        let orderState;
+        if(props.order.state === "Searching"){
+            orderState = [
+                <div className="col-md-8 offset-md-2 deliveringState rounded">
                     در جست&zwnj;جوی پیک
                 </div>
-            )
+            ]
         }
-        else if(props.state === "Delivering"){
-            return(
+        else if(props.order.state === "Delivering"){
+            orderState = [
                 <div className="col-md-8 offset-md-2 deliveringState rounded">
                     پیک در مسیر
                 </div>
-            )
+            ]
         }
         else{
-            return(
-                <button id={props.orderId} className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  type="submit" onClick={(e) => this.handleFactor(e,props.orderId)}>مشاهده فاکتور</button>
-            )
+            orderState = [
+                <button id={props.number-1} className="deliveredState col-md-8 offset-md-2 btn btn-block rounded"  type="submit" onClick={(e) => this.handleFactor(e,props.number-1)}>مشاهده فاکتور</button>
+            ]
         }
-    }
-    showOrder(props){
-        var restaurantName = (props.order.restaurantName.length > 25) ? "..."+props.order.restaurantName.substring(0,25) : props.order.restaurantName;
+               
         return (
             <div className="row">
                 <div className="col-md-4 offset-md-1 ordersCell rounded-left">
                     <div className="row-no-padding">
-                        <this.showState state={props.order.state} orderId={props.number-1}/>
+                        {/* <this.showState state={props.order.state} orderId={props.number-1}/> */}
+                        {orderState}
                     </div>
                 </div>
                 <div className="col-md-5 ordersCell">{restaurantName}</div>

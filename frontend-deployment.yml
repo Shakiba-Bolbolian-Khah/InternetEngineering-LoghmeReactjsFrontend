@@ -18,11 +18,11 @@ spec:
         image: mirhamedjz/react-ui:latest
         resources:
           limits:
-            memory: "150Mi"
-            cpu: "0.15"
+            memory: "250Mi"
+            cpu: "0.25"
           requests:
-            memory: "100Mi"
-            cpu: "0.1"
+            memory: "200Mi"
+            cpu: "0.2"
         ports:
         - containerPort: 3000
         volumeMounts:

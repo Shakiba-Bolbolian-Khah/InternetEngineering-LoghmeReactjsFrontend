@@ -121,13 +121,13 @@ class Authentication extends React.Component {
         }).join('&');
         const requestOptions = {
             method: 'POST',
-            headers: { 
+            headers: {
                 'content-length' : queryString.length,
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body: queryString
         };
-        fetch('http://ie.etuts.ir:32120/Loghme/authentication/signup', requestOptions)
+        fetch('http://ie.etuts.ir:31664/Loghme/authentication/signup', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -167,7 +167,7 @@ class Authentication extends React.Component {
             },
             body: queryString
         };
-        fetch('http://ie.etuts.ir:32120/Loghme/authentication/login', requestOptions)
+        fetch('http://ie.etuts.ir:31664/Loghme/authentication/login', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -208,7 +208,7 @@ class Authentication extends React.Component {
                 },
                 body: queryString
             };
-            fetch('http://ie.etuts.ir:32120/Loghme/authentication/googleLogin', requestOptions)
+            fetch('http://ie.etuts.ir:31664/Loghme/authentication/googleLogin', requestOptions)
             .then(response => {
                 const statusCode = response.status;
                 const data = response.json();

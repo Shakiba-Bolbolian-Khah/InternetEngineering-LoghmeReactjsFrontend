@@ -25,3 +25,11 @@ spec:
             cpu: "0.1"
         ports:
         - containerPort: 3000
+        volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Tehran
+            type: File

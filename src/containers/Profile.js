@@ -68,7 +68,7 @@ class Profile extends React.Component {
                 'Authorization': jwtStr
             })
         }
-        fetch('http://ie.etuts.ir:32120/Loghme/users', requestOptions)
+        fetch('http://ie.etuts.ir:31664/Loghme/users', requestOptions)
         .then(response => {
             const statusCode = response.status;
             const data = response.json();
@@ -225,7 +225,7 @@ class Profile extends React.Component {
 	        }),
 	        body: queryString
 	    };
-        fetch(`http://ie.etuts.ir:32120/Loghme/users`, requestOptions)
+        fetch(`http://ie.etuts.ir:31664/Loghme/users`, requestOptions)
         .then((response) => {
             if(response.status === 403) {
                 localStorage.removeItem("JWT")

@@ -30,6 +30,8 @@ class Home extends React.Component {
     componentDidMount() {
         var now = new Date();
         var expDate = new Date(localStorage.getItem("expDate"));
+        console.log(now)
+        console.log(expDate)
         if(now.getTime() >= expDate.getTime()) {
             localStorage.removeItem("JWT")
             localStorage.removeItem("expDate")

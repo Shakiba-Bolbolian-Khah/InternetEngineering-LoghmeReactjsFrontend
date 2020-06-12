@@ -124,6 +124,7 @@ class HomeRestaurants extends React.Component {
 
     showRestaurant(props){
         var restaurantName = (props.restaurant.name.length > 20) ? props.restaurant.name.substring(0,20)+"..." : props.restaurant.name;
+        console.log(this)
         return (
             <div className="col-2 restaurantInfo pl-0 pr-0 text-center borderShadow">
                 <img className="restaurantSmallLogo" src={props.restaurant.logo}/>

@@ -34,8 +34,8 @@ class Profile extends React.Component {
         this.showFactorElements = this.showFactorElements.bind(this)
         this.showFactorElement = this.showFactorElement.bind(this)
         this.hideFactor = this.hideFactor.bind(this)
-        // this.showState = this.showState.bind(this)
-        // this.showOrder = this.showOrder.bind(this)
+        this.showState = this.showState.bind(this)
+        this.showOrder = this.showOrder.bind(this)
         this.showOrders = this.showOrders.bind(this)
         this.state = {
             user : "",
@@ -246,7 +246,7 @@ class Profile extends React.Component {
             toast.error("Credit increament failed")
         })
     }
-    showState = (props)=>{
+    showState(props){
         if(props.state === "Searching"){
             return(
                 <div className="col-md-8 offset-md-2 searchingState rounded">
@@ -267,8 +267,9 @@ class Profile extends React.Component {
             )
         }
     }
-    showOrder = (props)=>{
+    showOrder(props){
         var restaurantName = (props.order.restaurantName.length > 25) ? "..."+props.order.restaurantName.substring(0,25) : props.order.restaurantName;
+        console.log(this)
         return (
             <div className="row">
                 <div className="col-md-4 offset-md-1 ordersCell rounded-left">

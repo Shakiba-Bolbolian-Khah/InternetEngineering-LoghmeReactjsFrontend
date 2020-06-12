@@ -18,7 +18,6 @@ class HomeRestaurants extends React.Component {
         this.serachRestaurants = this.serachRestaurants.bind(this)
         this.showRestaurants = this.showRestaurants.bind(this);
         this.showRestaurant = this.showRestaurant.bind(this);
-        // this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             restaurants : [],
             ready: false,
@@ -116,11 +115,6 @@ class HomeRestaurants extends React.Component {
             }
         }
       }
-
-    // handleSubmit(event,id){
-    //     event.preventDefault()
-    //     ReactDOM.render(<Restaurant id = {id}/>, document.getElementById("root"));
-    // }
 
     showRestaurant(props){
         var restaurantName = (props.restaurant.name.length > 20) ? props.restaurant.name.substring(0,20)+"..." : props.restaurant.name;
